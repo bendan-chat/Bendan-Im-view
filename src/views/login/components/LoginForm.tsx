@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { Login } from "@/api/interface/sys";
-import { loginApi } from "@/api/modules/login";
+import { Login } from "@/api/interface/user";
+import { loginApi } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
