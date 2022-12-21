@@ -39,9 +39,9 @@ class RequestHttp {
 				// * 如果当前请求不需要显示 loading,在api服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
 				config.headers!.noLoading || showFullScreenLoading();
 				// * 放行登录接口
+				let loginUrl: string | undefined = config.url;
 				const token: string = store.getState().global.token;
-				if (token === null || token === undefined) {
-					console.log("token:" + token);
+				if (loginUrl === "/sysUser/login") {
 					return config;
 				}
 				const bearerToken: string = "Bearer " + token;
