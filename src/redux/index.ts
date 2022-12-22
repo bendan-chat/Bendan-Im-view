@@ -6,17 +6,13 @@ import reduxThunk from "redux-thunk";
 import reduxPromise from "redux-promise";
 import global from "./modules/global/reducer";
 import menu from "./modules/menu/reducer";
-import tabs from "./modules/tabs/reducer";
 import auth from "./modules/auth/reducer";
-import breadcrumb from "./modules/breadcrumb/reducer";
 
 // 创建reducer(拆分reducer)
 const reducer = combineReducers({
 	global,
 	menu,
-	tabs,
-	auth,
-	breadcrumb
+	auth
 });
 
 // redux 持久化配置

@@ -36,6 +36,7 @@ export const rootRouter: RouteObject[] = [
 
 // * 注册路由
 const Router = () => {
+	console.log(rootRouter);
 	const routes = useRoutes(rootRouter);
 	return routes;
 };

@@ -1,7 +1,6 @@
 import { Layout } from "antd";
 import AvatarIcon from "./components/AvatarIcon";
 import CollapseIcon from "./components/CollapseIcon";
-import BreadcrumbNav from "./components/BreadcrumbNav";
 import AssemblySize from "./components/AssemblySize";
 import Language from "./components/Language";
 import Theme from "./components/Theme";
@@ -15,7 +14,6 @@ const LayoutHeader = () => {
 		<Header>
 			<div className="header-lf">
 				<CollapseIcon />
-				<BreadcrumbNav />
 			</div>
 			<div className="header-ri">
 				<AssemblySize />

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, Spin } from "antd";
 import { getOpenKeys, handleRouter, searchRoute } from "@/utils/util";
 import { setMenuList } from "@/redux/modules/menu/action";
-import { setBreadcrumbList } from "@/redux/modules/breadcrumb/action";
 import { setAuthRouter } from "@/redux/modules/auth/action";
 import { getMenuList } from "@/api/modules/menu";
 import { connect } from "react-redux";
@@ -15,7 +14,7 @@ import { Menus } from "@/api/interface/menu";
 
 const LayoutMenu = (props: any) => {
 	const { pathname } = useLocation();
-	const { isCollapse, setBreadcrumbList, setAuthRouter, setMenuList: setMenuListAction } = props;
+	const { isCollapse, setAuthRouter, setMenuList: setMenuListAction } = props;
 	const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname]);
 	const [openKeys, setOpenKeys] = useState<string[]>([]);
 
@@ -67,6 +66,11 @@ const LayoutMenu = (props: any) => {
 		return newArr;
 	};
 
+	// // * 处理后台菜单变成路由菜单
+	// const findAllBreadcrumb = (data: Menus.MenuParams[]) => {
+	// 	console.log(data);
+	// };
+
 	// 获取菜单列表并处理成 antd menu 需要的格式
 	const [menuList, setMenuList] = useState<MenuItem[]>();
 	const [loading, setLoading] = useState(false);
@@ -80,10 +84,7 @@ const LayoutMenu = (props: any) => {
 			newnums = deepLoopFloat(data);
 			setMenuList(newnums);
 			// 存储处理过后的所有面包屑导航栏到 redux 中
-			// let arr: any;
-			// arr = findAllBreadcrumb(data);
-			setBreadcrumbList(data);
-
+			// setBreadcrumbList(findAllBreadcrumb(data));
 			// 把路由菜单处理成一维数组，存储到 redux 中，做菜单权限判断
 			const dynamicRouter = handleRouter(data);
 			setAuthRouter(dynamicRouter);
@@ -124,5 +125,5 @@ const LayoutMenu = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => state.menu;
-const mapDispatchToProps = { setMenuList, setBreadcrumbList, setAuthRouter };
+const mapDispatchToProps = { setMenuList, setAuthRouter };
 export default connect(mapStateToProps, mapDispatchToProps)(LayoutMenu);

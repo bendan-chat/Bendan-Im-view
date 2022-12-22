@@ -7,12 +7,12 @@ import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
 import { useTranslation } from "react-i18next";
-import { setTabsList } from "@/redux/modules/tabs/action";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { ResultEnum } from "@/enums/httpEnum";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
-	const { setToken, setTabsList } = props;
+	const { setToken } = props;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
@@ -21,11 +21,13 @@ const LoginForm = (props: any) => {
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {
 		try {
 			setLoading(true);
-			const { data, msg } = await loginApi(loginForm);
-			setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
-			setTabsList([]);
-			message.success(msg);
-			navigate(HOME_URL);
+			const { data, msg, code } = await loginApi(loginForm);
+			console.log(code);
+			if (code === ResultEnum.SUCCESS) {
+				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
+				message.success(msg);
+				navigate(HOME_URL);
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -69,5 +71,5 @@ const LoginForm = (props: any) => {
 	);
 };
 
-const mapDispatchToProps = { setToken, setTabsList };
+const mapDispatchToProps = { setToken };
 export default connect(null, mapDispatchToProps)(LoginForm);

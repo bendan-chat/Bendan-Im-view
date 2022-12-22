@@ -10,8 +10,3 @@ export const getMenuList = () => {
 	};
 	return http.get<Menus.MenuParams[]>(adminServer.Menu + `/treeByRoleIds`, params);
 };
-
-// * 获取按钮权限
-export const getAuthorButtons = () => {
-	return http.get<Menus.ResAuthButtons>(adminServer.Menu + `/auth/buttons`);
-};

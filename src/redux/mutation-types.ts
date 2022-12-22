@@ -6,8 +6,6 @@ export const SET_MENU_LIST = "SET_MENU_LIST";
 export const SET_TABS_LIST = "SET_TABS_LIST";
 // 设置 tabsActive
 export const SET_TABS_ACTIVE = "SET_TABS_ACTIVE";
-// 设置 breadcrumb
-export const SET_BREADCRUMB_LIST = "SET_BREADCRUMB_LIST";
 // 设置 authButtons
 export const SET_AUTH_BUTTONS = "SET_AUTH_BUTTONS";
 // 设置 authRouter

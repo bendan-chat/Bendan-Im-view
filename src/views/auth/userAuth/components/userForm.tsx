@@ -1,21 +1,33 @@
-import "./user.less";
 import { Table, Input, Button, Space, DatePicker } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+// import type { PaginationProps } from "antd";
 import { connect } from "react-redux";
 
 const UserForm = () => {
 	const { RangePicker } = DatePicker;
-	const dataSource = [
-		{
-			key: "1",
-			username: "胡彦斌",
-			gender: "男",
-			email: "16877978@gmail",
-			status: "正常",
-			phoneNumber: "1312341241244",
-			createTime: "2022-11-12"
-		}
-	];
+
+	interface TestObj {
+		key: string;
+		username: string;
+		gender: string;
+		email: string;
+		status: string;
+		phoneNumber: string;
+		createTime: string;
+	}
+	const dataSource: TestObj[] = [];
+	const obj = {
+		key: "1",
+		username: "胡彦斌",
+		gender: "男",
+		email: "16877978@gmail",
+		status: "正常",
+		phoneNumber: "1312341241244",
+		createTime: "2022-11-12"
+	};
+	for (let i = 0; i < 200; i++) {
+		dataSource.push(obj);
+	}
 
 	const columns: any[] = [
 		{
@@ -66,6 +78,14 @@ const UserForm = () => {
 			width: "15%"
 		}
 	];
+
+	// const onChange: PaginationProps["onChange"] = pageNumber => {
+	// 	console.log("Page: ", pageNumber);
+	// };
+	const pagination = {
+		current: 1,
+		pageSize: 5
+	};
 	return (
 		<div className="card content-box">
 			<div className="input data">
@@ -86,7 +106,7 @@ const UserForm = () => {
 				</Space>
 			</div>
 			<br />
-			<Table bordered={true} dataSource={dataSource} columns={columns} />
+			<Table bordered={true} dataSource={dataSource} columns={columns} pagination={pagination} />
 		</div>
 	);
 };

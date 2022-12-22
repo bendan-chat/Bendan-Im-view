@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
-import { setAuthButtons } from "@/redux/modules/auth/action";
 import { updateCollapse } from "@/redux/modules/menu/action";
 import { connect } from "react-redux";
 import LayoutMenu from "./components/Menu";
 import LayoutHeader from "./components/Header";
-import LayoutTabs from "./components/Tabs";
 import LayoutFooter from "./components/Footer";
 import "./index.less";
 
@@ -37,7 +35,6 @@ const LayoutIndex = (props: any) => {
 			</Sider>
 			<Layout>
 				<LayoutHeader></LayoutHeader>
-				<LayoutTabs></LayoutTabs>
 				<Content>
 					<Outlet></Outlet>
 				</Content>
@@ -48,5 +45,5 @@ const LayoutIndex = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => state.menu;
-const mapDispatchToProps = { setAuthButtons, updateCollapse };
+const mapDispatchToProps = { updateCollapse };
 export default connect(mapStateToProps, mapDispatchToProps)(LayoutIndex);

@@ -11,7 +11,7 @@ const Theme = (props: any) => {
 	const { setThemeConfig, updateCollapse } = props;
 	const { isCollapse } = props.menu;
 	const { themeConfig } = props.global;
-	const { weakOrGray, breadcrumb, tabs, footer } = themeConfig;
+	const { weakOrGray, tabs, footer } = themeConfig;
 
 	const setWeakOrGray = (checked: boolean, theme: string) => {
 		if (checked) return setThemeConfig({ ...themeConfig, weakOrGray: theme });
@@ -78,15 +78,6 @@ const Theme = (props: any) => {
 						checked={isCollapse}
 						onChange={e => {
 							updateCollapse(e);
-						}}
-					/>
-				</div>
-				<div className="theme-item">
-					<span>面包屑导航</span>
-					<Switch
-						checked={!breadcrumb}
-						onChange={e => {
-							onChange(e, "breadcrumb");
 						}}
 					/>
 				</div>
