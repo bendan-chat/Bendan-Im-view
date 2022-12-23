@@ -82,6 +82,7 @@ const LayoutMenu = (props: any) => {
 			console.log("data", data);
 			let newnums: MenuItem[];
 			newnums = deepLoopFloat(data);
+			console.log("newnums:  ", newnums);
 			setMenuList(newnums);
 			// 存储处理过后的所有面包屑导航栏到 redux 中
 			// setBreadcrumbList(findAllBreadcrumb(data));
