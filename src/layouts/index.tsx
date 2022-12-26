@@ -1,40 +1,61 @@
-import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
-import { updateCollapse } from "@/redux/modules/menu/action";
-import { connect } from "react-redux";
-import LayoutMenu from "./components/Menu";
-import LayoutHeader from "./components/Header";
 import LayoutFooter from "./components/Footer";
+import FriendList from "./components/List";
+import { Input, Space, MenuProps, Menu } from "antd";
+const { Search } = Input;
 import "./index.less";
+import AssemblySize from "./components/Header/components/AssemblySize";
+import Language from "./components/Header/components/Language";
+import Theme from "./components/Header/components/Theme";
+import Fullscreen from "./components/Header/components/Fullscreen";
+import Sider from "antd/lib/layout/Sider";
+import { Content } from "antd/lib/layout/layout";
+import UserStatus from "./components/Header/components/UserStatus";
+import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
 
-const LayoutIndex = (props: any) => {
-	const { Sider, Content } = Layout;
-	const { isCollapse, updateCollapse } = props;
-
-	// 监听窗口大小变化
-	const listeningWindow = () => {
-		window.onresize = () => {
-			return (() => {
-				let screenWidth = document.body.clientWidth;
-				if (!isCollapse && screenWidth < 1200) updateCollapse(true);
-				if (!isCollapse && screenWidth > 1200) updateCollapse(false);
-			})();
-		};
-	};
-
-	useEffect(() => {
-		listeningWindow();
-	}, []);
+type MenuItem = Required<MenuProps>["items"][number];
+function getItem(
+	label: React.ReactNode,
+	key?: React.Key | null,
+	icon?: React.ReactNode,
+	children?: MenuItem[],
+	type?: "group"
+): MenuItem {
+	return {
+		key,
+		icon,
+		children,
+		label,
+		type
+	} as MenuItem;
+}
+const items: MenuItem[] = [
+	getItem("", "2", <UserStatus />),
+	getItem("", "5", <MessageOutlined style={{ fontSize: "18px" }} />),
+	getItem("", "4", <TeamOutlined style={{ fontSize: "18px" }} />),
+	getItem("", "6", <Language />),
+	getItem("", "7", <AssemblySize />),
+	getItem("", "8", <Theme />),
+	getItem("", "9", <Fullscreen />)
+];
+function LayoutIndex() {
+	function onSearch() {
+		console.log("12121");
+	}
 
 	return (
-		// 这里不用 Layout 组件原因是切换页面时样式会先错乱然后在正常显示，造成页面闪屏效果
 		<section className="container">
-			<Sider trigger={null} collapsed={props.isCollapse} width={220} theme="dark">
-				<LayoutMenu></LayoutMenu>
+			<Sider trigger={null} collapsed={false} width={60} theme="dark">
+				<Menu theme="dark" mode="inline" items={items} style={{ minWidth: 20, flex: "auto" }}></Menu>
+			</Sider>
+			<Sider trigger={null} width={220} theme="light">
+				<Space direction="vertical">
+					<Search className="Search" placeholder="input search text" allowClear onSearch={onSearch} />
+				</Space>
+				<FriendList />
 			</Sider>
 			<Layout>
-				<LayoutHeader></LayoutHeader>
 				<Content>
 					<Outlet></Outlet>
 				</Content>
@@ -42,8 +63,6 @@ const LayoutIndex = (props: any) => {
 			</Layout>
 		</section>
 	);
-};
+}
 
-const mapStateToProps = (state: any) => state.menu;
-const mapDispatchToProps = { updateCollapse };
-export default connect(mapStateToProps, mapDispatchToProps)(LayoutIndex);
+export default LayoutIndex;
