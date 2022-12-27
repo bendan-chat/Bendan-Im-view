@@ -1,4 +1,4 @@
-import { Login } from "@/api/interface/user";
+import { Login, Account } from "@/api/interface/user";
 import { ResPage, ReqPage } from "@/api/interface/sys";
 import { adminServer } from "@/api/config/servicePort";
 import qs from "qs";
@@ -29,8 +29,28 @@ export const loginApi = (params: Login.ReqLoginForm) => {
 };
 
 /**
+ * @name 获取好友列表
+ */
+interface getUserInfoParams {
+	username: number;
+}
+export const getUserInfo = (params: getUserInfoParams) => {
+	return http.get<Account.UserInfo>(adminServer.User + `/getUserinfo`, params);
+};
+
+/**
  * @name 用户分页
  */
 export const pageUsers = (params: ReqPage) => {
-	return http.get<ResPage<any>>(adminServer.Menu + `/listPage`, params);
+	return http.get<ResPage<any>>(adminServer.User + `/listPage`, params);
+};
+
+/**
+ * @name 获取好友列表
+ */
+interface getFriendParams {
+	userId: number;
+}
+export const getFriends = (params: getFriendParams) => {
+	return http.get<Account.ChatUser>(adminServer.Chat + `/getFriends`, params);
 };

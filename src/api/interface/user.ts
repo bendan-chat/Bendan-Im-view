@@ -24,3 +24,89 @@ export namespace Login {
 		scopes?: string[];
 	}
 }
+
+export namespace Account {
+	export interface ChatUser {
+		/**
+		 * 昵称
+		 */
+		nickName?: String;
+		/**
+		 * 头像
+		 */
+		avatar?: String;
+		/**
+		 * 性别   (-1 未知 0 女性  1 男性)
+		 */
+		gender: -1 | 0 | 1;
+	}
+	export interface UserInfo {
+		/**
+		 * 用户ID
+		 */
+		id: number;
+
+		/**
+		 * 用户名称
+		 */
+		username: String;
+
+		/**
+		 * 密码
+		 */
+		password: String;
+
+		/**
+		 * 昵称
+		 */
+		nickName: String;
+
+		/**
+		 * 真实姓名
+		 */
+		realName: String;
+
+		/**
+		 * 手机号
+		 */
+		phoneNumber: String;
+
+		/**
+		 * 头像
+		 */
+		avatar: String;
+
+		/**
+		 * 邮箱
+		 */
+		email: String;
+		/**
+		 * 状态（0-正常  1-锁定  2-删除）
+		 */
+		status: number;
+		/**
+		 * 性别   (-1 未知 0 女性  1 男性)
+		 */
+		gender: number;
+
+		/**
+		 * 创建人ID
+		 */
+		createId: number;
+
+		/**
+		 * 修改人ID
+		 */
+		updateId: number;
+
+		/**
+		 * 创建时间
+		 */
+		createTime: String;
+
+		/**
+		 * 更新时间
+		 */
+		updateTime: String;
+	}
+}

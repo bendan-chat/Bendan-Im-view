@@ -9,6 +9,7 @@ import { setToken } from "@/redux/modules/global/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { ResultEnum } from "@/enums/httpEnum";
+import { createWsClient } from "@/websocket/index";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
@@ -26,6 +27,8 @@ const LoginForm = (props: any) => {
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
 				message.success(msg);
+				// *  连接ws
+				createWsClient();
 				navigate(HOME_URL);
 			}
 		} finally {

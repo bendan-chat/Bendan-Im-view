@@ -3,4 +3,5 @@
 export namespace adminServer {
 	export const User = "/sysUser";
 	export const Menu = "/sysMenu";
+	export const Chat = "/chat";
 }
