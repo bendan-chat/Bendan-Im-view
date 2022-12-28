@@ -30,6 +30,10 @@ export namespace Account {
 		/**
 		 * 昵称
 		 */
+		id: number;
+		/**
+		 * 昵称
+		 */
 		nickName?: String;
 		/**
 		 * 头像
@@ -39,6 +43,10 @@ export namespace Account {
 		 * 性别   (-1 未知 0 女性  1 男性)
 		 */
 		gender: -1 | 0 | 1;
+		// /**
+		//  * 最后一条消息
+		//  */
+		// lastMsg: string;
 	}
 	export interface UserInfo {
 		/**

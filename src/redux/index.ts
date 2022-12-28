@@ -7,12 +7,14 @@ import reduxPromise from "redux-promise";
 import global from "./modules/global/reducer";
 import menu from "./modules/menu/reducer";
 import auth from "./modules/auth/reducer";
+import chat from "./modules/chat/reducer";
 
 // 创建reducer(拆分reducer)
 const reducer = combineReducers({
 	global,
 	menu,
-	auth
+	auth,
+	chat
 });
 
 // redux 持久化配置

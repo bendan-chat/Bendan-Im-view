@@ -4,7 +4,7 @@ import { ConfigProvider } from "antd";
 import { connect } from "react-redux";
 import { setLanguage } from "@/redux/modules/global/action";
 import { HashRouter } from "react-router-dom";
-import AuthRouter from "@/routers/utils/authRouter";
+// import AuthRouter from "@/routers/utils/authRouter";
 import Router from "@/routers/index";
 import useTheme from "@/hooks/useTheme";
 import zhCN from "antd/lib/locale/zh_CN";
@@ -38,9 +38,9 @@ const App = (props: any) => {
 	return (
 		<HashRouter>
 			<ConfigProvider locale={i18nLocale} componentSize={assemblySize}>
-				<AuthRouter>
-					<Router />
-				</AuthRouter>
+				{/* <AuthRouter> */}
+				<Router />
+				{/* </AuthRouter> */}
 			</ConfigProvider>
 		</HashRouter>
 	);

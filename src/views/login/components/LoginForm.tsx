@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface/user";
-import { loginApi } from "@/api/modules/user";
+import { loginApi, getFriends, getFriendParams } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
+import { setFriends } from "@/redux/modules/chat/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { ResultEnum } from "@/enums/httpEnum";
@@ -13,20 +14,28 @@ import { createWsClient } from "@/websocket/index";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
-	const { setToken } = props;
+	const { setToken, setFriends } = props;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
+
+	async function loadFriends(username: string) {
+		const params: getFriendParams = {
+			username
+		};
+		const { data } = await getFriends(params);
+		setFriends(data);
+	}
 
 	// 登录
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {
 		try {
 			setLoading(true);
 			const { data, msg, code } = await loginApi(loginForm);
-			console.log(code);
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
 				message.success(msg);
+				loadFriends(loginForm.username);
 				// *  连接ws
 				createWsClient();
 				navigate(HOME_URL);
@@ -74,5 +83,5 @@ const LoginForm = (props: any) => {
 	);
 };
 
-const mapDispatchToProps = { setToken };
+const mapDispatchToProps = { setToken, setFriends };
 export default connect(null, mapDispatchToProps)(LoginForm);

@@ -1,3 +1,4 @@
+import { Account } from "@/api/interface/user";
 import type { SizeType } from "antd/lib/config-provider/SizeContext";
 
 /* themeConfigProp */
@@ -30,4 +31,9 @@ export interface AuthState {
 		[propName: string]: any;
 	};
 	authRouter: string[];
+}
+
+/* friendState */
+export interface FriendsState {
+	friends: Account.ChatUser[];
 }

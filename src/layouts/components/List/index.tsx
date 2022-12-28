@@ -1,33 +1,21 @@
 import { List, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-// import { getFriends } from "@/api/modules/user";
+import { useEffect, useState } from "react";
+import { store } from "@/redux";
 import "./index.less";
-
-const data = [
-	{
-		title: "Ant Design Title 1"
-	},
-	{
-		title: "Ant Design Title 2"
-	},
-	{
-		title: "Ant Design Title 3"
-	},
-	{
-		title: "Ant Design Title 4"
-	}
-];
+import { Account } from "@/api/interface/user";
 
 function FriendList() {
-	// const { } = await getFriends()
 	const navigate = useNavigate();
+	const [data, setData] = useState<Account.ChatUser[]>([]);
 	const [hoverColor, setHoverColor] = useState<boolean>(true);
-
-	// 点击当前菜单跳转页面
-	function ItemClick() {
-		navigate("/chat");
-	}
+	const { friends } = store.getState().chat;
+	const appendData = () => {
+		setData(friends);
+	};
+	useEffect(() => {
+		appendData();
+	}, []);
 	return (
 		<List
 			header={<></>}
@@ -41,13 +29,15 @@ function FriendList() {
 					onMouseLeave={() => {
 						setHoverColor(false);
 					}}
-					onClick={ItemClick}
+					onClick={() => {
+						navigate("/chat");
+					}}
 					className={hoverColor ? "index" : ""}
 				>
 					<List.Item.Meta
 						className="index"
-						avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-						title={item.title}
+						avatar={<Avatar src={item.avatar} />}
+						title={item.nickName}
 						description="is refined by Ant UED Team.."
 					/>
 				</List.Item>

@@ -29,7 +29,7 @@ export const loginApi = (params: Login.ReqLoginForm) => {
 };
 
 /**
- * @name 获取好友列表
+ * @name 获取用户详情
  */
 interface getUserInfoParams {
 	username: number;
@@ -48,8 +48,8 @@ export const pageUsers = (params: ReqPage) => {
 /**
  * @name 获取好友列表
  */
-interface getFriendParams {
-	userId: number;
+export interface getFriendParams {
+	username: string;
 }
 export const getFriends = (params: getFriendParams) => {
 	return http.get<Account.ChatUser>(adminServer.Chat + `/getFriends`, params);
