@@ -30,7 +30,7 @@ function FriendList() {
 						setHoverColor(false);
 					}}
 					onClick={() => {
-						navigate("/chat");
+						navigate("/chat" + "/" + item.id);
 					}}
 					className={hoverColor ? "index" : ""}
 				>

@@ -45,7 +45,6 @@ const createWsClient = () => {
 		socketOpen = false;
 	};
 	ws.onmessage = function (event) {
-		console.log("event", event);
 		handleMsg(event);
 	};
 };
@@ -95,16 +94,15 @@ const sendHeartbeat = () => {
 const closeConnection = () => {
 	closeTimer = setTimeout(() => {
 		ws?.close();
-	}, 10000);
+	}, 100000);
 };
 
 /**
  * 重连 Web Socket
  */
 const reconnect = () => {
-	if (socketOpen) return;
 	//没连接上会一直重连，设置延迟避免请求过多
 	createWsClient();
 };
 
-export { createWsClient, ws };
+export { createWsClient, ws, sendMessage };

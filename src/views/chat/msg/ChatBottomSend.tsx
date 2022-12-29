@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
+import { sendMessage } from "@/websocket";
+import { SendCode } from "@/websocket/type";
+// import ChatRightMsg from "./ChatRightMsg";
 const { TextArea } = Input;
 
-export default function ChatBottomSend() {
-	const [msg, setMsg] = useState<string | number | readonly string[] | undefined>("");
+interface IProps {
+	addMsgList: any;
+	toId: number;
+}
+// eslint-disable-next-line react/prop-types
+export default function ChatBottomSend({ toId, addMsgList }: IProps) {
+	const [msg, setMsg] = useState<string>("");
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setMsg(e.target.value);
 	};
 	const sendMsgClick = () => {
-		// 前台展示
 		// 发送到后台
-		console.log(msg);
+		sendMessage({
+			code: SendCode.MESSAGE,
+			sendType: 0,
+			fromId: 2,
+			toId: toId,
+			content: msg
+		});
+		// 前台展示
+		addMsgList(msg);
 		setMsg("");
 	};
 	return (

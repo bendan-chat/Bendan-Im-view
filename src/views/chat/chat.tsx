@@ -2,30 +2,35 @@ import "./chat.less";
 import ChatBottomSend from "./msg/ChatBottomSend";
 import ChatLeftMsg from "./msg/ChatLeftMsg";
 import ChatRightMsg from "./msg/ChatRightMsg";
+import { useLocation } from "react-router";
+import { useState } from "react";
 
-const User = () => {
+const ChatRoom = () => {
+	const location = useLocation();
+	const toId: number = Number.parseInt(location.pathname.split("/", 3)[2]);
+	const [msgList, setMsgList] = useState<JSX.Element[]>([]);
+	// const msgList: JSX.Element[] = [];
+	// 加载之前聊天记录
+	for (let i = 2; i < 10; i++) {
+		msgList.push(<ChatLeftMsg key={msgList.length + 1} msg="qqqqqqq" />);
+		msgList.push(<ChatRightMsg key={msgList.length + 1} msg="ggggggg" />);
+	}
+
+	const addSelfMsg = (msg: string) => {
+		msgList.push(<ChatRightMsg key={msgList.length + 1} msg={msg} />);
+		console.log(msgList);
+		setMsgList(msgList);
+	};
 	return (
 		<>
 			<div className="cr">
-				<div className="message-container">
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatRightMsg msg="ggggggg" />
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatRightMsg msg="ggggggg" />
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatLeftMsg msg="qqqqqqq" />
-					<ChatRightMsg msg="ggggggg" />
-					<ChatRightMsg msg="ggggggg" />
-					<ChatRightMsg msg="ggggggg" />
-				</div>
+				<div className="message-container">{msgList}</div>
 				<div className="chatFooter">
-					<ChatBottomSend />
+					<ChatBottomSend addMsgList={addSelfMsg} toId={toId} />
 				</div>
 			</div>
 		</>
 	);
 };
 
-export default User;
+export default ChatRoom;
