@@ -38,6 +38,9 @@ const global = (state: GlobalState = globalState, action: AnyAction) =>
 			case types.SET_THEME_CONFIG:
 				draftState.themeConfig = action.themeConfig;
 				break;
+			case types.SET_USERINFO:
+				draftState.userInfo = action.userInfo;
+				break;
 			default:
 				return draftState;
 		}

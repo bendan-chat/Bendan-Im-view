@@ -8,6 +8,7 @@ export namespace Login {
 		oauth2AccessTokenResponse?: Oauth2AccessTokenResponse;
 		accessTokenExpiresIn?: number;
 		refreshExpiresIn?: number;
+		userId: number;
 	}
 	interface Oauth2AccessTokenResponse {
 		accessToken?: Token;

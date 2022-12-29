@@ -5,7 +5,7 @@
  * 3 - 聊天消息
  * 4 - 关闭链接
  */
-export const SENDCODE = {
+export const SendCode = {
 	NEW: 1,
 	HEARTBEAT: 2,
 	MESSAGE: 3,

@@ -5,7 +5,7 @@ import { Login } from "@/api/interface/user";
 import { loginApi, getFriends, getFriendParams } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
-import { setToken } from "@/redux/modules/global/action";
+import { setToken, setUserInfo } from "@/redux/modules/global/action";
 import { setFriends } from "@/redux/modules/chat/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
@@ -14,17 +14,22 @@ import { createWsClient } from "@/websocket/index";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
-	const { setToken, setFriends } = props;
+	const { setToken, setFriends, setUserInfo } = props;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
 
-	async function loadFriends(username: string) {
+	async function loadFriends(username: string, userId: number) {
 		const params: getFriendParams = {
 			username
 		};
 		const { data } = await getFriends(params);
 		setFriends(data);
+		const userInfo = {
+			username,
+			userId
+		};
+		setUserInfo(userInfo);
 	}
 
 	// 登录
@@ -35,7 +40,7 @@ const LoginForm = (props: any) => {
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
 				message.success(msg);
-				loadFriends(loginForm.username);
+				loadFriends(loginForm.username, data.userId);
 				// *  连接ws
 				createWsClient();
 				navigate(HOME_URL);
@@ -83,5 +88,5 @@ const LoginForm = (props: any) => {
 	);
 };
 
-const mapDispatchToProps = { setToken, setFriends };
+const mapDispatchToProps = { setToken, setFriends, setUserInfo };
 export default connect(null, mapDispatchToProps)(LoginForm);

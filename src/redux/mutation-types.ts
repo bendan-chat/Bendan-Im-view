@@ -20,3 +20,5 @@ export const SET_LANGUAGE = "SET_LANGUAGE";
 export const SET_THEME_CONFIG = "SET_THEME_CONFIG";
 // 设置 好友列表
 export const SET_CHAT_FRIENDS = "SET_CHAT_FRIENDS";
+// 设置 用户详情
+export const SET_USERINFO = "SET_USERINFO";

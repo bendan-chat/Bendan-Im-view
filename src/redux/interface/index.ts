@@ -10,6 +10,12 @@ export interface ThemeConfigProp {
 	footer: boolean;
 }
 
+/* UserInfoConfigProp */
+export interface UserInfoConfigProp {
+	id: number;
+	username: string;
+}
+
 /* GlobalState */
 export interface GlobalState {
 	token: string;
