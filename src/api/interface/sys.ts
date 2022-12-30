@@ -12,7 +12,7 @@ export interface ResultData<T> extends Result {
 
 // * 分页响应
 export interface ResPage<T> {
-	items?: T[];
+	items: T[];
 	total: number;
 }
 

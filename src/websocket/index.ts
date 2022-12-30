@@ -2,12 +2,12 @@ import { Message } from "@/api/interface/chat";
 import { store } from "@/redux";
 import { SendCode } from "./type";
 
-interface SendMessageProps {
+export interface SendMessageProps {
 	code: typeof SendCode[keyof typeof SendCode];
 	sendType?: Message.SendType;
 	fromId?: number;
 	toId?: number;
-	content?: string;
+	sendContent?: string;
 	userId?: number;
 }
 

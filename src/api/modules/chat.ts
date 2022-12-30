@@ -3,9 +3,48 @@ import { ChatServer } from "../config/servicePort";
 import { ReqPage, ResPage } from "../interface/sys";
 
 // * 获取聊天记录
-interface RecordPage extends ReqPage {
+export interface RecordPage extends ReqPage {
 	userId: number;
+	toId: number;
+}
+export interface ListRecordData {
+	/**
+	 *
+	 */
+	id: number;
+
+	/**
+	 * 用户id
+	 */
+
+	fromId: number;
+
+	/**
+	 * 专家id
+	
+	 */
+	toId: number;
+
+	/**
+	 * 发送内容
+	 */
+	sendContent: string;
+
+	/**
+	 * 发送类型【0文本，1图片，2语言，3视频】
+	 */
+	sendType: number;
+
+	/**
+	 * 发送时长
+	 */
+	sendTimeLength: number;
+
+	/**
+	 * 发送时间
+	 */
+	sendTime: string;
 }
 export const listRecord = (params: RecordPage) => {
-	return http.get<ResPage<any>>(ChatServer.Record + `/listRecord`, params);
+	return http.get<ResPage<ListRecordData>>(ChatServer.Record + `/listRecord`, params);
 };

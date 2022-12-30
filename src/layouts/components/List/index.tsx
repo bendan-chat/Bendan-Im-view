@@ -1,21 +1,22 @@
-import { List, Avatar } from "antd";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { store } from "@/redux";
-import "./index.less";
+import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
+
+import { List, Avatar } from "antd";
+
+import "./index.less";
 
 function FriendList() {
 	const navigate = useNavigate();
 	const [data, setData] = useState<Account.ChatUser[]>([]);
-	const [hoverColor, setHoverColor] = useState<boolean>(true);
 	const { friends } = store.getState().chat;
-	const appendData = () => {
-		setData(friends);
-	};
+	const [selectId, setSelectId] = useState<number>();
+
 	useEffect(() => {
-		appendData();
-	}, []);
+		setData(friends);
+	}, [friends]);
+
 	return (
 		<List
 			header={<></>}
@@ -23,16 +24,11 @@ function FriendList() {
 			dataSource={data}
 			renderItem={item => (
 				<List.Item
-					onMouseEnter={() => {
-						setHoverColor(true);
-					}}
-					onMouseLeave={() => {
-						setHoverColor(false);
-					}}
+					className={`${selectId === item.id ? "active-user" : ""}`}
 					onClick={() => {
 						navigate("/chat" + "/" + item.id);
+						setSelectId(item.id);
 					}}
-					className={hoverColor ? "index" : ""}
 				>
 					<List.Item.Meta
 						className="index"
