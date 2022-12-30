@@ -1,6 +1,4 @@
-import "./chat.less";
 import ChatBottomSend from "./msg/ChatBottomSend";
-// import ChatLeftMsg from "./msg/ChatLeftMsg";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { listRecord, RecordPage } from "@/api/modules/chat";
@@ -8,7 +6,8 @@ import { store } from "@/redux";
 
 import ChatRightMsg from "./msg/ChatRightMsg";
 import ChatLeftMsg from "./msg/ChatLeftMsg";
-import { SendMessageProps } from "@/websocket";
+import { SendMessageProps, ws } from "@/websocket";
+import "./chat.less";
 
 const ChatRoom = () => {
 	const { id } = useParams();
@@ -30,9 +29,19 @@ const ChatRoom = () => {
 		listRecord(params).then(function (response) {
 			setMsgList(response.data.items);
 		});
-
-		// console.log(id);
 	}, [id]);
+	ws!.onmessage = function (event) {
+		handleMsg(event);
+	};
+	const handleMsg = (event: MessageEvent<any>) => {
+		const result = JSON.parse(event.data as string);
+		// * 处理心跳
+		if (result === 2) {
+			console.log();
+		} else {
+			addSelfMsg(result);
+		}
+	};
 
 	// // * 更新消息
 	const addSelfMsg = (msg: SendMessageProps) => {

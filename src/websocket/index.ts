@@ -15,7 +15,7 @@ let ws: WebSocket | null;
 let socketOpen: boolean = false;
 
 // * 关闭连接定时器
-let closeTimer: ReturnType<typeof setTimeout> | undefined;
+// let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
 // ws 初始化
 const createWsClient = () => {
@@ -34,7 +34,7 @@ const createWsClient = () => {
 		// * 心跳
 		sendHeartbeat();
 		// * 启动关闭连接
-		closeConnection();
+		// closeConnection();
 	};
 	ws.onerror = function (e) {
 		console.log("onerror: ", e);
@@ -44,18 +44,9 @@ const createWsClient = () => {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
 		socketOpen = false;
 	};
-	ws.onmessage = function (event) {
-		handleMsg(event);
-	};
-};
-
-const handleMsg = (event: MessageEvent<any>) => {
-	const result = JSON.parse(event.data as string);
-	// * 处理心跳
-	if (result === 2) {
-		clearTimeout(closeTimer); // 清除定时关闭的连接
-		closeConnection(); // 再次打开
-	}
+	// ws.onmessage = function (event) {
+	// 	handleMsg(event);
+	// };
 };
 
 /**
@@ -68,6 +59,7 @@ const sendMessage = (obj: SendMessageProps): Promise<any> => {
 				ws?.send(JSON.stringify(obj));
 			} else {
 				reject(new Error("未连接服务"));
+				createWsClient();
 			}
 		} catch (e) {
 			console.log(e);
@@ -91,11 +83,11 @@ const sendHeartbeat = () => {
 /**
  * 关闭 Web Socket
  */
-const closeConnection = () => {
-	closeTimer = setTimeout(() => {
-		ws?.close();
-	}, 100000);
-};
+// const closeConnection = () => {
+// 	closeTimer = setTimeout(() => {
+// 		ws?.close();
+// 	}, 100000);
+// };
 
 /**
  * 重连 Web Socket
