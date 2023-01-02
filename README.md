@@ -1,8 +1,8 @@
-# Hooks-Admin 🚀
+# Bendan-Im 🚀
 
 ### 介绍 📖
 
-🚀🚀🚀 bendan Admin，基于 Hooks Admin 二次开发 主要功能 React18、React-Router v6、React-Hooks、Redux && Redux-Toolkit、TypeScript、Vite2、Ant-Design 开源的一套后台管理框架。
+🚀🚀🚀 bendan Admin，基于 Hooks Admin 二次开发 主要功能 React18、React-Router v6、React-Hooks、Redux && Redux-Toolkit、TypeScript、Vite2、Ant-Design 开源的一套 Im 聊天系统。
 
 🌈 Redux-Toolkit 版本请切换到 Redux-Toolkit 分支上
 
