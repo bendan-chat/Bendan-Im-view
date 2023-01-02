@@ -22,3 +22,5 @@ export const SET_THEME_CONFIG = "SET_THEME_CONFIG";
 export const SET_CHAT_FRIENDS = "SET_CHAT_FRIENDS";
 // 设置 用户详情
 export const SET_USERINFO = "SET_USERINFO";
+// 设置 本地聊天信息
+export const SET_LOCAL_MSG = "SET_LOCAL_MSG";

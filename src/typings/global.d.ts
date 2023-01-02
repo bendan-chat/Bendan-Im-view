@@ -1,3 +1,5 @@
+//# Server
+
 // * Menu
 declare namespace Menu {
 	interface MenuOptions {
@@ -22,6 +24,7 @@ declare interface ViteEnv {
 	VITE_PROXY_URL: string;
 	VITE_BUILD_GZIP: boolean;
 	VITE_REPORT: boolean;
+	VITE_SERVER_URL: "http://localhost:9999";
 }
 
 // * Dropdown MenuInfo

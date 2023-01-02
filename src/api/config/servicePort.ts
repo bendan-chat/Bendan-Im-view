@@ -11,3 +11,8 @@ export namespace adminServer {
 export namespace ChatServer {
 	export const Record = "/chat/record";
 }
+
+// Oss
+export namespace Oss {
+	export const Upload = "/oss/file";
+}

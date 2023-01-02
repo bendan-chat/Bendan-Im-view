@@ -24,6 +24,7 @@
 		"driver.js": "^0.9.8",
 		"i18next": "^21.8.10",
 		"immer": "^9.0.15",
+		"js-audio-recorder": "^1.0.7",
 		"moment": "^2.29.3",
 		"nprogress": "^0.2.0",
 		"qs": "^6.10.5",

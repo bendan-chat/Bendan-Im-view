@@ -7,7 +7,7 @@ export interface RecordPage extends ReqPage {
 	userId: number;
 	toId: number;
 }
-export interface ListRecordData {
+export interface RecordData {
 	/**
 	 *
 	 */
@@ -46,5 +46,5 @@ export interface ListRecordData {
 	sendTime: string;
 }
 export const listRecord = (params: RecordPage) => {
-	return http.get<ResPage<ListRecordData>>(ChatServer.Record + `/listRecord`, params);
+	return http.get<ResPage<RecordData>>(ChatServer.Record + `/listRecord`, params);
 };

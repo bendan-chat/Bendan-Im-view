@@ -43,7 +43,8 @@
 		"src/**/*.ts",
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
-		"vite.config.ts"
+		"vite.config.ts",
+		"src/utils/Timer.tx"
 	],
 	"exclude": [
 		"node_modules",
