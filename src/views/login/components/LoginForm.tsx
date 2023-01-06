@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface/user";
-import { loginApi, getFriends, getFriendParams } from "@/api/modules/user";
+import { loginApi } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken, setUserInfo } from "@/redux/modules/global/action";
@@ -14,19 +14,10 @@ import { createWsClient } from "@/websocket/index";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
-	const { setToken, setFriends, setUserInfo } = props;
+	const { setToken, setUserInfo } = props;
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async function loadFriends(username: string) {
-		const params: getFriendParams = {
-			username
-		};
-		const { data } = await getFriends(params);
-		setFriends(data);
-	}
 
 	// 登录
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {
@@ -36,12 +27,11 @@ const LoginForm = (props: any) => {
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
 				setUserInfo({
-					id: data.userId,
+					userId: data.userId,
 					username: loginForm.username,
 					avatar: data.avatar
 				});
 				message.success(msg);
-				// loadFriends(loginForm.username);
 				// *  连接ws
 				createWsClient();
 				navigate(HOME_URL);

@@ -24,12 +24,12 @@ const createWsClient = () => {
 	ws.onopen = function (e) {
 		console.log("onopen: ", e);
 		socketOpen = true;
-		// * 发送连接成功请求
-		const { id } = store.getState().global.userInfo;
 		// 建立连接通道
+		const { userId } = store.getState().global.userInfo;
+		console.log(userId);
 		sendMessage({
 			code: SendCode.NEW,
-			fromId: id
+			fromId: userId
 		});
 		// * 心跳
 		sendHeartbeat();

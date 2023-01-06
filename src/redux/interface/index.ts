@@ -12,7 +12,7 @@ export interface ThemeConfigProp {
 
 /* UserInfoConfigProp */
 export interface UserInfoConfigProp {
-	id: number;
+	userId: number;
 	username: string;
 	avatar: string;
 }
