@@ -1,10 +1,11 @@
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { store } from "@/redux";
 
 function UserStatus() {
+	const { avatar } = store.getState().global.userInfo;
 	return (
 		<div>
-			<Avatar shape="square" size="small" icon={<UserOutlined />} />
+			<Avatar shape="square" size="small" src={avatar} />
 		</div>
 	);
 }
