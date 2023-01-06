@@ -6,15 +6,23 @@ import { Account } from "@/api/interface/user";
 import { List, Avatar } from "antd";
 
 import "./index.less";
+import { getFriendParams, getFriends } from "@/api/modules/user";
 
 function FriendList() {
 	const navigate = useNavigate();
 	const [data, setData] = useState<Account.ChatUser[]>([]);
 	const { friends } = store.getState().chat;
+	const { username } = store.getState().global.userInfo;
 	const [selectId, setSelectId] = useState<number>();
-
+	async function loadFriends(username: string) {
+		const params: getFriendParams = {
+			username
+		};
+		const { data } = await getFriends(params);
+		setData(data);
+	}
 	useEffect(() => {
-		setData(friends);
+		loadFriends(username);
 	}, [friends]);
 
 	return (

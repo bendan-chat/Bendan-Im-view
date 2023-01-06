@@ -45,7 +45,6 @@ const ChatRoom = () => {
 
 	// // * 更新消息
 	const addSelfMsg = (msg: SendMessageProps) => {
-		//
 		const temp = [...msgList];
 		// * 最新的消息
 		temp.push(msg);
@@ -58,9 +57,9 @@ const ChatRoom = () => {
 				<div className="message-container">
 					{msgList.map((item, index) => {
 						if (item.fromId === userId) {
-							return <ChatRightMsg key={index} msg={item.sendContent} />;
+							return <ChatRightMsg avatar={item.avatar} key={index} msg={item.sendContent} />;
 						} else {
-							return <ChatLeftMsg key={index} msg={item.sendContent} />;
+							return <ChatLeftMsg avatar={item.avatar} key={index} msg={item.sendContent} />;
 						}
 					})}
 				</div>

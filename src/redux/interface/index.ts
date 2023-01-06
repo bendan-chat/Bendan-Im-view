@@ -14,6 +14,7 @@ export interface ThemeConfigProp {
 export interface UserInfoConfigProp {
 	id: number;
 	username: string;
+	avatar: string;
 }
 
 /* GlobalState */

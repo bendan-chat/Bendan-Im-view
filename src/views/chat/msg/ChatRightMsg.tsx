@@ -4,6 +4,7 @@ import React from "react";
 
 interface IProps {
 	msg: string;
+	avatar: string;
 }
 
 export default function ChatRightMsg({ msg }: IProps) {

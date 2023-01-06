@@ -9,6 +9,7 @@ export namespace Login {
 		accessTokenExpiresIn?: number;
 		refreshExpiresIn?: number;
 		userId: number;
+		avatar: string;
 	}
 	interface Oauth2AccessTokenResponse {
 		accessToken?: Token;

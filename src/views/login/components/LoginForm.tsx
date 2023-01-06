@@ -19,17 +19,13 @@ const LoginForm = (props: any) => {
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
 
-	async function loadFriends(username: string, userId: number) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async function loadFriends(username: string) {
 		const params: getFriendParams = {
 			username
 		};
 		const { data } = await getFriends(params);
 		setFriends(data);
-		const userInfo = {
-			username,
-			userId
-		};
-		setUserInfo(userInfo);
 	}
 
 	// 登录
@@ -39,8 +35,13 @@ const LoginForm = (props: any) => {
 			const { data, msg, code } = await loginApi(loginForm);
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
+				setUserInfo({
+					id: data.userId,
+					username: loginForm.username,
+					avatar: data.avatar
+				});
 				message.success(msg);
-				loadFriends(loginForm.username, data.userId);
+				// loadFriends(loginForm.username);
 				// *  连接ws
 				createWsClient();
 				navigate(HOME_URL);

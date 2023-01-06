@@ -2,6 +2,7 @@ import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 interface IProps {
 	msg: string;
+	avatar: string;
 }
 
 export default function ChatLeftMsg({ msg }: IProps) {
