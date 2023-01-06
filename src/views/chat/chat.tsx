@@ -10,9 +10,12 @@ import { SendMessageProps, ws } from "@/websocket";
 import "./chat.less";
 
 const ChatRoom = () => {
+	const { avatar } = store.getState().global.userInfo;
+	const { userId } = store.getState().global.userInfo;
+	const { toAvatar } = store.getState().chat;
+
 	const { id } = useParams();
 	const toId: number = Number.parseInt(id!);
-	const { userId } = store.getState().global.userInfo;
 	const [msgList, setMsgList] = useState<any[]>([]);
 
 	useEffect(() => {
@@ -27,6 +30,7 @@ const ChatRoom = () => {
 		};
 
 		listRecord(params).then(function (response) {
+			console.log(response.data.items);
 			setMsgList(response.data.items);
 		});
 	}, [id]);
@@ -57,9 +61,9 @@ const ChatRoom = () => {
 				<div className="message-container">
 					{msgList.map((item, index) => {
 						if (item.fromId === userId) {
-							return <ChatRightMsg avatar={item.avatar} key={index} msg={item.sendContent} />;
+							return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent} />;
 						} else {
-							return <ChatLeftMsg avatar={item.avatar} key={index} msg={item.sendContent} />;
+							return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent} />;
 						}
 					})}
 				</div>

@@ -1,15 +1,14 @@
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 interface IProps {
 	msg: string;
 	avatar: string;
 }
 
-export default function ChatLeftMsg({ msg }: IProps) {
+export default function ChatLeftMsg({ msg, avatar }: IProps) {
 	return (
 		<>
 			<div className="le">
-				<Avatar shape="square" icon={<UserOutlined />} />
+				<Avatar shape="square" src={avatar} />
 				<div className="le-message-box">{msg}</div>
 			</div>
 		</>

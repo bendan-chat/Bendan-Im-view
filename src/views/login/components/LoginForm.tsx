@@ -6,7 +6,6 @@ import { loginApi } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken, setUserInfo } from "@/redux/modules/global/action";
-import { setFriends } from "@/redux/modules/chat/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { ResultEnum } from "@/enums/httpEnum";
@@ -79,5 +78,5 @@ const LoginForm = (props: any) => {
 	);
 };
 
-const mapDispatchToProps = { setToken, setFriends, setUserInfo };
+const mapDispatchToProps = { setToken, setUserInfo };
 export default connect(null, mapDispatchToProps)(LoginForm);

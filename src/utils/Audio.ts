@@ -63,6 +63,19 @@ export class Voice {
 		});
 	}
 
+	// 下载wav文件
+	downloadWavFile(blob: Blob) {
+		const url = window.URL.createObjectURL(blob);
+		let a = document.createElement("a");
+		document.body.appendChild(a);
+		// @ts-ignore
+		a.style = "display: none";
+		a.href = url;
+		a.download = "sample.wav";
+		a.click();
+		window.URL.revokeObjectURL(url);
+	}
+
 	// 开始录音
 	async startRecord() {
 		const { msg } = await this.recorder();

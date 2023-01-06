@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
-
+import { setToAvatar } from "@/redux/modules//chat/action";
 import { List, Avatar } from "antd";
 
-import "./index.less";
 import { getFriendParams, getFriends } from "@/api/modules/user";
+import "./index.less";
+import { connect } from "react-redux";
 
-function FriendList() {
+const FriendList = (props: any) => {
 	const navigate = useNavigate();
+	const { setToAvatar } = props;
 	const [data, setData] = useState<Account.ChatUser[]>([]);
-	const { friends } = store.getState().chat;
 	const { username } = store.getState().global.userInfo;
 	const [selectId, setSelectId] = useState<number>();
 	async function loadFriends(username: string) {
@@ -23,7 +24,7 @@ function FriendList() {
 	}
 	useEffect(() => {
 		loadFriends(username);
-	}, [friends]);
+	}, []);
 
 	return (
 		<List
@@ -36,6 +37,7 @@ function FriendList() {
 					onClick={() => {
 						navigate("/chat" + "/" + item.id);
 						setSelectId(item.id);
+						setToAvatar(item.avatar);
 					}}
 				>
 					<List.Item.Meta
@@ -48,6 +50,7 @@ function FriendList() {
 			)}
 		/>
 	);
-}
+};
 
-export default FriendList;
+const mapDispatchToProps = { setToAvatar };
+export default connect(null, mapDispatchToProps)(FriendList);

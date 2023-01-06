@@ -1,8 +1,7 @@
-import { Account } from "@/api/interface/user";
 import * as types from "@/redux/mutation-types";
 
-// * setFriends
-export const setFriends = (friends: Account.ChatUser[]) => ({
-	type: types.SET_CHAT_FRIENDS,
-	friends
+// * setAvatar
+export const setToAvatar = (toAvatar: string) => ({
+	type: types.SET_TO_AVATAR,
+	toAvatar
 });

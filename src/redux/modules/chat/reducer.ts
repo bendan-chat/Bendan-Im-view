@@ -1,18 +1,18 @@
 import { AnyAction } from "redux";
-import { FriendsState } from "@/redux/interface";
+import { ChatState } from "@/redux/interface";
 import produce from "immer";
 import * as types from "@/redux/mutation-types";
 
-const friendsState: FriendsState = {
-	friends: []
+const chatState: ChatState = {
+	toAvatar: ""
 };
 
 // auth reducer
-const chat = (state: FriendsState = friendsState, action: AnyAction) =>
+const chat = (state: ChatState = chatState, action: AnyAction) =>
 	produce(state, draftState => {
 		switch (action.type) {
-			case types.SET_CHAT_FRIENDS:
-				draftState.friends = action.friends;
+			case types.SET_TO_AVATAR:
+				draftState.toAvatar = action.toAvatar;
 				break;
 			default:
 				return draftState;

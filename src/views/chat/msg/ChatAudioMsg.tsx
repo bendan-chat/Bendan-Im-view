@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { uploadTencentFile, sttFile } from "@/api/modules/upload";
 import { Voice } from "@/utils/Audio";
 import { MyTimer } from "@/utils/Timer";
+import { Message } from "@/api/interface/chat";
 
 let voice: Voice;
 
@@ -22,7 +23,6 @@ function ChatAudioMsg() {
 	const [audioBtu, setAudioBtu] = useState<string>("发送语音");
 	const [sendAudio, setSendAudio] = useState<boolean>(false);
 	const [myTimer] = useState<MyTimer>(new MyTimer());
-	// const [voice] = useState<Voice>(new Voice());
 
 	useEffect(() => {
 		(async function fn() {
@@ -30,48 +30,33 @@ function ChatAudioMsg() {
 		})();
 	}, []);
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const uploadWsAudio = (blob: Blob) => {
-		const fileOfBlob = new File([blob], "voice.pcm");
+	const uploadAudio = (blob: Blob) => {
+		const fileOfBlob = new File([blob], "2.wav");
 		const formData = new FormData();
 		formData.append("file", fileOfBlob);
 		formData.append("userId", userId);
-		formData.append("isVoice", "1");
+		formData.append("type", Message.MsgType.voiceMsg.toString());
 		return uploadTencentFile(formData);
 	};
 
 	const sendAudioClick = async () => {
 		if (!sendAudio) {
+			// 发送语音
 			setSendAudio(true);
 			setAudioBtu("停止发送");
 			myTimer.start();
 			voice.startRecord();
-			// startRecord();
-			// 发送语音
 		} else {
+			// 停止发送语音
 			setSendAudio(false);
 			let voiceLen = myTimer.stop();
-			console.log("voiceLen", voiceLen);
+			console.log("voiceLen", Math.round(voiceLen));
 			setAudioBtu("发送语音");
-			const res = voice.stopRecord();
-			const url = window.URL.createObjectURL(res);
-			let a = document.createElement("a");
-			document.body.appendChild(a);
-			// @ts-ignore
-			a.style = "display: none";
-			a.href = url;
-			a.download = "sample.wav";
-			a.click();
-			window.URL.revokeObjectURL(url);
-			// setUrl(url);
-			// console.log(url);
-			// 停止发送语音
-			// const { pcmBlob } =
-			// const pcmBlob = stopRecord();
-			// const params = new FormData();
-			// params.append("file", pcmBlob);
-			// sttFile(params);
-			// uploadWsAudio(pcmBlob);
+			const wavBlob = voice.stopRecord();
+			// 上传文件
+			let urlMsg = uploadAudio(wavBlob);
+			console.log(urlMsg);
+			// 发送消息
 		}
 	};
 	return (

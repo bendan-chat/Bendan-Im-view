@@ -1,5 +1,4 @@
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 
 interface IProps {
@@ -7,12 +6,12 @@ interface IProps {
 	avatar: string;
 }
 
-export default function ChatRightMsg({ msg }: IProps) {
+export default function ChatRightMsg({ msg, avatar }: IProps) {
 	return (
 		<>
 			<div className="ri">
 				<div className="ri-message-box">{msg}</div>
-				<Avatar shape="square" icon={<UserOutlined />} />
+				<Avatar shape="square" src={avatar} />
 			</div>
 		</>
 	);

@@ -24,3 +24,5 @@ export const SET_CHAT_FRIENDS = "SET_CHAT_FRIENDS";
 export const SET_USERINFO = "SET_USERINFO";
 // 设置 本地聊天信息
 export const SET_LOCAL_MSG = "SET_LOCAL_MSG";
+// 设置 好友头像
+export const SET_TO_AVATAR = "SET_TO_AVATAR ";

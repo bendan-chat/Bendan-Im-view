@@ -26,7 +26,6 @@ const createWsClient = () => {
 		socketOpen = true;
 		// 建立连接通道
 		const { userId } = store.getState().global.userInfo;
-		console.log(userId);
 		sendMessage({
 			code: SendCode.NEW,
 			fromId: userId
