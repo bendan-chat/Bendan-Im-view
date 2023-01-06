@@ -9,8 +9,8 @@ let leftDataList: any[] = [];
 let rightDataList: any[] = [];
 
 //录音
-export class Audio {
-	static instance: any;
+export class AudioUtil {
+	static instance: AudioUtil;
 	public mediaStreams: MediaStream | undefined;
 	public jsNodes: ScriptProcessorNode | undefined;
 
@@ -19,9 +19,9 @@ export class Audio {
 	}
 
 	//初始化，单例模式
-	static init(): Audio {
+	static init(): AudioUtil {
 		if (!this.instance) {
-			this.instance = new Audio();
+			this.instance = new AudioUtil();
 		}
 		return this.instance;
 	}
@@ -102,7 +102,7 @@ export class Audio {
 
 	//返回src
 	playRecord(arrayBuffer: ArrayBuffer) {
-		let blob = new Blob([new Uint8Array(arrayBuffer)]);
+		let blob = new Blob([new Uint8Array(arrayBuffer)], { type: "audio/wav" });
 		let blobUrl = URL.createObjectURL(blob);
 		return blobUrl;
 	}

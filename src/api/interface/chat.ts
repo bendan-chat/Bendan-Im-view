@@ -3,6 +3,13 @@ export namespace Message {
 	// * 0文本，1图片，2语音，3视频
 	export type SendType = 0 | 1 | 2 | 3;
 
+	export const MsgType = {
+		strMsg: 0 as SendType,
+		pictureMsg: 1 as SendType,
+		voiceMsg: 2 as SendType,
+		videoMsg: 3 as SendType
+	};
+
 	export interface ResProps {
 		id: number;
 		sendType: SendType;

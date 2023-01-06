@@ -4,6 +4,7 @@ import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import { store } from "@/redux";
 import ChatAudioMsg from "./ChatAudioMsg";
+import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;
 
 interface IProps {
@@ -21,7 +22,7 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	const sendMsgClick = () => {
 		const msgObj: SendMessageProps = {
 			code: SendCode.MESSAGE,
-			sendType: 0,
+			sendType: Message.MsgType.strMsg,
 			fromId: userId,
 			toId: toId,
 			sendContent: msg

@@ -25,12 +25,11 @@ const createWsClient = () => {
 		console.log("onopen: ", e);
 		socketOpen = true;
 		// * 发送连接成功请求
-		const userInfo = store.getState().global.userInfo;
-
+		const { id } = store.getState().global.userInfo;
 		// 建立连接通道
 		sendMessage({
 			code: SendCode.NEW,
-			fromId: userInfo.userId
+			fromId: id
 		});
 		// * 心跳
 		sendHeartbeat();
@@ -59,8 +58,8 @@ const sendMessage = (obj: SendMessageProps): Promise<any> => {
 			if (socketOpen) {
 				ws?.send(JSON.stringify(obj));
 			} else {
-				reject(new Error("未连接服务"));
 				createWsClient();
+				reject(new Error("未连接服务"));
 			}
 		} catch (e) {
 			console.log(e);

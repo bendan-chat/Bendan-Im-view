@@ -1,19 +1,11 @@
-import axios from "axios";
-import { Oss } from "../config/servicePort";
+import { adminServer } from "../config/servicePort";
+import http from "@/api/config/ClientConfig";
 
-// * 获取上传文件
-export const uploadFile = async (upload: FormData) => {
-	try {
-		// make axios post request
-		const response = await axios({
-			method: "post",
-			// url: Oss.Upload + `/uploadFile`,
-			url: import.meta.env.VITE_SERVER_URL + Oss.Upload + `/uploadFile`,
-			data: upload,
-			headers: { "Content-Type": "multipart/form-data" }
-		});
-		console.log(response.data);
-	} catch (error) {
-		console.log(error);
-	}
+// * 上传文件
+export const uploadTencentFile = async (upload: FormData) => {
+	return http.post(`${adminServer.Upload}/uploadTencentFile`, upload, { headers: { "Content-Type": "multipart/form-data" } });
+};
+
+export const sttFile = async (upload: FormData) => {
+	return http.post(`${adminServer.Stt}/asrFile`, upload, { headers: { "Content-Type": "multipart/form-data" } });
 };

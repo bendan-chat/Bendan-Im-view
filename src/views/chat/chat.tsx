@@ -11,9 +11,9 @@ import "./chat.less";
 
 const ChatRoom = () => {
 	const { id } = useParams();
+	const toId: number = Number.parseInt(id!);
 	const { userId } = store.getState().global.userInfo;
 	const [msgList, setMsgList] = useState<any[]>([]);
-	const toId: number = Number.parseInt(id!);
 
 	useEffect(() => {
 		// 加载之前聊天记录
