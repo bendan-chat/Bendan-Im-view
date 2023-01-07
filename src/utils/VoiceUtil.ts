@@ -104,7 +104,6 @@ export class Voice {
 		// 停止录音记录
 		this.mediaRecorder!.disconnect(this.context!.destination);
 		this.mediaStreamAudioSourceNode!.disconnect(this.mediaRecorder!);
-
 		// 将两个通道的数据压平
 		// Float32Array[] => Float32Array
 		let leftBuffer = this.flattenArray(leftChannel, recordingLength);

@@ -4,7 +4,7 @@ import { store } from "@/redux";
 import { useParams } from "react-router-dom";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { uploadTencentFile, sttFile } from "@/api/modules/upload";
-import { Voice } from "@/utils/Audio";
+import { Voice } from "@/utils/VoiceUtil";
 import { MyTimer } from "@/utils/Timer";
 import { Message } from "@/api/interface/chat";
 
@@ -15,7 +15,7 @@ const init = () => {
 	voice = new Voice();
 };
 
-function ChatAudioMsg() {
+function ChatAudioSend() {
 	const { userId } = store.getState().global.userInfo;
 	const { id } = useParams();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,6 +30,7 @@ function ChatAudioMsg() {
 		})();
 	}, []);
 
+	// 上传语音
 	const uploadAudio = (blob: Blob) => {
 		const fileOfBlob = new File([blob], "2.wav");
 		const formData = new FormData();
@@ -39,6 +40,7 @@ function ChatAudioMsg() {
 		return uploadTencentFile(formData);
 	};
 
+	// 发送语音点击事件
 	const sendAudioClick = async () => {
 		if (!sendAudio) {
 			// 发送语音
@@ -54,8 +56,10 @@ function ChatAudioMsg() {
 			setAudioBtu("发送语音");
 			const wavBlob = voice.stopRecord();
 			// 上传文件
-			let urlMsg = uploadAudio(wavBlob);
-			console.log(urlMsg);
+			let res = await uploadAudio(wavBlob);
+			// 发送消息给用户
+			// 前端展示
+			console.log(res.data);
 			// 发送消息
 		}
 	};
@@ -68,4 +72,4 @@ function ChatAudioMsg() {
 	);
 }
 
-export default ChatAudioMsg;
+export default ChatAudioSend;

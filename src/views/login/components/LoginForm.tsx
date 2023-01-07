@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface/user";
-import { loginApi } from "@/api/modules/user";
+import { login } from "@/api/modules/user";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken, setUserInfo } from "@/redux/modules/global/action";
@@ -22,7 +22,7 @@ const LoginForm = (props: any) => {
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {
 		try {
 			setLoading(true);
-			const { data, msg, code } = await loginApi(loginForm);
+			const { data, msg, code } = await login(loginForm);
 			if (code === ResultEnum.SUCCESS) {
 				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
 				setUserInfo({

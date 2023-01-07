@@ -3,7 +3,7 @@ import { Input, Button } from "antd";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import { store } from "@/redux";
-import ChatAudioMsg from "./ChatAudioMsg";
+import ChatAudioMsg from "./ChatAudioSend";
 import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;
 

@@ -1,4 +1,4 @@
-import ChatBottomSend from "./msg/ChatBottomSend";
+import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { listRecord, RecordPage } from "@/api/modules/chat";
@@ -30,7 +30,6 @@ const ChatRoom = () => {
 		};
 
 		listRecord(params).then(function (response) {
-			console.log(response.data.items);
 			setMsgList(response.data.items);
 		});
 	}, [id]);

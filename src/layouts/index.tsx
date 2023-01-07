@@ -2,8 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
 import FriendList from "./components/List";
-import { Input, Space, MenuProps, Menu } from "antd";
-const { Search } = Input;
+import { MenuProps, Menu } from "antd";
 import "./index.less";
 import AssemblySize from "./components/Header/components/AssemblySize";
 import Language from "./components/Header/components/Language";
@@ -40,19 +39,12 @@ const items: MenuItem[] = [
 	getItem("", "9", <Fullscreen />)
 ];
 function LayoutIndex() {
-	function onSearch() {
-		console.log("12121");
-	}
-
 	return (
 		<section className="container">
 			<Sider trigger={null} collapsed={false} width={60} theme="dark">
 				<Menu theme="dark" mode="inline" items={items} style={{ minWidth: 20, flex: "auto" }}></Menu>
 			</Sider>
 			<Sider trigger={null} width={220} theme="light">
-				<Space direction="vertical">
-					<Search className="Search" placeholder="input search text" allowClear onSearch={onSearch} />
-				</Space>
 				<FriendList />
 			</Sider>
 			<Layout>
