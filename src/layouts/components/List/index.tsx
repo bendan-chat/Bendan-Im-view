@@ -26,7 +26,24 @@ const FriendList = (props: any) => {
 		loadFriends(username);
 	}, []);
 
+	// const loadMoreData = () => {
+	// 	const params: getFriendParams = {
+	// 		username
+	// 	};
+	// 	getFriends(params).then(res => {
+	// 		setData([...data, ...res.data]);
+	// 	});
+	// };
+
 	return (
+		// <InfiniteScroll
+		// 	dataLength={data.length}
+		// 	next={loadMoreData}
+		// 	hasMore={data.length < 50}
+		// 	loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+		// 	endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+		// 	scrollableTarget="scrollableDiv"
+		// >
 		<List
 			header={<></>}
 			itemLayout="horizontal"

@@ -45,6 +45,7 @@ export interface RecordData {
 	 */
 	sendTime: string;
 }
+// 查询聊天记录
 export const listRecord = (params: RecordPage) => {
-	return http.get<ResPage<RecordData>>(ChatServer.Record + `/listRecord`, params);
+	return http.get<ResPage<RecordData>>(ChatServer.Record + `/listRecord`, params, { headers: { noLoading: true } });
 };
