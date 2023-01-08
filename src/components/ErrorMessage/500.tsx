@@ -15,7 +15,7 @@ const NotNetwork = () => {
 			subTitle="Sorry, something went wrong."
 			extra={
 				<Button type="primary" onClick={goHome}>
-					Back Home
+					回到 首页
 				</Button>
 			}
 		/>

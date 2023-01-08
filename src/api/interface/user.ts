@@ -62,11 +62,6 @@ export namespace Account {
 		username: String;
 
 		/**
-		 * 密码
-		 */
-		password: String;
-
-		/**
 		 * 昵称
 		 */
 		nickName: String;

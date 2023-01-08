@@ -7,7 +7,7 @@ import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
 import PasswordModal from "./PasswordModal";
-import InfoModal from "./InfoModal";
+import InfoModal from "./UserInfo";
 
 function UserStatus(props: any) {
 	const { avatar } = store.getState().global.userInfo;
@@ -29,6 +29,7 @@ function UserStatus(props: any) {
 			okText: "确认",
 			cancelText: "取消",
 			onOk: () => {
+				// todo
 				setToken("");
 				message.success("退出登录成功！");
 				navigate("/login");

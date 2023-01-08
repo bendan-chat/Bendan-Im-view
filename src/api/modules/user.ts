@@ -38,11 +38,11 @@ export const logout = () => {
 /**
  * @name 获取用户详情
  */
-interface getUserInfoParams {
-	username: number;
+export interface getUserInfoParams {
+	username: string;
 }
 export const getUserInfo = (params: getUserInfoParams) => {
-	return http.get<Account.UserInfo>(adminServer.User + `/getUserinfo`, params);
+	return http.get<Account.UserInfo>(adminServer.User + `/getUserinfo`, params, { headers: { noLoading: true } });
 };
 
 /**

@@ -3,15 +3,16 @@ import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
 import FriendList from "./components/List";
 import { MenuProps, Menu } from "antd";
-import "./index.less";
-import AssemblySize from "./components/Header/components/AssemblySize";
-import Language from "./components/Header/components/Language";
-import Theme from "./components/Header/components/Theme";
-import Fullscreen from "./components/Header/components/Fullscreen";
+import AssemblySize from "./components/Header/AssemblySize";
+import Language from "./components/Header/Language";
+import Theme from "./components/Header/Theme";
+import Fullscreen from "./components/Header/Fullscreen";
 import Sider from "antd/lib/layout/Sider";
 import { Content } from "antd/lib/layout/layout";
-import UserStatus from "./components/Header/components/UserStatus";
+import UserStatus from "./components/Header/UserStatus";
 import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
+
+import "./index.less";
 
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(

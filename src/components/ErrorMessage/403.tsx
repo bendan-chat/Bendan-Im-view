@@ -15,7 +15,7 @@ const NotAuth = () => {
 			subTitle="Sorry, you are not authorized to access this page."
 			extra={
 				<Button type="primary" onClick={goHome}>
-					Back Home
+					回到 首页
 				</Button>
 			}
 		/>

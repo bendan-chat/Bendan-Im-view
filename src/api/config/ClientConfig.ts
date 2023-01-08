@@ -5,8 +5,8 @@ import { ResultData } from "@/api/interface/sys";
 import { ResultEnum } from "@/enums/httpEnum";
 import { checkStatus } from "../helper/checkStatus";
 import { AxiosCanceler } from "../helper/axiosCancel";
-import { setToken } from "@/redux/modules/global/action";
 import { message } from "antd";
+import { setToken } from "@/redux/modules/global/action";
 import { store } from "@/redux";
 import { adminServer } from "./servicePort";
 
@@ -81,6 +81,7 @@ class RequestHttp {
 			},
 			async (error: AxiosError) => {
 				const { response } = error;
+				console.log("response", response);
 				NProgress.done();
 				tryHideFullScreenLoading();
 				// 请求超时单独判断，请求超时没有 response
