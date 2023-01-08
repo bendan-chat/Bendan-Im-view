@@ -1,68 +1,58 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useImperativeHandle, Ref, useEffect } from "react";
 import { Modal, message, Button, Form, Input, Radio, Avatar } from "antd";
-import { getUserInfo, getUserInfoParams } from "@/api/modules/user";
-import { store } from "@/redux";
-// import UploadAvatar from "./UploadAvatar";
+import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
+import { getUserInfo, getUserInfoParams } from "@/api/modules/user";
 
 interface Props {
-	innerRef: Ref<{ showModal: (params: any) => void } | undefined>;
+	innerRef: Ref<{ showModal: (params: any) => void }>;
 }
 
 const InfoModal = (props: Props) => {
-	const { username } = store.getState().global.userInfo;
 	const [data, setData] = useState<Account.UserInfo>();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
-
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
 	}));
 
 	const showModal = (params: { name: number }) => {
 		console.log(params);
+		loadUserInfo();
 		setModalVisible(true);
 	};
-
-	useEffect(() => {
-		userInfo();
-	}, []);
 
 	// 修改用户信息
 	const handleOk = (values: any) => {
 		setSubmitHidden(true);
-		// setModalVisible(false);
-		console.log("Received values of form: ", values);
+		setModalVisible(false);
+		console.log("values: ", values);
 		message.success("修改用户信息成功 🎉🎉🎉");
 	};
 
 	// 取消按钮的响应
 	const handleCancel = () => {
 		setModalVisible(false);
+		setSubmitHidden(true);
 	};
 
 	// 加载用户详情
-	const userInfo = async () => {
+	const loadUserInfo = async () => {
 		const params: getUserInfoParams = {
-			username: username
+			username: "admin"
 		};
 		const { data } = await getUserInfo(params);
-		setData(data!);
-		return data;
+		setData(data);
 	};
 
-	// useEffect(() => {
-	// 	setSubmitHidden(submitHidden);
-	// }, [submitHidden]);
-
+	// 修改事件
 	const updateClick = () => {
 		setSubmitHidden(false);
-		console.log(submitHidden);
 	};
 
 	return (
 		<Modal centered keyboard title="个人信息" open={modalVisible} onCancel={handleCancel} destroyOnClose={true} footer={null}>
-			<Button></Button>
 			<Form
 				disabled={submitHidden}
 				labelCol={{ span: 4 }}
@@ -72,22 +62,22 @@ const InfoModal = (props: Props) => {
 				size={"small"}
 			>
 				<Form.Item
-					initialValue={`${data?.username}`}
+					initialValue={data?.username}
 					name={["userinfo", "username"]}
-					label="用户名"
+					label="账号"
 					labelCol={{ span: 4 }}
 					wrapperCol={{ span: 8 }}
 				>
-					<Input />
+					{submitHidden ? <span>{data?.username}</span> : <Input />}
 				</Form.Item>
 				<Form.Item
 					wrapperCol={{ span: 8 }}
 					labelCol={{ span: 4 }}
 					name={["userinfo", "nickName"]}
 					label="昵称"
-					initialValue={`${data?.nickName}`}
+					initialValue={data?.nickName}
 				>
-					<Input />
+					{submitHidden ? <span>{data?.nickName}</span> : <Input />}
 				</Form.Item>
 				<Form.Item label="性别" name={["userinfo", "gender"]} initialValue={data?.gender}>
 					<Radio.Group value={data?.gender}>
@@ -96,15 +86,14 @@ const InfoModal = (props: Props) => {
 						<Radio value={-1}> 未知 </Radio>
 					</Radio.Group>
 				</Form.Item>
-				<Form.Item label="手机号" name={["userinfo", "phoneNumber"]} initialValue={`${data?.phoneNumber}`}>
-					<Input />
+				<Form.Item label="手机" name={["userinfo", "phoneNumber"]} initialValue={data?.phoneNumber}>
+					{submitHidden ? <span>{data?.phoneNumber}</span> : <Input />}
 				</Form.Item>
-				<Form.Item label="邮箱" name={["userinfo", "email"]} initialValue={`${data?.email}`}>
-					<Input />
+				<Form.Item label="邮箱" name={["userinfo", "email"]} initialValue={data?.email}>
+					{submitHidden ? <span>{data?.email}</span> : <Input />}
 				</Form.Item>
-				<Form.Item label="头像" name={["userinfo", "avatar"]} initialValue={`${data?.avatar}`}>
-					<Avatar shape="square" size={64} src={data?.avatar} />
-					{/* <UploadAvatar></UploadAvatar> */}
+				<Form.Item label="头像" name={["userinfo", "avatar"]} initialValue={data?.avatar}>
+					{submitHidden ? <Avatar shape="square" size={64} src={data?.avatar} /> : <UploadAvatar />}
 				</Form.Item>
 				<Form.Item wrapperCol={{ offset: 18 }}>
 					<Button hidden={submitHidden} type="primary" htmlType="submit">

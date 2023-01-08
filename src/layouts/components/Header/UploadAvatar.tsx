@@ -3,20 +3,17 @@ import type { UploadChangeParam } from "antd/es/upload";
 import { message, Upload } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { uploadTencentFile } from "@/api/modules/upload";
+import { UploadRequestOption } from "rc-upload/lib/interface";
+import { getBase64 } from "@/utils/imgUtil";
+import { store } from "@/redux";
 
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-	const reader = new FileReader();
-	reader.addEventListener("load", () => callback(reader.result as string));
-	reader.readAsDataURL(img);
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// 上传前校验文件
 const beforeUpload = (file: RcFile) => {
-	console.log(file);
-	// const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-	// if (!isJpgOrPng) {
-	// 	message.error("You can only upload JPG/PNG file!");
-	// }
+	const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+	if (!isJpgOrPng) {
+		message.error("You can only upload JPG/PNG file!");
+	}
 	const isLt2M = file.size / 1024 / 1024 < 2;
 	if (!isLt2M) {
 		message.error("Image must smaller than 2MB!");
@@ -26,7 +23,8 @@ const beforeUpload = (file: RcFile) => {
 
 export default function UploadAvatar() {
 	const [loading, setLoading] = useState(false);
-	const [imageUrl, setImageUrl] = useState<string>();
+	const [imageUrl, setImageUrl] = useState<string>("");
+	const { userId } = store.getState().global.userInfo;
 
 	const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
 		if (info.file.status === "uploading") {
@@ -42,6 +40,25 @@ export default function UploadAvatar() {
 		}
 	};
 
+	const customRequest = async (options: UploadRequestOption<any>) => {
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { action, data, file, filename, headers, onError, onProgress, onSuccess, withCredentials } = options;
+
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("userId", userId);
+		formData.append("type", "1");
+
+		uploadTencentFile(formData)
+			.then(({ data: response }) => {
+				setTimeout(() => {
+					//@ts-ignore
+					onSuccess(response, file);
+				});
+			})
+			.catch(onError);
+	};
+
 	const uploadButton = (
 		<div>
 			{loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -51,13 +68,15 @@ export default function UploadAvatar() {
 
 	return (
 		<Upload
-			accept={".jpeg, .png"}
+			// {...uploadProps}
+			// 文件查询的时候只显示 jpeg, .png
+			accept={".jpeg, .png, .gif"}
 			name="avatar"
 			listType="picture-card"
 			className="avatar-uploader"
 			showUploadList={false}
-			action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-			// beforeUpload={beforeUpload}
+			customRequest={customRequest}
+			beforeUpload={beforeUpload}
 			onChange={handleChange}
 			maxCount={1}
 		>

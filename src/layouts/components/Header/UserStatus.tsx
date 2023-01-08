@@ -7,34 +7,46 @@ import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
 import PasswordModal from "./PasswordModal";
-import InfoModal from "./UserInfo";
+import InfoModal from "./UserDetails";
+import { getUserInfo, getUserInfoParams, logout } from "@/api/modules/user";
+// import { Account } from "@/api/interface/user";
 
 function UserStatus(props: any) {
-	const { avatar } = store.getState().global.userInfo;
+	const { avatar, username } = store.getState().global.userInfo;
+
 	const { setToken } = props;
 	const navigate = useNavigate();
 
 	interface ModalProps {
 		showModal: (params: { name: number }) => void;
 	}
+
 	const passRef = useRef<ModalProps>(null);
 	const infoRef = useRef<ModalProps>(null);
 
 	// 退出登录
-	const logout = () => {
+	const userLogout = () => {
 		Modal.confirm({
 			title: "温馨提示 🧡",
 			icon: <ExclamationCircleOutlined />,
 			content: "是否确认退出登录？",
 			okText: "确认",
 			cancelText: "取消",
-			onOk: () => {
-				// todo
+			onOk: async () => {
+				await logout();
 				setToken("");
 				message.success("退出登录成功！");
 				navigate("/login");
 			}
 		});
+	};
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const loadUserInfo = async () => {
+		const params: getUserInfoParams = {
+			username: username
+		};
+		const { data } = await getUserInfo(params);
+		return data;
 	};
 
 	const items: MenuProps["items"] = [
@@ -59,7 +71,7 @@ function UserStatus(props: any) {
 		{
 			key: "4",
 			label: <span className="dropdown-item">退出登录</span>,
-			onClick: logout
+			onClick: userLogout
 		}
 	];
 	return (

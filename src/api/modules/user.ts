@@ -32,7 +32,7 @@ export const login = (params: Login.ReqLoginForm) => {
  * @name 登出
  */
 export const logout = () => {
-	return http.get(adminServer.User + `/logout`);
+	return http.delete(adminServer.User + `/logout`);
 };
 
 /**
