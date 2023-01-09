@@ -5,7 +5,7 @@ import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { UploadRequestOption } from "rc-upload/lib/interface";
-import { getBase64 } from "@/utils/imgUtil";
+import { getBase64 } from "@/utils/ImgUtil";
 import { store } from "@/redux";
 
 // 上传前校验文件

@@ -46,6 +46,9 @@ const FriendList = (props: any) => {
 	}
 	return (
 		<div>
+			<div className="search-friend-class">
+				<Search placeholder="input search text" enterButton allowClear onSearch={onSearch} />
+			</div>
 			<InfiniteScroll
 				dataLength={data.length}
 				next={loadMoreData}
@@ -54,7 +57,6 @@ const FriendList = (props: any) => {
 				endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
 				scrollableTarget="scrollableDiv"
 			>
-				<Search placeholder="input search text" enterButton allowClear onSearch={onSearch} />
 				<List
 					header={<></>}
 					itemLayout="horizontal"

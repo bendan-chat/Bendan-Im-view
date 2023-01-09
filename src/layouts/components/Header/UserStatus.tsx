@@ -9,7 +9,6 @@ import { setToken } from "@/redux/modules/global/action";
 import PasswordModal from "./PasswordModal";
 import InfoModal from "./UserDetails";
 import { getUserInfo, getUserInfoParams, logout } from "@/api/modules/user";
-// import { Account } from "@/api/interface/user";
 
 function UserStatus(props: any) {
 	const { avatar, username } = store.getState().global.userInfo;

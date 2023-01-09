@@ -31,6 +31,10 @@ const ChatRoom = () => {
 
 		listRecord(params).then(function (response) {
 			setMsgList(response.data.items);
+			console.log(document.getElementsByClassName("message-container")[0].scrollTop);
+			document.getElementsByClassName("message-container")[0].scrollTop =
+				document.getElementsByClassName("message-container")[0].scrollHeight;
+			console.log(document.getElementsByClassName("message-container")[0].scrollTop);
 		});
 	}, [id]);
 	ws!.onmessage = function (event) {
@@ -53,7 +57,6 @@ const ChatRoom = () => {
 		temp.push(msg);
 		setMsgList(temp);
 	};
-
 	return (
 		<>
 			<div className="cr">
