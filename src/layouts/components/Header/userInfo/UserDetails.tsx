@@ -1,9 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useImperativeHandle, Ref, useEffect } from "react";
-import { Modal, message, Button, Form, Input, Radio, Avatar } from "antd";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions } from "antd";
 import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
 import { getUserInfo, getUserInfoParams } from "@/api/modules/user";
+import "./userDetails.less";
 
 interface Props {
 	innerRef: Ref<{ showModal: (params: any) => void }>;
@@ -45,16 +47,56 @@ const InfoModal = (props: Props) => {
 		const { data } = await getUserInfo(params);
 		setData(data);
 	};
+	useEffect(() => {
+		let dataTemp = data;
+		setData(dataTemp);
+	}, [data]);
 
 	// 修改事件
 	const updateClick = () => {
 		setSubmitHidden(false);
 	};
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const matchSex = (gender: number) => {
+		switch (gender) {
+			case 0:
+				return <span key={0}>女</span>;
+				break;
+			case 1:
+				return <span key={1}>男</span>;
+				break;
+			case -1:
+				return <span key={-1}>未知</span>;
+				break;
+		}
+	};
 
 	return (
 		<Modal centered keyboard title="个人信息" open={modalVisible} onCancel={handleCancel} destroyOnClose={true} footer={null}>
+			<div hidden={!submitHidden} className="userInfo-descriptions">
+				<Descriptions>
+					<Descriptions.Item label="账号">{data?.username}</Descriptions.Item>
+				</Descriptions>
+				<Descriptions>
+					<Descriptions.Item label="昵称">{data?.nickName}</Descriptions.Item>
+				</Descriptions>
+				<Descriptions>
+					<Descriptions.Item label="性别">{matchSex(data?.gender as number)}</Descriptions.Item>
+				</Descriptions>
+				<Descriptions>
+					<Descriptions.Item label="手机">{data?.phoneNumber}</Descriptions.Item>
+				</Descriptions>
+				<Descriptions>
+					<Descriptions.Item label="邮箱">{data?.email}</Descriptions.Item>
+				</Descriptions>
+				<Descriptions>
+					<Descriptions.Item label="头像">
+						<Avatar shape="square" size={64} src={data?.avatar} />
+					</Descriptions.Item>
+				</Descriptions>
+			</div>
 			<Form
-				disabled={submitHidden}
+				hidden={submitHidden}
 				labelCol={{ span: 4 }}
 				wrapperCol={{ span: 10 }}
 				layout="horizontal"
@@ -68,7 +110,7 @@ const InfoModal = (props: Props) => {
 					labelCol={{ span: 4 }}
 					wrapperCol={{ span: 8 }}
 				>
-					{submitHidden ? <span>{data?.username}</span> : <Input />}
+					<Input />
 				</Form.Item>
 				<Form.Item
 					wrapperCol={{ span: 8 }}
@@ -77,23 +119,23 @@ const InfoModal = (props: Props) => {
 					label="昵称"
 					initialValue={data?.nickName}
 				>
-					{submitHidden ? <span>{data?.nickName}</span> : <Input />}
+					<Input />
 				</Form.Item>
 				<Form.Item label="性别" name={["userinfo", "gender"]} initialValue={data?.gender}>
-					<Radio.Group value={data?.gender}>
-						<Radio value={0}> 女 </Radio>
-						<Radio value={1}> 男 </Radio>
-						<Radio value={-1}> 未知 </Radio>
+					<Radio.Group value={data?.gender as number}>
+						<Radio value={0}>女</Radio>
+						<Radio value={1}>男</Radio>
+						<Radio value={-1}>未知</Radio>
 					</Radio.Group>
 				</Form.Item>
 				<Form.Item label="手机" name={["userinfo", "phoneNumber"]} initialValue={data?.phoneNumber}>
-					{submitHidden ? <span>{data?.phoneNumber}</span> : <Input />}
+					<Input />
 				</Form.Item>
 				<Form.Item label="邮箱" name={["userinfo", "email"]} initialValue={data?.email}>
-					{submitHidden ? <span>{data?.email}</span> : <Input />}
+					<Input />
 				</Form.Item>
 				<Form.Item label="头像" name={["userinfo", "avatar"]} initialValue={data?.avatar}>
-					{submitHidden ? <Avatar shape="square" size={64} src={data?.avatar} /> : <UploadAvatar />}
+					<UploadAvatar />
 				</Form.Item>
 				<Form.Item wrapperCol={{ offset: 18 }}>
 					<Button hidden={submitHidden} type="primary" htmlType="submit">
@@ -101,9 +143,11 @@ const InfoModal = (props: Props) => {
 					</Button>
 				</Form.Item>
 			</Form>
-			<Button hidden={!submitHidden} onClick={updateClick} danger>
-				修改信息
-			</Button>
+			<div style={{ textAlign: "right" }}>
+				<Button hidden={!submitHidden} onClick={updateClick} danger>
+					修改信息
+				</Button>
+			</div>
 		</Modal>
 	);
 };

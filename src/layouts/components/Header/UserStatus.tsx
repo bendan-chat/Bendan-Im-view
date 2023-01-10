@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
-import PasswordModal from "./PasswordModal";
-import InfoModal from "./UserDetails";
+import PasswordModal from "./userInfo/PasswordModal";
+import InfoModal from "./userInfo/UserDetails";
 import { getUserInfo, getUserInfoParams, logout } from "@/api/modules/user";
 
 function UserStatus(props: any) {
