@@ -18,12 +18,13 @@ const PasswordModal = (props: Props) => {
 		setIsModalVisible(true);
 	};
 
-	const handleCancel = () => {
+	const setModalHidden = () => {
 		setIsModalVisible(false);
 	};
+
 	return (
-		<Modal footer={null} title="修改密码" open={isModalVisible} onCancel={handleCancel} destroyOnClose={true}>
-			<PasswordForm />
+		<Modal footer={null} title="修改密码" open={isModalVisible} onCancel={setModalHidden} destroyOnClose={true}>
+			<PasswordForm onModalHidden={setModalHidden} />
 		</Modal>
 	);
 };

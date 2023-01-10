@@ -8,7 +8,7 @@ import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;
 
 interface IProps {
-	addMsgList: any;
+	addMsgList: (msg: SendMessageProps) => void;
 	toId: number;
 }
 export default function ChatBottomSend({ toId, addMsgList }: IProps) {
@@ -34,7 +34,7 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			// 发送到后台
 			sendMessage(msgObj);
 			// 前台展示
-			addMsgList(msgObj, true);
+			addMsgList(msgObj);
 			setMsg("");
 		}
 	};

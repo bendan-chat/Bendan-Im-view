@@ -31,12 +31,16 @@ const ChatRoom = () => {
 
 		listRecord(params).then(function (response) {
 			setMsgList(response.data.items);
-			console.log(document.getElementsByClassName("message-container")[0].scrollTop);
 			document.getElementsByClassName("message-container")[0].scrollTop =
 				document.getElementsByClassName("message-container")[0].scrollHeight;
-			console.log(document.getElementsByClassName("message-container")[0].scrollTop);
 		});
 	}, [id]);
+
+	// 动态加载消息时候滚动条也要沉低
+	useEffect(() => {
+		document.getElementsByClassName("message-container")[0].scrollTop =
+			document.getElementsByClassName("message-container")[0].scrollHeight;
+	}, [msgList]);
 	ws!.onmessage = function (event) {
 		handleMsg(event);
 	};
@@ -50,10 +54,9 @@ const ChatRoom = () => {
 		}
 	};
 
-	// // * 更新消息
+	// * 更新消息
 	const addSelfMsg = (msg: SendMessageProps) => {
 		const temp = [...msgList];
-		// * 最新的消息
 		temp.push(msg);
 		setMsgList(temp);
 	};
