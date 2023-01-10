@@ -32,10 +32,11 @@ export default function PasswordForm({ onModalHidden }: IProps) {
 			case 3:
 				setLoadings([...loadings, true]);
 				setInterval(() => {
-					onModalHidden();
+					console.log();
 				}, 2000);
-				// 跳到登录页
+				onModalHidden();
 				message.success("修改密码成功~!!");
+				// 跳到登录页
 				break;
 		}
 	};

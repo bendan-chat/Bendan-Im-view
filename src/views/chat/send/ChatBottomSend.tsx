@@ -3,7 +3,7 @@ import { Input, Button } from "antd";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import { store } from "@/redux";
-import ChatAudioMsg from "./ChatAudioSend";
+// import ChatAudioMsg from "./ChatAudioSend";
 import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;
 
@@ -56,7 +56,7 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			<Button onClick={sendMsgClick} type="primary" className="right-bottom-btn">
 				发送
 			</Button>
-			<ChatAudioMsg />
+			{/* <ChatAudioMsg /> */}
 		</div>
 	);
 }

@@ -8,6 +8,7 @@ import ChatRightMsg from "./msg/ChatRightMsg";
 import ChatLeftMsg from "./msg/ChatLeftMsg";
 import { SendMessageProps, ws } from "@/websocket";
 import "./chat.less";
+import ChatRightVoiceMsg from "./msg/ChatRightVoiceMsg";
 
 const ChatRoom = () => {
 	const { avatar } = store.getState().global.userInfo;
@@ -19,7 +20,7 @@ const ChatRoom = () => {
 	const [msgList, setMsgList] = useState<any[]>([]);
 
 	useEffect(() => {
-		// 加载之前聊天记录
+		// * 加载聊天记录
 		const params: RecordPage = {
 			cur: 1,
 			limit: 1000,
@@ -36,7 +37,7 @@ const ChatRoom = () => {
 		});
 	}, [id]);
 
-	// 动态加载消息时候滚动条也要沉低
+	// * 动态加载消息时候滚动条也要沉低
 	useEffect(() => {
 		document.getElementsByClassName("message-container")[0].scrollTop =
 			document.getElementsByClassName("message-container")[0].scrollHeight;
@@ -44,6 +45,8 @@ const ChatRoom = () => {
 	ws!.onmessage = function (event) {
 		handleMsg(event);
 	};
+
+	// * 处理WebSocket 消息
 	const handleMsg = (event: MessageEvent<any>) => {
 		const result = JSON.parse(event.data as string);
 		// * 处理心跳
@@ -54,7 +57,7 @@ const ChatRoom = () => {
 		}
 	};
 
-	// * 更新消息
+	// * 页面新增消息
 	const addSelfMsg = (msg: SendMessageProps) => {
 		const temp = [...msgList];
 		temp.push(msg);
@@ -62,6 +65,7 @@ const ChatRoom = () => {
 	};
 	return (
 		<>
+			<ChatRightVoiceMsg len={10} src="" avatar={avatar} />
 			<div className="cr">
 				<div className="message-container">
 					{msgList.map((item, index) => {

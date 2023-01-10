@@ -8,6 +8,10 @@ import { UploadRequestOption } from "rc-upload/lib/interface";
 import { getBase64 } from "@/utils/ImgUtil";
 import { store } from "@/redux";
 
+interface IProps {
+	avatar: string;
+}
+
 // 上传前校验文件
 const beforeUpload = (file: RcFile) => {
 	const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -21,9 +25,9 @@ const beforeUpload = (file: RcFile) => {
 	return isLt2M;
 };
 
-export default function UploadAvatar() {
+export default function UploadAvatar({ avatar }: IProps) {
 	const [loading, setLoading] = useState(false);
-	const [imageUrl, setImageUrl] = useState<string>("");
+	const [imageUrl, setImageUrl] = useState<string>(avatar);
 	const { userId } = store.getState().global.userInfo;
 
 	const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {

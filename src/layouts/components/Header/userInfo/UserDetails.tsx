@@ -15,6 +15,7 @@ const InfoModal = (props: Props) => {
 	const [data, setData] = useState<Account.UserInfo>();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
+	const [form] = Form.useForm();
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
 	}));
@@ -46,11 +47,12 @@ const InfoModal = (props: Props) => {
 		};
 		const { data } = await getUserInfo(params);
 		setData(data);
+		form.setFieldsValue(data);
 	};
-	useEffect(() => {
-		let dataTemp = data;
-		setData(dataTemp);
-	}, [data]);
+	// useEffect(() => {
+	// 	let dataTemp = data;
+	// 	setData(dataTemp);
+	// }, [data]);
 
 	// 修改事件
 	const updateClick = () => {
@@ -96,6 +98,7 @@ const InfoModal = (props: Props) => {
 				</Descriptions>
 			</div>
 			<Form
+				form={form}
 				hidden={submitHidden}
 				labelCol={{ span: 4 }}
 				wrapperCol={{ span: 10 }}
@@ -103,39 +106,27 @@ const InfoModal = (props: Props) => {
 				onFinish={handleOk}
 				size={"small"}
 			>
-				<Form.Item
-					initialValue={data?.username}
-					name={["userinfo", "username"]}
-					label="账号"
-					labelCol={{ span: 4 }}
-					wrapperCol={{ span: 8 }}
-				>
+				<Form.Item name={"username"} label="账号" labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					wrapperCol={{ span: 8 }}
-					labelCol={{ span: 4 }}
-					name={["userinfo", "nickName"]}
-					label="昵称"
-					initialValue={data?.nickName}
-				>
+				<Form.Item wrapperCol={{ span: 8 }} labelCol={{ span: 4 }} name={"nickName"} label="昵称">
 					<Input />
 				</Form.Item>
-				<Form.Item label="性别" name={["userinfo", "gender"]} initialValue={data?.gender}>
+				<Form.Item label="性别" name={"gender"} initialValue={data?.gender}>
 					<Radio.Group value={data?.gender as number}>
 						<Radio value={0}>女</Radio>
 						<Radio value={1}>男</Radio>
 						<Radio value={-1}>未知</Radio>
 					</Radio.Group>
 				</Form.Item>
-				<Form.Item label="手机" name={["userinfo", "phoneNumber"]} initialValue={data?.phoneNumber}>
+				<Form.Item label="手机" name={"phoneNumber"}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="邮箱" name={["userinfo", "email"]} initialValue={data?.email}>
+				<Form.Item label="邮箱" name={"email"}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="头像" name={["userinfo", "avatar"]} initialValue={data?.avatar}>
-					<UploadAvatar />
+				<Form.Item label="头像" name={"avatar"}>
+					<UploadAvatar avatar={data?.avatar as string} />
 				</Form.Item>
 				<Form.Item wrapperCol={{ offset: 18 }}>
 					<Button hidden={submitHidden} type="primary" htmlType="submit">
