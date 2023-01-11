@@ -1,21 +1,15 @@
 import { Avatar, Card } from "antd";
 import React, { useState } from "react";
-import staticRight from "@/assets/images/voice/static_right.png";
-import right from "@/assets/images/voice/right.gif";
+import staticLeft from "@/assets/images/voice/static_left.png";
+import Left from "@/assets/images/voice/left.gif";
 import { SyncOutlined, FontSizeOutlined } from "@ant-design/icons";
-import sample from "@/assets/sample.wav";
+import { ChatProps } from "@/views/chat/interface/ChatProps";
 
-interface IProps {
-	src: string;
-	len: number;
-	avatar: string;
-}
-
-export default function ChatRightVoiceMsg({ src, avatar, len }: IProps) {
+export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.voiceProps) {
 	const [iconHidden, setIconHidden] = useState<boolean>(true);
 	const [sttState, setSttState] = useState<boolean>(true);
 	const [sttText, setSttText] = useState<boolean>(true);
-	let audio = new Audio(sample);
+	let audio = new Audio(msg);
 
 	// * 1 播放点击事件
 	const playClick = () => {
@@ -24,7 +18,6 @@ export default function ChatRightVoiceMsg({ src, avatar, len }: IProps) {
 	};
 	// * 1.1 播放语音
 	const playVoice = () => {
-		console.log(src);
 		audio.addEventListener("ended", () => {
 			console.log("播放结束");
 		});
@@ -44,20 +37,19 @@ export default function ChatRightVoiceMsg({ src, avatar, len }: IProps) {
 			setSttText(false);
 		}, len * 1000);
 	};
-
 	return (
 		<>
-			<div className="ri">
-				<div className="ri-box">
-					<div className="ri-message-box">
-						<span onClick={playClick}>
-							{len + " s"}
-							<img style={{ width: "20px" }} src={iconHidden ? staticRight : right}></img>
-						</span>
-						<SyncOutlined className="ri-stt-icon" hidden={sttState} spin />
-						<FontSizeOutlined className="ri-stt-icon" hidden={!sttState} onClick={sttClick} />
-					</div>
+			<div className="le">
+				<div className="le-box-voice">
 					<Avatar shape="square" src={avatar} />
+					<div className="le-message-box">
+						<span onClick={playClick}>
+							<img style={{ width: "20px" }} src={iconHidden ? staticLeft : Left}></img>
+							{len + " s"}
+						</span>
+						<SyncOutlined className="le-stt-icon" hidden={sttState} spin />
+						<FontSizeOutlined className="le-stt-icon" hidden={!sttState} onClick={sttClick} />
+					</div>
 				</div>
 				<Card
 					size="small"

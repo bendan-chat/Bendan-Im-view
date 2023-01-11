@@ -1,13 +1,17 @@
 import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { listRecord, RecordPage } from "@/api/modules/chat";
+import { listRecord, RecordData, RecordPage } from "@/api/modules/chat";
 import { store } from "@/redux";
 
-import ChatRightMsg from "./msg/ChatRightMsg";
-import ChatLeftMsg from "./msg/ChatLeftMsg";
+import ChatRightMsg from "./msg/str/ChatRightMsg";
+import ChatLeftMsg from "./msg/str/ChatLeftMsg";
 import { SendMessageProps, ws } from "@/websocket";
+import { Message } from "@/api/interface/chat";
+import { SendCode } from "@/websocket/type";
 import "./chat.less";
+import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
+import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
 
 const ChatRoom = () => {
 	const { avatar } = store.getState().global.userInfo;
@@ -16,10 +20,28 @@ const ChatRoom = () => {
 
 	const { id } = useParams();
 	const toId: number = Number.parseInt(id!);
-	const [msgList, setMsgList] = useState<any[]>([]);
+	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 
+	// * 把 RecordData[] ->  SendMessageProps[]
+	const handlerListRecord = (items: RecordData[]) => {
+		const smps: SendMessageProps[] = [];
+		for (let i = 0; i < items.length; i++) {
+			let item = items[i];
+			const smp: SendMessageProps = {
+				fromId: item.fromId,
+				toId: item.toId,
+				sendContent: item.sendContent,
+				sendType: item.sendType as Message.SendType,
+				audioLen: item.audioLen,
+				code: SendCode.MESSAGE
+			};
+			smps.push(smp);
+		}
+		return smps;
+	};
+
+	// * 加载聊天记录
 	useEffect(() => {
-		// * 加载聊天记录
 		const params: RecordPage = {
 			cur: 1,
 			limit: 1000,
@@ -28,9 +50,9 @@ const ChatRoom = () => {
 			userId: userId,
 			toId: Number.parseInt(id!)
 		};
-
 		listRecord(params).then(function (response) {
-			setMsgList(response.data.items);
+			const dataList = handlerListRecord(response.data.items);
+			setMsgList(dataList);
 			document.getElementsByClassName("message-container")[0].scrollTop =
 				document.getElementsByClassName("message-container")[0].scrollHeight;
 		});
@@ -41,6 +63,8 @@ const ChatRoom = () => {
 		document.getElementsByClassName("message-container")[0].scrollTop =
 			document.getElementsByClassName("message-container")[0].scrollHeight;
 	}, [msgList]);
+
+	// ws 接受消息
 	ws!.onmessage = function (event) {
 		handleMsg(event);
 	};
@@ -62,16 +86,47 @@ const ChatRoom = () => {
 		temp.push(msg);
 		setMsgList(temp);
 	};
+
+	const matchMsgType = (item: SendMessageProps, index: number) => {
+		if (item.fromId === userId) {
+			switch (item.sendType) {
+				case 0:
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+				case 1:
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+				case 2:
+					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent as string} len={item.audioLen as number} />;
+				case 3:
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+				default:
+					new Error("出现未知消息请检查数据库");
+					break;
+			}
+		} else {
+			switch (item.sendType) {
+				case 0:
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+				case 1:
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+				case 2:
+					return (
+						<ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent as string} len={item.audioLen as number} />
+					);
+				case 3:
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+				default:
+					new Error("出现未知消息请检查数据库");
+					break;
+			}
+		}
+	};
+
 	return (
 		<>
 			<div className="cr">
 				<div className="message-container">
 					{msgList.map((item, index) => {
-						if (item.fromId === userId) {
-							return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent} />;
-						} else {
-							return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent} />;
-						}
+						return matchMsgType(item, index);
 					})}
 				</div>
 				<div className="chatFooter">

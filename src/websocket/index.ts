@@ -9,7 +9,7 @@ export interface SendMessageProps {
 	toId?: number;
 	sendContent?: string;
 	userId?: number;
-	sendTimeLength?: number;
+	audioLen?: number;
 }
 
 let ws: WebSocket | null;

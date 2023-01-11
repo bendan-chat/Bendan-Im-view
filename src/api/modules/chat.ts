@@ -38,7 +38,7 @@ export interface RecordData {
 	/**
 	 * 发送时长
 	 */
-	sendTimeLength: number;
+	audioLen: number;
 
 	/**
 	 * 发送时间

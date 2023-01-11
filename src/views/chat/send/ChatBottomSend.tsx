@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import { store } from "@/redux";
-// import ChatAudioMsg from "./ChatAudioSend";
+import ChatAudioButton from "./ChatAudioButton";
 import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;
 
@@ -40,23 +41,31 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	};
 	return (
 		<div className="footer-body">
-			<TextArea
-				status={sendStattus ? "" : "warning"}
-				value={msg}
-				className="textArea"
-				style={{ height: 150 }}
-				placeholder="请输入内容......"
-				allowClear
-				onChange={onChange}
-				onClick={() => {
-					setSendStattus(true);
-				}}
-				onPressEnter={sendMsgClick}
-			/>
-			<Button onClick={sendMsgClick} type="primary" className="right-bottom-btn">
-				发送
-			</Button>
-			{/* <ChatAudioMsg /> */}
+			<div className="multi-div">
+				<Button type="primary" shape="circle" className="multi-btn">
+					<MoreOutlined />
+				</Button>
+			</div>
+			<div className="input-edge-div">
+				<TextArea
+					bordered={false}
+					status={sendStattus ? "" : "warning"}
+					value={msg}
+					className="textArea"
+					style={{ height: 150 }}
+					placeholder="请输入内容......"
+					allowClear
+					onChange={onChange}
+					onClick={() => {
+						setSendStattus(true);
+					}}
+					onPressEnter={sendMsgClick}
+				/>
+				<Button onClick={sendMsgClick} type="primary" className="right-send-btn">
+					发送
+				</Button>
+				<ChatAudioButton className="left-voice-btn" addMsgList={addMsgList} toId={toId} />
+			</div>
 		</div>
 	);
 }

@@ -1,3 +1,4 @@
+/* stylelint-disable length-zero-no-unit */
 /* stylelint-disable comment-empty-line-before */
 /* stylelint-disable no-invalid-double-slash-comments */
 /* stylelint-disable shorthand-property-no-redundant-values */
@@ -16,16 +17,37 @@
 }
 .footer-body {
 	position: relative;
+	border-top: 1px solid #a7a7a7;
+	padding: 5px;
 }
 .ant-card- {
 	color: #f8f8f8;
 	background: #3f3f3f;
 }
+.multi-div {
+	margin-bottom: 30px;
+}
 // 发送消息按钮
-.right-bottom-btn {
+.right-send-btn {
 	position: absolute;
-	right: 0;
-	bottom: 0;
+	right: 0px;
+	bottom: 0px;
+	z-index: 100;
+}
+.left-voice-btn {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	z-index: 100;
+}
+/*
+text-align: right;
+margin-bottom: 5px;
+*/
+.multi-btn {
+	position: absolute;
+	right: 9px;
+	top: 9px;
 	z-index: 100;
 }
 /* 
@@ -43,14 +65,19 @@
 	align-items: center;
 	gap: 20px;
 }
+.le-box-voice {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	div {
+		cursor: pointer;
+	}
+}
 .le-message-box {
 	background-color: white;
 	border-radius: 10px;
 	padding: 10px 20px;
 	position: relative;
-	span {
-		cursor: pointer;
-	}
 }
 .le-message-box::after {
 	content: "";
@@ -68,7 +95,7 @@
 }
 /* 
 	右边消息样式 
-	flex-direction 靠右
+	flex-direction: column 靠右
 */
 .ri {
 	display: flex;
@@ -82,14 +109,19 @@
 	align-items: center;
 	gap: 20px;
 }
+.ri-box-voice {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	div {
+		cursor: pointer;
+	}
+}
 .ri-message-box {
 	background-color: #51de80;
 	border-radius: 10px;
 	padding: 10px 20px;
 	position: relative;
-	span {
-		cursor: pointer;
-	}
 }
 .ri-message-box::after {
 	content: "";
