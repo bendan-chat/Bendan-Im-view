@@ -1,3 +1,5 @@
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable no-invalid-double-slash-comments */
 /* stylelint-disable shorthand-property-no-redundant-values */
 /* stylelint-disable declaration-empty-line-before */
 /* stylelint-disable order/properties-order */
@@ -12,17 +14,43 @@
 .chatFooter {
 	width: 100%;
 }
+.footer-body {
+	position: relative;
+}
+.ant-card- {
+	color: #f8f8f8;
+	background: #3f3f3f;
+}
+// 发送消息按钮
+.right-bottom-btn {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 100;
+}
+/* 
+	左边消息样式 
+	margin-bottom 上下间距
+*/
 .le {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+.le-box {
 	display: flex;
 	align-items: center;
 	gap: 20px;
-	margin-bottom: 20px;
 }
 .le-message-box {
 	background-color: white;
 	border-radius: 10px;
 	padding: 10px 20px;
 	position: relative;
+	span {
+		cursor: pointer;
+	}
 }
 .le-message-box::after {
 	content: "";
@@ -33,12 +61,26 @@
 	border-style: solid;
 	border-color: transparent white transparent transparent;
 }
+.le-stt-icon {
+	position: absolute;
+	right: -20px;
+	top: 15px;
+}
+/* 
+	右边消息样式 
+	flex-direction 靠右
+*/
 .ri {
 	display: flex;
-	align-items: center;
-	justify-content: right;
-	gap: 20px;
+	align-items: flex-end;
+	gap: 10px;
 	margin-bottom: 20px;
+	flex-direction: column;
+}
+.ri-box {
+	display: flex;
+	align-items: center;
+	gap: 20px;
 }
 .ri-message-box {
 	background-color: #51de80;
@@ -49,11 +91,6 @@
 		cursor: pointer;
 	}
 }
-.stt-icon {
-	position: absolute;
-	left: -20px;
-	top: 15px;
-}
 .ri-message-box::after {
 	content: "";
 	position: absolute;
@@ -63,12 +100,8 @@
 	border-style: solid;
 	border-color: transparent transparent transparent #51de80;
 }
-.footer-body {
-	position: relative;
-}
-.right-bottom-btn {
+.ri-stt-icon {
 	position: absolute;
-	right: 0;
-	bottom: 0;
-	z-index: 100;
+	left: -20px;
+	top: 15px;
 }

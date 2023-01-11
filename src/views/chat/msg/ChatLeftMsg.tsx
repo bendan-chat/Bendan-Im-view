@@ -8,8 +8,10 @@ export default function ChatLeftMsg({ msg, avatar }: IProps) {
 	return (
 		<>
 			<div className="le">
-				<Avatar shape="square" src={avatar} />
-				<div className="le-message-box">{msg}</div>
+				<div className="le-box">
+					<Avatar shape="square" src={avatar} />
+					<div className="le-message-box">{msg}</div>
+				</div>
 			</div>
 		</>
 	);

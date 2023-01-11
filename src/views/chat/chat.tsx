@@ -8,7 +8,6 @@ import ChatRightMsg from "./msg/ChatRightMsg";
 import ChatLeftMsg from "./msg/ChatLeftMsg";
 import { SendMessageProps, ws } from "@/websocket";
 import "./chat.less";
-import ChatRightVoiceMsg from "./msg/ChatRightVoiceMsg";
 
 const ChatRoom = () => {
 	const { avatar } = store.getState().global.userInfo;
@@ -65,7 +64,6 @@ const ChatRoom = () => {
 	};
 	return (
 		<>
-			<ChatRightVoiceMsg len={10} src="" avatar={avatar} />
 			<div className="cr">
 				<div className="message-container">
 					{msgList.map((item, index) => {
