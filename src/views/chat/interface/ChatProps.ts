@@ -1,9 +1,13 @@
 export namespace ChatProps {
 	export interface CommonProps {
-		msg: string;
+		msg?: string;
 		avatar: string;
 	}
-	export interface voiceProps extends CommonProps {
+	export interface VoiceProps extends CommonProps {
 		len: number;
+	}
+	export interface FileProps extends CommonProps {
+		fileName: string;
+		size: number;
 	}
 }

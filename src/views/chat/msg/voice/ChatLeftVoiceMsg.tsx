@@ -5,7 +5,7 @@ import Left from "@/assets/images/voice/left.gif";
 import { SyncOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { ChatProps } from "@/views/chat/interface/ChatProps";
 
-export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.voiceProps) {
+export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoiceProps) {
 	const [iconHidden, setIconHidden] = useState<boolean>(true);
 	const [sttState, setSttState] = useState<boolean>(true);
 	const [sttText, setSttText] = useState<boolean>(true);

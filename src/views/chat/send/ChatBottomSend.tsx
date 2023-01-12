@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+import { SmileTwoTone, PhoneTwoTone, FolderTwoTone } from "@ant-design/icons";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import { store } from "@/redux";
@@ -16,10 +16,14 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	const { userId } = store.getState().global.userInfo;
 	const [msg, setMsg] = useState<string>("");
 	const [sendStattus, setSendStattus] = useState<boolean>(true);
+	const inputRef = React.createRef<HTMLInputElement>();
 
+	// * 更新输入框的内容
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setMsg(e.target.value);
 	};
+
+	// * 发送消息 点击事件
 	const sendMsgClick = () => {
 		const msgObj: SendMessageProps = {
 			code: SendCode.MESSAGE,
@@ -39,12 +43,29 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			setMsg("");
 		}
 	};
+
+	// * focus 在输入
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
+	}, []);
+	const emjoyClick = () => {
+		console.log("emjoyClick");
+	};
+	const fileClick = () => {
+		console.log("fileClick");
+	};
+	const phoneClick = () => {
+		console.log("phoneClick");
+	};
+
 	return (
 		<div className="footer-body">
 			<div className="multi-div">
-				<Button type="primary" shape="circle" className="multi-btn">
-					<MoreOutlined />
-				</Button>
+				<SmileTwoTone onClick={emjoyClick} className="emjoy-left-icon" />
+				<FolderTwoTone onClick={fileClick} className="file-left-icon" />
+				<PhoneTwoTone onClick={phoneClick} className="phone-right-icon" />
 			</div>
 			<div className="input-edge-div">
 				<TextArea
@@ -53,12 +74,13 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 					value={msg}
 					className="textArea"
 					style={{ height: 150 }}
-					placeholder="请输入内容......"
+					placeholder=""
 					allowClear
 					onChange={onChange}
 					onClick={() => {
 						setSendStattus(true);
 					}}
+					ref={inputRef}
 					onPressEnter={sendMsgClick}
 				/>
 				<Button onClick={sendMsgClick} type="primary" className="right-send-btn">

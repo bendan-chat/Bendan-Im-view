@@ -91,7 +91,8 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 			sendType: Message.MsgType.voiceMsg,
 			fromId: userId,
 			toId: toId,
-			sendContent: "        "
+			sendContent: "https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/6ba58aab-c431-4226-a55c-d5199675fbb7.wav",
+			audioLen: 13
 		};
 		addMsgList(msgObj);
 	};

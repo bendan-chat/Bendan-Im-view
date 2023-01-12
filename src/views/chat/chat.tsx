@@ -9,9 +9,12 @@ import ChatLeftMsg from "./msg/str/ChatLeftMsg";
 import { SendMessageProps, ws } from "@/websocket";
 import { Message } from "@/api/interface/chat";
 import { SendCode } from "@/websocket/type";
-import "./chat.less";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
+import ChatFileLeftMsg from "./msg/file/ChatFileLeftMsg";
+
+import "./chat.less";
+import ChatFileRightMsg from "./msg/file/ChatFileRightMsg";
 
 const ChatRoom = () => {
 	const { avatar } = store.getState().global.userInfo;
@@ -91,13 +94,13 @@ const ChatRoom = () => {
 		if (item.fromId === userId) {
 			switch (item.sendType) {
 				case 0:
-					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 1:
-					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 2:
-					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent as string} len={item.audioLen as number} />;
+					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
 				case 3:
-					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent as string} />;
+					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
@@ -105,15 +108,13 @@ const ChatRoom = () => {
 		} else {
 			switch (item.sendType) {
 				case 0:
-					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 1:
-					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 2:
-					return (
-						<ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent as string} len={item.audioLen as number} />
-					);
+					return <ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
 				case 3:
-					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent as string} />;
+					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
@@ -128,6 +129,8 @@ const ChatRoom = () => {
 					{msgList.map((item, index) => {
 						return matchMsgType(item, index);
 					})}
+					<ChatFileLeftMsg fileName="aaa.txt" size={5} avatar={toAvatar} />
+					<ChatFileRightMsg fileName="aaa.txt" size={5} avatar={avatar} />
 				</div>
 				<div className="chatFooter">
 					<ChatBottomSend addMsgList={addSelfMsg} toId={toId} />

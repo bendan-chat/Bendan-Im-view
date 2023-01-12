@@ -1,0 +1,82 @@
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable no-invalid-double-slash-comments */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable declaration-empty-line-before */
+/* stylelint-disable order/properties-order */
+
+// 左边消息
+.file-le {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+}
+.file-le-box {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.file-le-box-voice {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	div {
+		cursor: pointer;
+	}
+}
+.file-le-message-box {
+	background-color: #cadcff;
+	border-radius: 10px;
+	padding: 20px 20px;
+	position: relative;
+	bottom: -32px;
+}
+.file-le-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	left: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent #cadcff transparent transparent;
+}
+
+// 右边消息
+
+.file-ri {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+	flex-direction: column;
+}
+.file-ri-box {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.file-ri-box-voice {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	div {
+		cursor: pointer;
+	}
+}
+.file-ri-message-box {
+	background-color: #cadcff;
+	border-radius: 10px;
+	padding: 20px 20px;
+	position: relative;
+	bottom: -32px;
+}
+.file-ri-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	right: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent transparent transparent #cadcff;
+}
