@@ -1,13 +1,15 @@
 import { Avatar } from "antd";
 import { ChatProps } from "@/views/chat/interface/ChatProps";
 
+import "./ChatStr.less";
+
 export default function ChatLeftMsg({ msg, avatar }: ChatProps.CommonProps) {
 	return (
 		<>
-			<div className="le">
-				<div className="le-box">
+			<div className="str-le">
+				<div className="str-le-box">
 					<Avatar shape="square" src={avatar} />
-					<div className="le-message-box">
+					<div className="str-le-message-box">
 						<span>{msg}</span>
 					</div>
 				</div>

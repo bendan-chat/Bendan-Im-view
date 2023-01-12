@@ -4,6 +4,7 @@ import staticLeft from "@/assets/images/voice/static_left.png";
 import Left from "@/assets/images/voice/left.gif";
 import { SyncOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { ChatProps } from "@/views/chat/interface/ChatProps";
+import "./ChatVoice.less";
 
 export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoiceProps) {
 	const [iconHidden, setIconHidden] = useState<boolean>(true);
@@ -39,16 +40,16 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 	};
 	return (
 		<>
-			<div className="le">
-				<div className="le-box-voice">
+			<div className="voice-le">
+				<div className="voice-le-box-voice">
 					<Avatar shape="square" src={avatar} />
-					<div className="le-message-box">
+					<div className="voice-le-message-box">
 						<span onClick={playClick}>
 							<img style={{ width: "20px" }} src={iconHidden ? staticLeft : Left}></img>
 							{len + " s"}
 						</span>
-						<SyncOutlined className="le-stt-icon" hidden={sttState} spin />
-						<FontSizeOutlined className="le-stt-icon" hidden={!sttState} onClick={sttClick} />
+						<SyncOutlined className="voice-le-stt-icon" hidden={sttState} spin />
+						<FontSizeOutlined className="voice-le-stt-icon" hidden={!sttState} onClick={sttClick} />
 					</div>
 				</div>
 				<Card

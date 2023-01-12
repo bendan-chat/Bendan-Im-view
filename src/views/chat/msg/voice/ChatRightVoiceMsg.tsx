@@ -4,6 +4,7 @@ import staticRight from "@/assets/images/voice/static_right.png";
 import right from "@/assets/images/voice/right.gif";
 import { SyncOutlined, FontSizeOutlined } from "@ant-design/icons";
 import { ChatProps } from "@/views/chat/interface/ChatProps";
+import "./ChatVoice.less";
 
 export default function ChatRightVoiceMsg({ msg, avatar, len }: ChatProps.VoiceProps) {
 	const [iconHidden, setIconHidden] = useState<boolean>(true);
@@ -40,15 +41,15 @@ export default function ChatRightVoiceMsg({ msg, avatar, len }: ChatProps.VoiceP
 
 	return (
 		<>
-			<div className="ri">
-				<div className="ri-box-voice">
-					<div className="ri-message-box">
+			<div className="voice-ri">
+				<div className="voice-ri-box-voice">
+					<div className="voice-ri-message-box">
 						<span onClick={playClick}>
 							{len + " s"}
 							<img style={{ width: "20px" }} src={iconHidden ? staticRight : right}></img>
 						</span>
-						<SyncOutlined className="ri-stt-icon" hidden={sttState} spin />
-						<FontSizeOutlined className="ri-stt-icon" hidden={!sttState} onClick={sttClick} />
+						<SyncOutlined className="voice-ri-stt-icon" hidden={sttState} spin />
+						<FontSizeOutlined className="voice-ri-stt-icon" hidden={!sttState} onClick={sttClick} />
 					</div>
 					<Avatar shape="square" src={avatar} />
 				</div>

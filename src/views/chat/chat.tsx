@@ -12,8 +12,12 @@ import { SendCode } from "@/websocket/type";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
 
+import ChatVideoRightMsg from "./msg/video/ChatVideoRightMsg";
+import ChatVideoLeftMsg from "./msg/video/ChatVideoLeftMsg";
 import ChatImageRightMsg from "./msg/image/ChatImageRightMsg";
 import ChatImageLeftMsg from "./msg/image/ChatImageLeftMsg";
+import ChatFileLeftMsg from "./msg/file/ChatFileLeftMsg";
+import ChatFileRightMsg from "./msg/file/ChatFileRightMsg";
 
 import "./chat.less";
 
@@ -92,16 +96,19 @@ const ChatRoom = () => {
 	};
 
 	const matchMsgType = (item: SendMessageProps, index: number) => {
+		// * 0文本，1图片，2语音，3视频 , 4文件
 		if (item.fromId === userId) {
 			switch (item.sendType) {
 				case 0:
 					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 1:
-					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
+					return <ChatImageRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 2:
 					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
 				case 3:
-					return <ChatRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
+					return <ChatVideoRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
+				case 4:
+					return <ChatFileRightMsg avatar={toAvatar} key={index} msg={item.sendContent!} fileName={""} size={0} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
@@ -111,11 +118,13 @@ const ChatRoom = () => {
 				case 0:
 					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 1:
-					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
+					return <ChatImageLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 2:
 					return <ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
 				case 3:
-					return <ChatLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
+					return <ChatVideoLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
+				case 4:
+					return <ChatFileLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} fileName={""} size={0} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
@@ -130,8 +139,6 @@ const ChatRoom = () => {
 					{msgList.map((item, index) => {
 						return matchMsgType(item, index);
 					})}
-					<ChatImageLeftMsg msg="https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/1-21.jpg" avatar={toAvatar} />
-					<ChatImageRightMsg msg="https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/1-21.jpg" avatar={avatar} />
 				</div>
 				<div className="chatFooter">
 					<ChatBottomSend addMsgList={addSelfMsg} toId={toId} />

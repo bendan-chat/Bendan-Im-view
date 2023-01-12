@@ -1,0 +1,69 @@
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable no-invalid-double-slash-comments */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable declaration-empty-line-before */
+/* stylelint-disable order/properties-order */
+.video-le {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+}
+.video-le-box {
+	display: flex;
+	gap: 20px;
+}
+.video-le-message-box {
+	background-color: white;
+	border-radius: 7px;
+	padding: 8px 9px;
+	position: relative;
+	width: 50%;
+}
+.video-le-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	left: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent white transparent transparent;
+}
+/* 
+	右边消息样式 
+	flex-direction: column 靠右
+*/
+.video-ri {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+	flex-direction: column;
+}
+/* 
+  flex
+  justify-content: flex-end; 左右布局
+	align-items: 上下布局
+*/
+.video-ri-box {
+	display: flex;
+	gap: 20px;
+	justify-content: flex-end;
+}
+.video-ri-message-box {
+	background-color: white;
+	border-radius: 7px;
+	padding: 8px 9px;
+	position: relative;
+	width: 50%;
+}
+.video-ri-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	right: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent transparent transparent white;
+}
