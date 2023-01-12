@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, message, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface/user";
 import { login } from "@/api/modules/user";
@@ -9,7 +9,6 @@ import { setToken, setUserInfo } from "@/redux/modules/global/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { ResultEnum } from "@/enums/httpEnum";
-// import { createWsClient } from "@/websocket/index";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
@@ -62,18 +61,24 @@ const LoginForm = (props: any) => {
 				<Input.Password autoComplete="new-password" placeholder="密码" prefix={<LockOutlined />} />
 			</Form.Item>
 			<Form.Item className="login-btn">
-				<Button
-					onClick={() => {
-						form.resetFields();
-					}}
-					icon={<CloseCircleOutlined />}
-				>
-					{t("login.reset")}
-				</Button>
-				<Button type="primary" htmlType="submit" loading={loading} icon={<UserOutlined />}>
-					{t("login.confirm")}
-				</Button>
+				<Space size={"middle"}>
+					<Button
+						onClick={() => {
+							form.resetFields();
+						}}
+						icon={<CloseCircleOutlined />}
+					>
+						{t("login.reset")}
+					</Button>
+					<Button type="primary" htmlType="submit" loading={loading} icon={<UserOutlined />}>
+						{t("login.confirm")}
+					</Button>
+				</Space>
 			</Form.Item>
+			<div>
+				<a>忘记密码</a>
+				<a style={{ float: "right" }}>立即注册</a>
+			</div>
 		</Form>
 	);
 };

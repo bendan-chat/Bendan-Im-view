@@ -61,9 +61,9 @@ const ChatRoom = () => {
 		listRecord(params).then(function (response) {
 			const dataList = handlerListRecord(response.data.items);
 			setMsgList(dataList);
-			document.getElementsByClassName("message-container")[0].scrollTop =
-				document.getElementsByClassName("message-container")[0].scrollHeight;
 		});
+		document.getElementsByClassName("message-container")[0].scrollTop =
+			document.getElementsByClassName("message-container")[0].scrollHeight;
 	}, [id]);
 
 	// * 动态加载消息时候滚动条也要沉低
