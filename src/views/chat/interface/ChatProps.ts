@@ -7,7 +7,6 @@ export namespace ChatProps {
 		len: number;
 	}
 	export interface FileProps extends CommonProps {
-		fileName: string;
 		size: number;
 	}
 }

@@ -40,7 +40,7 @@ const ChatRoom = () => {
 				toId: item.toId,
 				sendContent: item.sendContent,
 				sendType: item.sendType as Message.SendType,
-				audioLen: item.audioLen,
+				length: item.length,
 				code: SendCode.MESSAGE
 			};
 			smps.push(smp);
@@ -104,11 +104,11 @@ const ChatRoom = () => {
 				case 1:
 					return <ChatImageRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 2:
-					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
+					return <ChatRightVoiceMsg avatar={avatar} key={index} msg={item.sendContent!} len={item.length!} />;
 				case 3:
 					return <ChatVideoRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 4:
-					return <ChatFileRightMsg avatar={toAvatar} key={index} msg={item.sendContent!} fileName={""} size={0} />;
+					return <ChatFileRightMsg avatar={toAvatar} key={index} msg={item.sendContent!} size={item.length!} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
@@ -120,11 +120,11 @@ const ChatRoom = () => {
 				case 1:
 					return <ChatImageLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 2:
-					return <ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent!} len={item.audioLen!} />;
+					return <ChatLeftVoiceMsg avatar={toAvatar} key={index} msg={item.sendContent!} len={item.length!} />;
 				case 3:
 					return <ChatVideoLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} />;
 				case 4:
-					return <ChatFileLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} fileName={""} size={0} />;
+					return <ChatFileLeftMsg avatar={toAvatar} key={index} msg={item.sendContent!} size={item.length!} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;
