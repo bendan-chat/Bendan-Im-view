@@ -1,0 +1,66 @@
+/* stylelint-disable length-zero-no-unit */
+/* stylelint-disable comment-empty-line-before */
+/* stylelint-disable no-invalid-double-slash-comments */
+/* stylelint-disable shorthand-property-no-redundant-values */
+/* stylelint-disable declaration-empty-line-before */
+/* stylelint-disable order/properties-order */
+.image-le {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+}
+.image-le-box {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.image-le-message-box {
+	background-color: white;
+	border-radius: 10px;
+	padding: 5px 5px;
+	position: relative;
+	bottom: -45px;
+}
+.image-le-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	left: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent white transparent transparent;
+}
+
+/* 
+	右边消息样式 
+	flex-direction: column 靠右
+*/
+.image-ri {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	margin-bottom: 50px;
+	flex-direction: column;
+}
+.image-ri-box {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+.image-ri-message-box {
+	background-color: white;
+	border-radius: 10px;
+	padding: 5px 5px;
+	position: relative;
+	bottom: -45px;
+}
+.image-ri-message-box::after {
+	content: "";
+	position: absolute;
+	top: 13px;
+	right: -16px;
+	border-width: 8px;
+	border-style: solid;
+	border-color: transparent transparent transparent white;
+}

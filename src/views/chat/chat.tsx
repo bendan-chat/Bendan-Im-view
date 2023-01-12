@@ -11,10 +11,11 @@ import { Message } from "@/api/interface/chat";
 import { SendCode } from "@/websocket/type";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
-import ChatFileLeftMsg from "./msg/file/ChatFileLeftMsg";
+
+import ChatImageRightMsg from "./msg/image/ChatImageRightMsg";
+import ChatImageLeftMsg from "./msg/image/ChatImageLeftMsg";
 
 import "./chat.less";
-import ChatFileRightMsg from "./msg/file/ChatFileRightMsg";
 
 const ChatRoom = () => {
 	const { avatar } = store.getState().global.userInfo;
@@ -129,8 +130,8 @@ const ChatRoom = () => {
 					{msgList.map((item, index) => {
 						return matchMsgType(item, index);
 					})}
-					<ChatFileLeftMsg fileName="aaa.txt" size={5} avatar={toAvatar} />
-					<ChatFileRightMsg fileName="aaa.txt" size={5} avatar={avatar} />
+					<ChatImageLeftMsg msg="https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/1-21.jpg" avatar={toAvatar} />
+					<ChatImageRightMsg msg="https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/1-21.jpg" avatar={avatar} />
 				</div>
 				<div className="chatFooter">
 					<ChatBottomSend addMsgList={addSelfMsg} toId={toId} />
