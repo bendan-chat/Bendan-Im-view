@@ -17,6 +17,16 @@ const AuthRouter: Array<RouteObject> = [
 					title: "聊天室",
 					key: "chat"
 				}
+			},
+			{
+				path: "/group",
+				element: lazyLoad(React.lazy(() => import("@/views/group"))),
+				// element: ,
+				meta: {
+					requiresAuth: true,
+					title: "群组",
+					key: "group"
+				}
 			}
 		]
 	}

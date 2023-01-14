@@ -71,7 +71,7 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 			fromId: userId,
 			toId: toId,
 			sendContent: url,
-			audioLen: voiceLen
+			length: voiceLen
 		};
 		// 发送后台
 		sendMessage(msgObj);
@@ -92,7 +92,7 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 			fromId: userId,
 			toId: toId,
 			sendContent: "https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/6ba58aab-c431-4226-a55c-d5199675fbb7.wav",
-			audioLen: 13
+			length: 13
 		};
 		addMsgList(msgObj);
 	};

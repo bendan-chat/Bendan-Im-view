@@ -10,6 +10,8 @@ import PasswordModal from "./userInfo/PasswordModal";
 import InfoModal from "./userInfo/UserDetails";
 import { getUserInfo, getUserInfoParams, logout } from "@/api/modules/user";
 
+import "./UserStatus.less";
+
 function UserStatus(props: any) {
 	const { avatar, username } = store.getState().global.userInfo;
 
@@ -74,13 +76,13 @@ function UserStatus(props: any) {
 		}
 	];
 	return (
-		<>
+		<div className="userinfo-dropdown" style={{ height: 32, margin: 16, background: "rgba(255, 255, 255, 0.2)" }}>
 			<Dropdown menu={{ items }} placement="bottom" arrow trigger={["click"]}>
-				<Avatar shape="square" size="small" src={avatar} />
+				<Avatar shape="square" size={32} src={avatar} />
 			</Dropdown>
 			<InfoModal innerRef={infoRef}></InfoModal>
 			<PasswordModal innerRef={passRef}></PasswordModal>
-		</>
+		</div>
 	);
 }
 

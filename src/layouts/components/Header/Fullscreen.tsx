@@ -9,6 +9,7 @@ const Fullscreen = () => {
 		screenfull.on("change", () => {
 			if (screenfull.isFullscreen) setFullScreen(true);
 			else setFullScreen(false);
+			// eslint-disable-next-line prettier/prettier
 			return () => screenfull.off("change", () => {});
 		});
 	}, []);

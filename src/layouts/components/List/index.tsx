@@ -36,7 +36,6 @@ const FriendList = (props: any) => {
 	// 懒加载好友
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const loadMoreData = () => {
-		console.log("loadMoreData");
 		const params: getFriendParams = {
 			username
 		};
@@ -55,13 +54,13 @@ const FriendList = (props: any) => {
 		setSearchHidden(true);
 	}
 	function onBlur() {
-		console.log("onBlur");
+		setSearchHidden(false);
 	}
 	return (
 		<div>
 			<div className="search-friend-class">
 				<Space>
-					<Input placeholder="input search text" allowClear onClick={onSearch} onBlur={onBlur} />
+					<Input size="small" placeholder="搜索" allowClear onClick={onSearch} onBlur={onBlur} />
 					<Button onClick={addUser} type="primary" shape="circle">
 						<UserAddOutlined />
 					</Button>
