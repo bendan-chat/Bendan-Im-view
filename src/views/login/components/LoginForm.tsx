@@ -30,8 +30,6 @@ const LoginForm = (props: any) => {
 					avatar: data.avatar
 				});
 				message.success(msg);
-				// *  连接ws
-				// createWsClient();
 				navigate(HOME_URL);
 			}
 		} finally {

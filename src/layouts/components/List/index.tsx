@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
 import { setToAvatar } from "@/redux/modules//chat/action";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { List, Avatar, Input, Space, Button, Skeleton, Divider } from "antd";
+import { List, Avatar, Input, Space, Button, Badge, Skeleton, Divider } from "antd";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
+import { ws } from "@/websocket";
 
 import "./index.less";
 import { ChatPage, listChat } from "@/api/modules/chat";
@@ -74,6 +75,22 @@ const FriendList = ({ onChatList }: IProps) => {
 		});
 	};
 
+	// ws 接受消息
+	ws!.onmessage = function (event) {
+		handleMsg(event);
+	};
+
+	// * 处理WebSocket 消息
+	const handleMsg = (event: MessageEvent<any>) => {
+		const result = JSON.parse(event.data as string);
+		// * 处理心跳
+		if (result === 2) {
+			console.log();
+		} else {
+			console.log("index->>" + result);
+		}
+	};
+
 	// 新增 好友
 	function addUser() {
 		console.log("addUser");
@@ -112,16 +129,22 @@ const FriendList = ({ onChatList }: IProps) => {
 						<List.Item
 							className={`${selectId === item.id ? "active-user" : ""}`}
 							onClick={() => {
-								navigate("/chat" + "/" + item.id);
-								setSelectId(item.id);
-								store.dispatch(setToAvatar(item.avatar as string));
+								if (!onChatList) {
+									navigate("/chat" + "/" + item.id);
+									setSelectId(item.id);
+									store.dispatch(setToAvatar(item.avatar as string));
+								}
 							}}
 						>
 							<List.Item.Meta
 								className="index"
-								avatar={<Avatar src={item.avatar} />}
+								avatar={
+									// <Badge count={1}>
+									<Avatar src={item.avatar} size="large" />
+									// </Badge>
+								}
 								title={item.nickName}
-								description="is refined by Ant UED Team.."
+								description={item.lastMsg}
 							/>
 						</List.Item>
 					)}
