@@ -1,51 +1,34 @@
 import http from "@/api/config/ClientConfig";
-import { ChatServer } from "../config/servicePort";
+import { AdminServer, ChatServer } from "../config/servicePort";
+import { Chat } from "../interface/chat";
 import { ReqPage, ResPage } from "../interface/sys";
+import { Account } from "../interface/user";
 
-// * 获取聊天记录
+/**
+ * 查询聊天记录
+ * @param page
+ * @param userId
+ * @param toId
+ * */
 export interface RecordPage extends ReqPage {
 	userId: number;
 	toId: number;
 }
-export interface RecordData {
-	/**
-	 *
-	 */
-	id: number;
+export const listRecord = (params: RecordPage) => {
+	return http.get<ResPage<Chat.RecordData>>(ChatServer.Record + `/listRecord`, params, { headers: { noLoading: true } });
+};
 
+/**
+ * 查询聊天列表
+ * @param page
+ * @param username
+ * */
+export interface ChatPage extends ReqPage {
 	/**
 	 * 用户id
 	 */
-
-	fromId: number;
-
-	/**
-	 * 专家id
-	
-	 */
-	toId: number;
-
-	/**
-	 * 发送内容
-	 */
-	sendContent: string;
-
-	/**
-	 * 发送类型【0文本，1图片，2语言，3视频】
-	 */
-	sendType: number;
-
-	/**
-	 * 发送时长
-	 */
-	length: number;
-
-	/**
-	 * 发送时间
-	 */
-	sendTime: string;
+	username: string;
 }
-// 查询聊天记录
-export const listRecord = (params: RecordPage) => {
-	return http.get<ResPage<RecordData>>(ChatServer.Record + `/listRecord`, params, { headers: { noLoading: true } });
+export const listChat = (params: ChatPage) => {
+	return http.get<Account.ChatUser[]>(AdminServer.Chat + `/getChatList`, params, { headers: { noLoading: true } });
 };

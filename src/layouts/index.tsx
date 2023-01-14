@@ -20,6 +20,8 @@ function LayoutIndex() {
 	type MenuItem = Required<MenuProps>["items"][number];
 	const [iconStyle, setIconStyle] = useState<boolean>(false);
 	const [menuItemStyle, setMenuItemStyle] = useState<boolean[]>([true, false, false]);
+	const [onChatList, setOnChatList] = useState<boolean>(false);
+
 	const { id } = useParams();
 	const [chatNum, setChatNum] = useState<string>("");
 
@@ -60,6 +62,7 @@ function LayoutIndex() {
 					navigate("/chat" + "/" + chatNum);
 				}
 				selectedStyle(0);
+				setOnChatList(false);
 			}
 		},
 		{
@@ -70,6 +73,7 @@ function LayoutIndex() {
 				setChatNum(id!);
 				navigate("/group");
 				selectedStyle(1);
+				setOnChatList(true);
 			}
 		}
 		// ,
@@ -102,7 +106,7 @@ function LayoutIndex() {
 				<Menu selectable={false} theme="dark" mode="inline" items={items} style={{ minWidth: 20, flex: "auto" }}></Menu>
 			</Sider>
 			<Sider trigger={null} width={220} theme="light">
-				<FriendList />
+				<FriendList onChatList={onChatList} />
 			</Sider>
 			<Layout>
 				<Content>

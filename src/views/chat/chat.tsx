@@ -1,13 +1,13 @@
 import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { listRecord, RecordData, RecordPage } from "@/api/modules/chat";
+import { listRecord, RecordPage } from "@/api/modules/chat";
 import { store } from "@/redux";
 
 import ChatRightMsg from "./msg/str/ChatRightMsg";
 import ChatLeftMsg from "./msg/str/ChatLeftMsg";
 import { SendMessageProps, ws } from "@/websocket";
-import { Message } from "@/api/interface/chat";
+import { Chat, Message } from "@/api/interface/chat";
 import { SendCode } from "@/websocket/type";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
@@ -31,7 +31,7 @@ const ChatRoom = () => {
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 
 	// * 把 RecordData[] ->  SendMessageProps[]
-	const handlerListRecord = (items: RecordData[]) => {
+	const handlerListRecord = (items: Chat.RecordData[]) => {
 		const smps: SendMessageProps[] = [];
 		for (let i = 0; i < items.length; i++) {
 			let item = items[i];

@@ -21,17 +21,45 @@ export namespace Message {
 	}
 }
 
-// * 聊天列表
-export namespace ChatList {
-	export interface ResProps {
+// * 聊天记录
+export namespace Chat {
+	export interface RecordData {
+		/**
+		 *
+		 */
 		id: number;
-		userUuid: string;
-		expertUuid: string;
-		expertName: string;
-		plantCategory: string;
-		reportFormTitle: string;
-		unreadMessageCount: number;
-		firstPicture: string;
+
+		/**
+		 * 用户id
+		 */
+
+		fromId: number;
+
+		/**
+		 * 发送对象id
+		
+		 */
+		toId: number;
+
+		/**
+		 * 发送内容
+		 */
+		sendContent: string;
+
+		/**
+		 * 发送类型【0文本，1图片，2语言，3视频】
+		 */
+		sendType: number;
+
+		/**
+		 * 发送时长
+		 */
+		length: number;
+
+		/**
+		 * 发送时间
+		 */
+		sendTime: string;
 	}
 }
 

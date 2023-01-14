@@ -8,7 +8,7 @@ import { AxiosCanceler } from "../helper/axiosCancel";
 import { message } from "antd";
 import { setToken } from "@/redux/modules/global/action";
 import { store } from "@/redux";
-import { adminServer } from "./servicePort";
+import { AdminServer } from "./servicePort";
 
 const axiosCanceler = new AxiosCanceler();
 
@@ -42,7 +42,7 @@ class RequestHttp {
 				// * 放行登录接口
 				let loginUrl: string | undefined = config.url;
 				const token: string = store.getState().global.token;
-				if (loginUrl === adminServer.User + "/login") {
+				if (loginUrl === AdminServer.User + "/login") {
 					return config;
 				}
 				const bearerToken: string = "Bearer " + token;

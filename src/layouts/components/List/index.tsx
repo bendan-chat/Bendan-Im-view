@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
 import { store } from "@/redux";
 import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
@@ -8,35 +7,66 @@ import { setToAvatar } from "@/redux/modules//chat/action";
 import { List, Avatar, Input, Space, Button, Skeleton, Divider } from "antd";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import InfiniteScroll from "react-infinite-scroll-component";
-import { getFriendParams, getFriends } from "@/api/modules/user";
+import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
 
 import "./index.less";
+import { ChatPage, listChat } from "@/api/modules/chat";
 
-const FriendList = (props: any) => {
+interface IProps {
+	onChatList: boolean;
+}
+
+const FriendList = ({ onChatList }: IProps) => {
 	const navigate = useNavigate();
-	const { setToAvatar } = props;
 	const [data, setData] = useState<Account.ChatUser[]>([]);
 	const { username } = store.getState().global.userInfo;
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
 
-	// 加载好友
+	/**
+	 * 加载好友列表
+	 *
+	 * @param username
+	 */
 	async function loadFriends(username: string) {
-		const params: getFriendParams = {
+		const params: FriendParams = {
 			username
 		};
 		const { data } = await getFriends(params);
 		setData(data);
 	}
+	/**
+	 * 加载聊天列表
+	 *
+	 * @param username
+	 */
+	async function loadChatList(username: string) {
+		const params: ChatPage = {
+			cur: 1,
+			limit: 100,
+			order: true,
+			username: username
+		};
+		const { data } = await listChat(params);
+		setData(data);
+	}
+	// useEffect(() => {
+	// 	loadChatList(username);
+	// }, []);
+
 	useEffect(() => {
-		loadFriends(username);
-	}, []);
+		if (onChatList) {
+			loadFriends(username);
+		} else {
+			loadChatList(username);
+		}
+	}, [onChatList]);
 
 	// 懒加载好友
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const loadMoreData = () => {
-		const params: getFriendParams = {
+		const params: FriendParams = {
 			username
 		};
 		getFriends(params).then(res => {
@@ -84,7 +114,7 @@ const FriendList = (props: any) => {
 							onClick={() => {
 								navigate("/chat" + "/" + item.id);
 								setSelectId(item.id);
-								setToAvatar(item.avatar);
+								store.dispatch(setToAvatar(item.avatar as string));
 							}}
 						>
 							<List.Item.Meta
@@ -102,5 +132,4 @@ const FriendList = (props: any) => {
 	);
 };
 
-const mapDispatchToProps = { setToAvatar };
-export default connect(null, mapDispatchToProps)(FriendList);
+export default FriendList;
