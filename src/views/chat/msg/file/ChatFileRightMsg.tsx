@@ -5,16 +5,9 @@ import { FileTwoTone } from "@ant-design/icons";
 
 import "./ChatFile.less";
 import { DownloadUrl } from "@/utils/DownloadUtil";
+import { splitUrlToFileName } from "@/utils/util";
 
 export default function ChatFileRightMsg({ avatar, msg, size }: ChatProps.FileProps) {
-	const splitUrlToFileName = () => {
-		const urlArgs: string[] | undefined = msg?.split("/");
-		const nameArgs: string[] | undefined = urlArgs![urlArgs!.length - 1].split(".");
-		let name = decodeURI(nameArgs[0]);
-		let suffixName = nameArgs[1];
-		return name + "." + suffixName;
-	};
-
 	/**
 	 * 下载点击
 	 */
@@ -40,7 +33,7 @@ export default function ChatFileRightMsg({ avatar, msg, size }: ChatProps.FilePr
 							<FileTwoTone style={{ fontSize: "50px" }} />
 						</div>
 						<div className="file-info-name" style={{ float: "right" }}>
-							<p style={{ fontSize: "16px" }}>{splitUrlToFileName()}</p>
+							<p style={{ fontSize: "16px" }}>{splitUrlToFileName(msg!)}</p>
 							<sub style={{ fontSize: "1px" }}>{size + " B"}</sub>
 						</div>
 					</div>

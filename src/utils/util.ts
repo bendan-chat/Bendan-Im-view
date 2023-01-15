@@ -2,6 +2,24 @@ import { RouteObject } from "@/routers/interface";
 import { Menus } from "@/api/interface/menu";
 
 /**
+ * 分割上传路径 取后缀
+ * 如果不是url 直接返回
+ * @param urls
+ * @returns
+ */
+export function splitUrlToFileName(url: string) {
+	const urlArgs: string[] | undefined = url?.split("/");
+	if (urlArgs![0].match("http") == null) {
+		return url;
+	} else {
+		const nameArgs: string[] | undefined = urlArgs![urlArgs!.length - 1].split(".");
+		let name = decodeURI(nameArgs[0]);
+		let suffixName = nameArgs[1];
+		return name + "." + suffixName;
+	}
+}
+
+/**
  * @description 获取localStorage
  * @param {String} key Storage名称
  * @return string

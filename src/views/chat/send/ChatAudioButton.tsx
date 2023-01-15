@@ -1,18 +1,12 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { uploadTencentFile, sttFile } from "@/api/modules/upload";
+import { uploadTencentFile } from "@/api/modules/upload";
 import { Message } from "@/api/interface/chat";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import Recorder from "js-audio-recorder";
 
-// let voice: Voice;
-// * 初始化 录音设备
-// const init = () => {
-// 	voice = new Voice();
-// };
 let recorder: Recorder;
 interface IProps {
 	addMsgList: (msg: SendMessageProps) => void;
@@ -24,35 +18,42 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 	const { userId } = store.getState().global.userInfo;
 	const [audioBtu, setAudioBtu] = useState<string>("发送语音");
 	const [sendAudio, setSendAudio] = useState<boolean>(false);
-
-	// 上传语音
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const uploadAudio = (blob: Blob) => {
-		const fileOfBlob = new File([blob], "2.wav");
-		const formData = new FormData();
-		formData.append("file", fileOfBlob);
-		formData.append("userId", userId);
-		formData.append("type", Message.MsgType.voiceMsg.toString());
-		return uploadTencentFile(formData);
-	};
 	useEffect(() => {
 		let audios = sendAudio;
 		setSendAudio(audios);
 	}, [sendAudio]);
 
 	/**
+	 * 上传语音
+	 * @param blob
+	 * @returns
+	 */
+	const uploadAudio = (blob: Blob) => {
+		const fileOfBlob = new File([blob], "voice.wav");
+		const formData = new FormData();
+		formData.append("file", fileOfBlob);
+		formData.append("userId", userId);
+		formData.append("type", Message.MsgType.voiceMsg.toString());
+		return uploadTencentFile(formData);
+	};
+
+	/**
 	 * 处理 上传后的语音
 	 * @param voiceLen
-	 * @param url
+	 * @param wavBlob
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const handlerAudioMsg = (voiceLen: number, url: string) => {
+	const handlerAudioMsg = async (voiceLen: number, wavBlob: Blob) => {
+		if (voiceLen < 1) {
+			message.warning("说话时间太短 ！");
+			return;
+		}
+		const { data } = await uploadAudio(wavBlob);
 		const msgObj: SendMessageProps = {
 			code: SendCode.MESSAGE,
 			sendType: Message.MsgType.voiceMsg,
 			fromId: userId,
 			toId: toId,
-			sendContent: url,
+			sendContent: data,
 			length: voiceLen
 		};
 		// 发送前端
@@ -78,19 +79,9 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 		setAudioBtu("发送语音");
 		setSendAudio(false);
 		const wavBlob = recorder.getWAVBlob();
-		let voiceLen = recorder.duration;
-		console.log(recorder.duration);
-		const msgObj: SendMessageProps = {
-			code: SendCode.MESSAGE,
-			sendType: Message.MsgType.voiceMsg,
-			fromId: userId,
-			toId: toId,
-			sendContent: "https://bendan-1305865318.cos.ap-guangzhou.myqcloud.com/1/6ba58aab-c431-4226-a55c-d5199675fbb7.wav",
-			length: voiceLen
-		};
-		addMsgList(msgObj);
-		const { data } = await uploadAudio(wavBlob);
-		handlerAudioMsg(voiceLen, data);
+		// 向下取整
+		let voiceLen = Math.floor(recorder.duration);
+		handlerAudioMsg(voiceLen, wavBlob);
 	};
 	return (
 		<div className={className}>

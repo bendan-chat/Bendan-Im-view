@@ -85,7 +85,6 @@ const ChatRoom = () => {
 			console.log();
 		} else {
 			addSelfMsg(result);
-			console.log("chat->>" + result);
 		}
 	};
 

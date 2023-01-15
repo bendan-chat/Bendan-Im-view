@@ -3,19 +3,11 @@ import { ChatProps } from "@/views/chat/interface/ChatProps";
 import { FileTwoTone } from "@ant-design/icons";
 import { VerticalAlignBottomOutlined } from "@ant-design/icons";
 import { DownloadUrl } from "@/utils/DownloadUtil";
+import { splitUrlToFileName } from "@/utils/util";
 
 import "./ChatFile.less";
 
 export default function ChatFileLeftMsg({ avatar, size, msg }: ChatProps.FileProps) {
-	// 获取文件名
-	const splitUrlToFileName = () => {
-		const urlArgs: string[] | undefined = msg?.split("/");
-		const nameArgs: string[] | undefined = urlArgs![urlArgs!.length - 1].split(".");
-		let name = decodeURI(nameArgs[0]);
-		let suffixName = nameArgs[1];
-		return name + "." + suffixName;
-	};
-
 	/**
 	 * 下载点击
 	 */
@@ -42,7 +34,7 @@ export default function ChatFileLeftMsg({ avatar, size, msg }: ChatProps.FilePro
 							<FileTwoTone style={{ fontSize: "50px" }} />
 						</div>
 						<div className="file-info-name" style={{ float: "right" }}>
-							<p style={{ fontSize: "16px" }}>{splitUrlToFileName()}</p>
+							<p style={{ fontSize: "16px" }}>{splitUrlToFileName(msg!)}</p>
 							<sub style={{ fontSize: "1px" }}>{size + " B"}</sub>
 						</div>
 					</div>

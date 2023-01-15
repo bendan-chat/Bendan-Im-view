@@ -9,10 +9,10 @@ import { List, Avatar, Input, Space, Button, Badge, Skeleton, Divider } from "an
 import InfiniteScroll from "react-infinite-scroll-component";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
-import { ws } from "@/websocket";
 
 import "./index.less";
 import { ChatPage, listChat } from "@/api/modules/chat";
+import { splitUrlToFileName } from "@/utils/util";
 
 interface IProps {
 	onChatList: boolean;
@@ -52,9 +52,6 @@ const FriendList = ({ onChatList }: IProps) => {
 		const { data } = await listChat(params);
 		setData(data);
 	}
-	// useEffect(() => {
-	// 	loadChatList(username);
-	// }, []);
 
 	useEffect(() => {
 		if (onChatList) {
@@ -75,21 +72,27 @@ const FriendList = ({ onChatList }: IProps) => {
 		});
 	};
 
-	// ws 接受消息
-	ws!.onmessage = function (event) {
-		handleMsg(event);
-	};
-
-	// * 处理WebSocket 消息
-	const handleMsg = (event: MessageEvent<any>) => {
-		const result = JSON.parse(event.data as string);
-		// * 处理心跳
-		if (result === 2) {
-			console.log();
+	function HandlerLastMsg(item: Account.ChatUser) {
+		// * 0文本，1图片，2语音，3视频 , 4文件
+		let msg: string;
+		let msgTemp = splitUrlToFileName(item.lastMsg);
+		let msgSplit = msgTemp.split(".");
+		if (msgSplit.length == 1) {
+			msg = "str";
 		} else {
-			console.log("index->>" + result);
+			msg = msgSplit[1];
 		}
-	};
+		switch (msg!) {
+			case "str":
+				return msgTemp;
+			case "wav":
+				return "[语音]";
+			case "mp4":
+				return "[视频]";
+			default:
+				return "[文件]" + msgTemp;
+		}
+	}
 
 	// 新增 好友
 	function addUser() {
@@ -144,7 +147,7 @@ const FriendList = ({ onChatList }: IProps) => {
 									// </Badge>
 								}
 								title={item.nickName}
-								description={item.lastMsg}
+								description={HandlerLastMsg(item)}
 							/>
 						</List.Item>
 					)}
