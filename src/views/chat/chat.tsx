@@ -30,7 +30,11 @@ const ChatRoom = () => {
 	const toId: number = Number.parseInt(id!);
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 
-	// * 把 RecordData[] ->  SendMessageProps[]
+	/**
+	 * 把 RecordData[] ->  SendMessageProps[]
+	 * @param items
+	 * @returns
+	 */
 	const handlerListRecord = (items: Chat.RecordData[]) => {
 		const smps: SendMessageProps[] = [];
 		for (let i = 0; i < items.length; i++) {

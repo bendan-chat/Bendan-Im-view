@@ -6,8 +6,8 @@ const phoneClick = () => {
 };
 export default function PhoneIcon() {
 	return (
-		<div>
+		<>
 			<PhoneTwoTone onClick={phoneClick} className="phone-right-icon" />
-		</div>
+		</>
 	);
 }

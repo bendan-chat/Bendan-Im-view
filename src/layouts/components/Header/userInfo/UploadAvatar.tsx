@@ -7,6 +7,7 @@ import { uploadTencentFile } from "@/api/modules/upload";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { getBase64 } from "@/utils/ImgUtil";
 import { store } from "@/redux";
+import { Message } from "@/api/interface/chat";
 
 interface IProps {
 	avatar: string;
@@ -51,7 +52,7 @@ export default function UploadAvatar({ avatar }: IProps) {
 		const formData = new FormData();
 		formData.append("file", file);
 		formData.append("userId", userId);
-		formData.append("type", "1");
+		formData.append("type", `${Message.MsgType.pictureMsg}`);
 
 		uploadTencentFile(formData)
 			.then(({ data: response }) => {

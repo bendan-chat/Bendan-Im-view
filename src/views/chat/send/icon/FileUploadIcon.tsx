@@ -1,23 +1,44 @@
-import React from "react";
-import { FolderTwoTone } from "@ant-design/icons";
-import { Modal } from "antd";
+import React, { useState } from "react";
+import { FolderTwoTone, UploadOutlined } from "@ant-design/icons";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Button, Modal } from "antd";
+import MyUploadFile from "@/components/UploadFile";
 
-const fileClick = () => {
-	Modal.confirm({
-		title: "下载文件 🧡",
-		centered: true,
-		content: "当前操作会下载文件是否需要？",
-		okText: "确认",
-		cancelText: "取消",
-		onOk: async () => {
-			console.log();
-		}
-	});
-};
 export default function FileUploadIcon() {
+	const [myOpen, setMyOpen] = useState(false);
+	const fileClick = () => {
+		setMyOpen(true);
+	};
+	function handleCancel() {
+		setMyOpen(false);
+	}
 	return (
-		<div>
+		<>
 			<FolderTwoTone onClick={fileClick} className="file-left-icon" />
-		</div>
+			<Modal
+				transitionName=""
+				maskTransitionName=""
+				destroyOnClose={true}
+				okText="上传"
+				cancelButtonProps={{
+					style: {
+						float: "left"
+					}
+				}}
+				open={myOpen}
+				centered={true}
+				width={900}
+				title={
+					<div style={{ display: "flex", justifyContent: "space-between" }}>
+						<UploadOutlined style={{ fontSize: 30, color: "#46a8fa" }} />
+						<span style={{ marginRight: "400px" }}>上传文件</span>
+					</div>
+				}
+				onCancel={handleCancel}
+				// onOk={}
+			>
+				<MyUploadFile />
+			</Modal>
+		</>
 	);
 }
