@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { Input, Button } from "antd";
-import { SmileTwoTone, PhoneTwoTone, FolderTwoTone } from "@ant-design/icons";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
 import ChatAudioButton from "./ChatAudioButton";
 import { Message } from "@/api/interface/chat";
+import EmjoyIcon from "./icon/EmjoyIcon";
+import FileUploadIcon from "./icon/FileUploadIcon";
+import PhoneIcon from "./icon/PhoneIcon";
 const { TextArea } = Input;
 
 interface IProps {
@@ -50,22 +52,13 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			inputRef.current.focus();
 		}
 	}, []);
-	const emjoyClick = () => {
-		console.log("emjoyClick");
-	};
-	const fileClick = () => {
-		console.log("fileClick");
-	};
-	const phoneClick = () => {
-		console.log("phoneClick");
-	};
 
 	return (
 		<div className="footer-body">
 			<div className="multi-div">
-				<SmileTwoTone onClick={emjoyClick} className="emjoy-left-icon" />
-				<FolderTwoTone onClick={fileClick} className="file-left-icon" />
-				<PhoneTwoTone onClick={phoneClick} className="phone-right-icon" />
+				<EmjoyIcon />
+				<FileUploadIcon />
+				<PhoneIcon />
 			</div>
 			<div className="input-edge-div">
 				<TextArea
