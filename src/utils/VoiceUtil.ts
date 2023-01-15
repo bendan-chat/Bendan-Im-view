@@ -22,14 +22,17 @@ export class Voice {
 	// 音频容器
 	public context: AudioContext | undefined;
 
-	// 采样率
-	public sampleRate: number = 44100;
+	// 音频容器
+	public myMediaStream: MediaStream | undefined;
 
 	// 音频流node
 	public mediaStreamAudioSourceNode: MediaStreamAudioSourceNode | undefined;
 
 	// 输入通道数
 	public numberOfInputChannels = 2;
+
+	// 采样率
+	public sampleRate: number = 44100;
 
 	// 输出通道数
 	public numberOfOutputChannels = 2;
@@ -63,26 +66,13 @@ export class Voice {
 		});
 	}
 
-	// 下载wav文件
-	downloadWavFile(blob: Blob) {
-		const url = window.URL.createObjectURL(blob);
-		let a = document.createElement("a");
-		document.body.appendChild(a);
-		// @ts-ignore
-		a.style = "display: none";
-		a.href = url;
-		a.download = "sample.wav";
-		a.click();
-		window.URL.revokeObjectURL(url);
-	}
-
 	// 开始录音
-	async startRecord() {
-		const { msg } = await this.recorder();
+	startRecord(myMediaStream: MediaStream) {
+		this.myMediaStream = myMediaStream;
 		// creates the audio context
 		this.context = new window.AudioContext({ sampleRate: this.sampleRate });
 		// creates the audio SourceNode
-		this.mediaStreamAudioSourceNode = this.context.createMediaStreamSource(msg);
+		this.mediaStreamAudioSourceNode = this.context.createMediaStreamSource(this.myMediaStream!);
 		// 创建一个jsNode
 		this.mediaRecorder = this.createJSNode(this.context);
 
@@ -104,6 +94,7 @@ export class Voice {
 		// 停止录音记录
 		this.mediaRecorder!.disconnect(this.context!.destination);
 		this.mediaStreamAudioSourceNode!.disconnect(this.mediaRecorder!);
+		this.myMediaStream!.getAudioTracks()[0].stop();
 		// 将两个通道的数据压平
 		// Float32Array[] => Float32Array
 		let leftBuffer = this.flattenArray(leftChannel, recordingLength);

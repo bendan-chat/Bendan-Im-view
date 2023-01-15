@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { store } from "@/redux";
 import { Input, Button } from "antd";
 import { SmileTwoTone, PhoneTwoTone, FolderTwoTone } from "@ant-design/icons";
 import { sendMessage, SendMessageProps } from "@/websocket";
 import { SendCode } from "@/websocket/type";
-import { store } from "@/redux";
 import ChatAudioButton from "./ChatAudioButton";
 import { Message } from "@/api/interface/chat";
 const { TextArea } = Input;

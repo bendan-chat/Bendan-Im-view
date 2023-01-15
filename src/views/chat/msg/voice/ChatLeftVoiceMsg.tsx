@@ -58,7 +58,7 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 					style={{
 						wordBreak: "break-all",
 						borderRadius: "10px",
-						marginRight: "50px",
+						marginLeft: "50px",
 						width: "auto",
 						color: "#f8f8f8",
 						background: "rgb(78 78 78)"
