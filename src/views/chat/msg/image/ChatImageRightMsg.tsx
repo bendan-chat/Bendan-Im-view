@@ -9,7 +9,7 @@ export default function ChatImageRightMsg({ msg, avatar }: ChatProps.CommonProps
 			<div className="image-ri">
 				<div className="image-ri-box">
 					<div className="image-ri-message-box">
-						<Image width={200} src={msg} />
+						<Image height={"150px"} width={"150px"} src={msg} />
 					</div>
 					<Avatar shape="square" src={avatar} />
 				</div>

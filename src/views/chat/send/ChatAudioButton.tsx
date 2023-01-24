@@ -18,6 +18,7 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 	const { userId } = store.getState().global.userInfo;
 	const [audioBtu, setAudioBtu] = useState<string>("发送语音");
 	const [sendAudio, setSendAudio] = useState<boolean>(false);
+	const [uploadAudioing, setUploadAudioing] = useState<boolean>(false);
 	useEffect(() => {
 		let audios = sendAudio;
 		setSendAudio(audios);
@@ -42,24 +43,30 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 	 * @param voiceLen
 	 * @param wavBlob
 	 */
-	const handlerAudioMsg = async (voiceLen: number, wavBlob: Blob) => {
+	const handlerAudioMsg = (voiceLen: number, wavBlob: Blob) => {
 		if (voiceLen < 1) {
 			message.warning("说话时间太短 ！");
 			return;
 		}
-		const { data } = await uploadAudio(wavBlob);
-		const msgObj: SendMessageProps = {
-			code: SendCode.MESSAGE,
-			sendType: Message.MsgType.voiceMsg,
-			fromId: userId,
-			toId: toId,
-			sendContent: data,
-			length: voiceLen
-		};
-		// 发送前端
-		addMsgList(msgObj);
-		// 发送后台
-		sendMessage(msgObj);
+		setUploadAudioing(true);
+		uploadAudio(wavBlob)
+			.then(res => {
+				const msgObj: SendMessageProps = {
+					code: SendCode.MESSAGE,
+					sendType: Message.MsgType.voiceMsg,
+					fromId: userId,
+					toId: toId,
+					sendContent: res.data,
+					length: voiceLen
+				};
+				// 发送前端
+				addMsgList(msgObj);
+				// 发送后台
+				sendMessage(msgObj);
+			})
+			.finally(() => {
+				setUploadAudioing(false);
+			});
 	};
 
 	/**
@@ -85,7 +92,14 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 	};
 	return (
 		<div className={className}>
-			<Button danger={sendAudio} onMouseUp={onMouseUp} onMouseDown={onMouseDown} type="primary" className="right-bottom-btn-Stop">
+			<Button
+				loading={uploadAudioing}
+				danger={sendAudio}
+				onMouseUp={onMouseUp}
+				onMouseDown={onMouseDown}
+				type="primary"
+				className="right-bottom-btn-Stop"
+			>
 				{audioBtu}
 			</Button>
 		</div>

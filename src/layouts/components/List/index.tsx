@@ -61,36 +61,29 @@ const FriendList = ({ onChatList }: IProps) => {
 		}
 	}, [onChatList]);
 
-	// 懒加载好友
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const loadMoreData = () => {
-		const params: FriendParams = {
-			username
-		};
-		getFriends(params).then(res => {
-			setData([...data, ...res.data]);
-		});
-	};
-
 	function HandlerLastMsg(item: Account.ChatUser) {
 		// * 0文本，1图片，2语音，3视频 , 4文件
-		let msg: string;
-		let msgTemp = splitUrlToFileName(item.lastMsg);
-		let msgSplit = msgTemp.split(".");
-		if (msgSplit.length == 1) {
-			msg = "str";
+		if (onChatList) {
+			return "";
 		} else {
-			msg = msgSplit[1];
-		}
-		switch (msg!) {
-			case "str":
-				return msgTemp;
-			case "wav":
-				return "[语音]";
-			case "mp4":
-				return "[视频]";
-			default:
-				return "[文件]" + msgTemp;
+			let msg: string;
+			let msgTemp = splitUrlToFileName(item.lastMsg);
+			let msgSplit = msgTemp.split(".");
+			if (msgSplit.length == 1) {
+				msg = "str";
+			} else {
+				msg = msgSplit[1];
+			}
+			switch (msg!) {
+				case "str":
+					return msgTemp;
+				case "wav":
+					return "[语音]";
+				case "mp4":
+					return "[视频]";
+				default:
+					return "[文件]" + msgTemp;
+			}
 		}
 	}
 

@@ -112,7 +112,7 @@ const ChatRoom = () => {
 				case 3:
 					return <ChatVideoRightMsg avatar={avatar} key={index} msg={item.sendContent!} />;
 				case 4:
-					return <ChatFileRightMsg avatar={toAvatar} key={index} msg={item.sendContent!} size={item.length!} />;
+					return <ChatFileRightMsg avatar={avatar} key={index} msg={item.sendContent!} size={item.length!} />;
 				default:
 					new Error("出现未知消息请检查数据库");
 					break;

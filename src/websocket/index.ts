@@ -15,9 +15,6 @@ export interface SendMessageProps {
 let ws: WebSocket | null;
 let socketOpen: boolean = false;
 
-// * 关闭连接定时器
-// let closeTimer: ReturnType<typeof setTimeout> | undefined;
-
 // ws 初始化
 const createWsClient = () => {
 	ws = new WebSocket(import.meta.env.VITE_WEB_SOCKET_URL);

@@ -10,7 +10,7 @@ export default function ChatImageLeftMsg({ msg, avatar }: ChatProps.CommonProps)
 				<div className="image-le-box">
 					<Avatar shape="square" src={avatar} />
 					<div className="image-le-message-box">
-						<Image width={200} src={msg} />
+						<Image height={"150px"} width={"150px"} src={msg} />
 					</div>
 				</div>
 			</div>

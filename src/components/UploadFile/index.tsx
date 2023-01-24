@@ -1,42 +1,21 @@
-import React, { useState } from "react";
-
-import { UploadRequestOption } from "rc-upload/lib/interface";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload, UploadFile, UploadProps } from "antd";
-import { uploadTencentFile } from "@/api/modules/upload";
-import { store } from "@/redux";
 
 const { Dragger } = Upload;
 
-export default function MyUploadFile() {
-	const [fileList, setFileList] = useState<UploadFile[]>([]);
-	const { userId } = store.getState().global.userInfo;
+interface IProps {
+	fileList: UploadFile[];
+	setFileList: (file: UploadFile[]) => void;
+}
 
+export default function MyUploadFile({ fileList, setFileList }: IProps) {
 	const props: UploadProps = {
 		name: "file",
 		multiple: true,
-		customRequest(options: UploadRequestOption<any>) {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const { action, data, file, filename, headers, onError, onProgress, onSuccess, withCredentials } = options;
-
-			const formData = new FormData();
-			formData.append("file", file);
-			formData.append("userId", userId);
-			formData.append("type", "");
-
-			uploadTencentFile(formData)
-				.then(({ data: response }) => {
-					setTimeout(() => {
-						//@ts-ignore
-						onSuccess(response, file);
-					});
-				})
-				.catch(onError);
-		},
 		onChange(info) {
 			const { status } = info.file;
 			if (status !== "uploading") {
-				console.log(info.file, info.fileList);
+				console.log("uploading" + info.file, info.fileList);
 			}
 			if (status === "done") {
 				message.success(`${info.file.name} file uploaded successfully.`);

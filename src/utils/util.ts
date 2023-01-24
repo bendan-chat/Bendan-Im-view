@@ -1,5 +1,25 @@
 import { RouteObject } from "@/routers/interface";
 import { Menus } from "@/api/interface/menu";
+import { Message } from "@/api/interface/chat";
+
+/**
+ * 匹配文件类型 返回 Message.MsgType
+ * @param fileName
+ */
+export function matchFileSuffix(fileName: string) {
+	const fileNameSuffix = fileName.split(".")[1];
+	if (fileNameSuffix.match("jpg") || fileNameSuffix.match("png") || fileNameSuffix.match("gif")) {
+		return Message.MsgType.pictureMsg;
+	} else if (fileNameSuffix.match("mp4")) {
+		return Message.MsgType.videoMsg;
+	}
+	// else if (fileNameSuffix.match("mp3") || fileNameSuffix.match("wav") || fileNameSuffix.match("pcm")) {
+	// 	return Message.MsgType.voiceMsg;
+	// }
+	else {
+		return Message.MsgType.fileMsg;
+	}
+}
 
 /**
  * 分割上传路径 取后缀
@@ -9,6 +29,7 @@ import { Menus } from "@/api/interface/menu";
  */
 export function splitUrlToFileName(url: string) {
 	const urlArgs: string[] | undefined = url?.split("/");
+	// let arg = urlArgs![0];
 	if (urlArgs![0].match("http") == null) {
 		return url;
 	} else {
