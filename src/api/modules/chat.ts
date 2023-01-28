@@ -29,6 +29,7 @@ export interface ChatPage extends ReqPage {
 	 */
 	username: string;
 }
+
 export const listChat = (params: ChatPage) => {
 	return http.get<Account.ChatUser[]>(AdminServer.Chat + `/getChatList`, params, { headers: { noLoading: true } });
 };

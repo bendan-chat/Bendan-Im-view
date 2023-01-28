@@ -2,7 +2,7 @@ import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { CSSProperties, useEffect, useState } from "react";
 import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
-import FriendList from "./components/List";
+import FriendList from "./components/List/FriendList";
 import { MenuProps, Menu } from "antd";
 
 import Sider from "antd/lib/layout/Sider";
@@ -15,12 +15,13 @@ import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
 // import Fullscreen from "./components/Header/Fullscreen";
 
 import "./index.less";
+import ChatList from "./components/List/ChatList";
 
 function LayoutIndex() {
 	type MenuItem = Required<MenuProps>["items"][number];
 	const [iconStyle, setIconStyle] = useState<boolean>(false);
 	const [menuItemStyle, setMenuItemStyle] = useState<boolean[]>([true, false, false]);
-	const [onChatList, setOnChatList] = useState<boolean>(false);
+	const [listMatch, setListMatch] = useState<boolean>(false);
 
 	const { id } = useParams();
 	const [chatNum, setChatNum] = useState<string>("");
@@ -62,7 +63,7 @@ function LayoutIndex() {
 					navigate("/chat" + "/" + chatNum);
 				}
 				selectedStyle(0);
-				setOnChatList(false);
+				setListMatch(false);
 			}
 		},
 		{
@@ -71,9 +72,9 @@ function LayoutIndex() {
 			icon: <TeamOutlined style={menuItemStyle[1] ? styleColor : style} />,
 			onClick: () => {
 				setChatNum(id!);
-				navigate("/group");
+				navigate("/friends");
 				selectedStyle(1);
-				setOnChatList(true);
+				setListMatch(true);
 			}
 		}
 		// ,
@@ -106,7 +107,7 @@ function LayoutIndex() {
 				<Menu selectable={false} theme="dark" mode="inline" items={items} style={{ minWidth: 20, flex: "auto" }}></Menu>
 			</Sider>
 			<Sider trigger={null} width={220} theme="light">
-				<FriendList onChatList={onChatList} />
+				{listMatch ? <FriendList /> : <ChatList />}
 			</Sider>
 			<Layout>
 				<Content>

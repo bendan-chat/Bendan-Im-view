@@ -6,7 +6,7 @@ export namespace AdminServer {
 	export const Menu = "/admin/sysMenu";
 	export const Chat = "/admin/chat";
 	export const Upload = "/admin/oss";
-	export const Stt = "/admin/stt";
+	export const Asr = "/admin/asr";
 }
 
 // chat

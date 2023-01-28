@@ -19,8 +19,8 @@ const AuthRouter: Array<RouteObject> = [
 				}
 			},
 			{
-				path: "/group",
-				element: lazyLoad(React.lazy(() => import("@/views/group"))),
+				path: "/friends",
+				element: lazyLoad(React.lazy(() => import("@/views/friends"))),
 				// element: ,
 				meta: {
 					requiresAuth: true,

@@ -12,6 +12,16 @@ export const uploadTencentFile = async (upload: FormData) => {
 	});
 };
 
-export const sttFile = async (upload: FormData) => {
-	return http.post(`${AdminServer.Stt}/asrFile`, upload, { headers: { "Content-Type": "multipart/form-data" } });
+/**
+ * 翻译
+ * @param url
+ */
+interface AsrParam {
+	url: string;
+}
+export const asrText = async (url: string) => {
+	const param: AsrParam = {
+		url: url
+	};
+	return http.get<string>(`${AdminServer.Asr}/turnText`, param, { headers: { noLoading: true } });
 };
