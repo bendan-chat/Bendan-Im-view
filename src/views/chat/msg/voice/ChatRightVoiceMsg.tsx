@@ -20,12 +20,11 @@ export default function ChatRightVoiceMsg({ msg, avatar, len }: ChatProps.VoiceP
 	 * 播放点击事件
 	 */
 	const playClick = () => {
-		setIconHidden(false);
 		audio.addEventListener("ended", () => {
-			console.log("播放结束");
-		});
-		audio.play().finally(() => {
 			setIconHidden(true);
+		});
+		audio.play().then(() => {
+			setIconHidden(false);
 		});
 	};
 

@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { store } from "@/redux";
 import { Account } from "@/api/interface/user";
 import { List, Avatar, Input, Space, Button, Dropdown, MenuProps } from "antd";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
-import { AddFriend } from "./AddFriend";
+import { AddFriend } from "./components/AddFriend";
 
-import "./index.less";
+import "./FriendList.less";
+import FriendItem from "./components/FriendItem";
 
 const FriendList = () => {
 	interface ModalProps {
@@ -16,6 +19,7 @@ const FriendList = () => {
 	const [data, setData] = useState<Account.ChatUser[]>([]);
 	const { username } = store.getState().global.userInfo;
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
+	const navigate = useNavigate();
 	useEffect(() => {
 		loadFriends(username);
 	}, []);
@@ -56,6 +60,7 @@ const FriendList = () => {
 	 * 新好友点击事情
 	 */
 	function newFriends() {
+		navigate("/newFriends");
 		console.log("newFriends");
 	}
 
@@ -88,13 +93,10 @@ const FriendList = () => {
 			<br />
 			<div hidden={searchHidden} className="friends-chat">
 				<div style={{ paddingLeft: "5px" }}>新的朋友</div>
-				<List.Item style={{ borderBottom: "1px solid #dcdada" }} onClick={newFriends}>
-					<List.Item.Meta
-						className="index"
-						avatar={<Avatar style={{ background: "#fa9d3b" }} src={<UserAddOutlined />} size="large" />}
-						title={"新的朋友"}
-					/>
-				</List.Item>
+				<div className="newFriends" onClick={newFriends}>
+					<Avatar style={{ background: "#fa9d3b", marginTop: "15px" }} src={<UserAddOutlined />} size="large" />
+					<span style={{ marginTop: "24px", marginLeft: "11px" }}>新的朋友</span>
+				</div>
 				<br />
 				<div style={{ paddingLeft: "5px" }}>好友</div>
 				<Dropdown menu={{ items }} trigger={["contextMenu"]}>
@@ -105,10 +107,7 @@ const FriendList = () => {
 							<List.Item
 								className={""}
 								onClick={() => {
-									// 	if (!onChatList) {
-									// 		navigate("/chat" + "/" + item.id);
-									// 		store.dispatch(setToAvatar(item.avatar as string));
-									// 	}
+									navigate("/friend" + "/" + item.id);
 								}}
 							>
 								<List.Item.Meta className="index" avatar={<Avatar src={item.avatar} size="large" />} title={item.nickName} />

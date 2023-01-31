@@ -27,6 +27,26 @@ const AuthRouter: Array<RouteObject> = [
 					title: "群组",
 					key: "group"
 				}
+			},
+			{
+				path: "/newFriends",
+				element: lazyLoad(React.lazy(() => import("@/views/newFriends"))),
+				// element: ,
+				meta: {
+					requiresAuth: true,
+					title: "新的朋友",
+					key: "newFriends"
+				}
+			},
+			{
+				path: "/friend/:id",
+				element: lazyLoad(React.lazy(() => import("@/views/friend"))),
+				// element: ,
+				meta: {
+					requiresAuth: true,
+					title: "朋友",
+					key: "friend"
+				}
 			}
 		]
 	}

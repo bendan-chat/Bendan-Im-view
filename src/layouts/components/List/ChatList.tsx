@@ -9,7 +9,7 @@ import { List, Avatar, Input, Space, Button, Badge, Skeleton, Divider, Dropdown 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PlusSquareTwoTone } from "@ant-design/icons";
 
-import "./index.less";
+import "./ChatList.less";
 import { ChatPage, listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
 
