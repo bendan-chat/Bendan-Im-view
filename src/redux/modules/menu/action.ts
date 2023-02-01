@@ -14,3 +14,9 @@ export const setMenuList = (menuList: Menu.MenuOptions[]) => ({
 	type: types.SET_MENU_LIST,
 	menuList
 });
+
+// * setMenuKey
+export const setMenuIconKey = (menuIconKey: string) => ({
+	type: types.SET_MENU_ICON_KEY,
+	menuIconKey
+});

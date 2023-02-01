@@ -5,7 +5,8 @@ import * as types from "@/redux/mutation-types";
 
 const menuState: MenuState = {
 	isCollapse: false,
-	menuList: []
+	menuList: [],
+	menuIconKey: "11"
 };
 
 // menu reducer
@@ -17,6 +18,9 @@ const menu = (state: MenuState = menuState, action: AnyAction) =>
 				break;
 			case types.SET_MENU_LIST:
 				draftState.menuList = action.menuList;
+				break;
+			case types.SET_MENU_ICON_KEY:
+				draftState.menuIconKey = action.menuIconKey;
 				break;
 			default:
 				return draftState;

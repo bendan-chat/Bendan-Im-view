@@ -28,6 +28,28 @@ export namespace Login {
 }
 
 export namespace Account {
+	export interface FriendUser {
+		/**
+		 * 昵称
+		 */
+		id: number;
+		/**
+		 * username
+		 */
+		username: string;
+		/**
+		 * 昵称
+		 */
+		nickName?: String;
+		/**
+		 * 头像
+		 */
+		avatar?: String;
+		/**
+		 * 性别   (-1 未知 0 女性  1 男性)
+		 */
+		gender: -1 | 0 | 1;
+	}
 	export interface ChatUser {
 		/**
 		 * 昵称

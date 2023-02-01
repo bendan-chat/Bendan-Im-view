@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
 import FriendList from "./components/List/FriendList";
@@ -9,24 +9,21 @@ import Sider from "antd/lib/layout/Sider";
 import { Content } from "antd/lib/layout/layout";
 import UserStatus from "./components/Header/UserStatus";
 import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
-// import Language from "./components/Header/Language";
-// import AssemblySize from "./components/Header/AssemblySize";
-// import Theme from "./components/Header/Theme";
-// import Fullscreen from "./components/Header/Fullscreen";
-
-import "./index.less";
+import { setMenuIconKey } from "@/redux/modules/menu/action";
 import ChatList from "./components/List/ChatList";
 
-function LayoutIndex() {
-	type MenuItem = Required<MenuProps>["items"][number];
-	const [iconStyle, setIconStyle] = useState<boolean>(false);
-	const [menuItemStyle, setMenuItemStyle] = useState<boolean[]>([true, false, false]);
-	const [listMatch, setListMatch] = useState<boolean>(false);
+import "./index.less";
+import { store } from "@/redux";
 
-	const { id } = useParams();
-	const [chatNum, setChatNum] = useState<string>("");
+const LayoutIndex = () => {
+	type MenuItem = Required<MenuProps>["items"][number];
 
 	const navigate = useNavigate();
+	const menuIconKey = store.getState().menu.menuIconKey;
+	const { id } = useParams();
+	const [chatNum, setChatNum] = useState<string>("");
+	const [listMatch, setListMatch] = useState<boolean>(false);
+
 	// * icon 样式
 	const styleColor: CSSProperties | undefined = {
 		fontSize: "18px",
@@ -36,68 +33,33 @@ function LayoutIndex() {
 		fontSize: "18px",
 		color: ""
 	};
-	const selectedStyle = (key: number) => {
-		let menuItemStyleTemp = menuItemStyle;
-		for (let i = 0; i < menuItemStyleTemp.length; i++) {
-			if (i == key) {
-				menuItemStyleTemp[i] = true;
-				continue;
-			}
-			menuItemStyleTemp[i] = false;
-		}
-		setMenuItemStyle(menuItemStyleTemp);
-	};
 
-	useEffect(() => {
-		setIconStyle(iconStyle);
-	}, [iconStyle]);
 	const items: MenuItem[] = [
 		{
 			label: "",
 			key: "11",
-			icon: <MessageOutlined style={menuItemStyle[0] ? styleColor : style} />,
+			icon: <MessageOutlined style={menuIconKey == "11" ? styleColor : style} />,
 			onClick: () => {
 				if (chatNum == undefined || chatNum == "") {
 					navigate("/home/index");
 				} else {
 					navigate("/chat" + "/" + chatNum);
 				}
-				selectedStyle(0);
 				setListMatch(false);
+				store.dispatch(setMenuIconKey("11"));
 			}
 		},
 		{
 			label: "",
 			key: "12",
-			icon: <TeamOutlined style={menuItemStyle[1] ? styleColor : style} />,
+			icon: <TeamOutlined style={menuIconKey == "12" ? styleColor : style} />,
 			onClick: () => {
 				setChatNum(id!);
 				navigate("/friends");
-				selectedStyle(1);
 				setListMatch(true);
+				store.dispatch(setMenuIconKey("12"));
 			}
 		}
-		// ,
-		// {
-		// 	label: "",
-		// 	key: "13",
-		// 	icon: <Language />
-		// },
-		// {
-		// 	label: "",
-		// 	key: "14",
-		// 	icon: <AssemblySize />
-		// },
-		// {
-		// 	label: "",
-		// 	key: "15",
-		// 	icon: <Theme />
-		// },
-		// {
-		// 	label: "",
-		// 	key: "16",
-		// 	icon: <Fullscreen />
-		// }
 	];
 
 	return (
@@ -117,6 +79,6 @@ function LayoutIndex() {
 			</Layout>
 		</section>
 	);
-}
+};
 
 export default LayoutIndex;

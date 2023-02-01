@@ -8,7 +8,6 @@ import { store } from "@/redux";
 import { RcFile } from "antd/es/upload";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { SendCode } from "@/websocket/type";
-import { Message } from "@/api/interface/chat";
 import { matchFileSuffix } from "@/utils/util";
 
 interface IProps {

@@ -29,6 +29,7 @@ export interface GlobalState {
 export interface MenuState {
 	isCollapse: boolean;
 	menuList: Menu.MenuOptions[];
+	menuIconKey: string;
 }
 
 /* AuthState */

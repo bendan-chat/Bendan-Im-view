@@ -3,10 +3,7 @@ import { store } from "@/redux";
 import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
 import { setToAvatar } from "@/redux/modules//chat/action";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { List, Avatar, Input, Space, Button, Badge, Skeleton, Divider, Dropdown } from "antd";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import InfiniteScroll from "react-infinite-scroll-component";
+import { List, Avatar, Input, Space } from "antd";
 import { PlusSquareTwoTone } from "@ant-design/icons";
 
 import "./ChatList.less";
@@ -95,21 +92,9 @@ const ChatList = () => {
 				<Space>
 					<Input size="small" placeholder="搜索" allowClear onClick={onSearch} onBlur={onBlur} />
 					<PlusSquareTwoTone onClick={ClickGroupChat} style={{ fontSize: "30px" }} />
-
-					{/* <Button onClick={addUser} type="primary" shape="circle">
-						<PlusSquareTwoTone style={{ fontSize: "100px" }} />
-					</Button> */}
 				</Space>
 			</div>
-			<div hidden={searchHidden} className="friends-chat">
-				{/* <InfiniteScroll
-					dataLength={data.length}
-					next={loadMoreData}
-					hasMore={data.length < 50}
-					loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-					endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-					scrollableTarget="scrollableDiv"
-				> */}
+			<div hidden={searchHidden} className="chatList-cha">
 				<List
 					itemLayout="horizontal"
 					dataSource={data}
@@ -124,18 +109,13 @@ const ChatList = () => {
 						>
 							<List.Item.Meta
 								className="index"
-								avatar={
-									// <Badge count={1}>
-									<Avatar src={item.avatar} size="large" />
-									// </Badge>
-								}
+								avatar={<Avatar src={item.avatar} size="large" />}
 								title={item.nickName}
 								description={HandlerLastMsg(item)}
 							/>
 						</List.Item>
 					)}
 				/>
-				{/* </InfiniteScroll> */}
 			</div>
 		</div>
 	);

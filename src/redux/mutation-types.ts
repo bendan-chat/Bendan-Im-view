@@ -2,6 +2,8 @@
 export const UPDATE_COLLAPSE = "UPDATE_ASIDE_COLLAPSE";
 // 设置 menuList
 export const SET_MENU_LIST = "SET_MENU_LIST";
+// 设置 menu key
+export const SET_MENU_ICON_KEY = "SET_MENU_ICON_KEY";
 // 设置 tabsList
 export const SET_TABS_LIST = "SET_TABS_LIST";
 // 设置 tabsActive

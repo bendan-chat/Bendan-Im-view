@@ -61,3 +61,10 @@ export interface FriendParams {
 export const getFriends = (params: FriendParams) => {
 	return http.get<Account.ChatUser[]>(AdminServer.Chat + `/getFriends`, params, { headers: { noLoading: true } });
 };
+
+export const getFriend = (userId: number) => {
+	const params = {
+		userId
+	};
+	return http.get<Account.FriendUser>(AdminServer.Chat + `/getFriend`, params, { headers: { noLoading: true } });
+};
