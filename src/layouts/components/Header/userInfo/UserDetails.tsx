@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useImperativeHandle, Ref, useEffect } from "react";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions } from "antd";
 import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
-import { getUserInfo, getUserInfoParams } from "@/api/modules/user";
 import "./userDetails.less";
+import { store } from "@/redux";
+import { getUserInfo } from "@/api/modules/user";
 
 interface Props {
 	innerRef: Ref<{ showModal: (params: any) => void }>;
@@ -15,6 +15,7 @@ const InfoModal = (props: Props) => {
 	const [data, setData] = useState<Account.UserInfo>();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
+	const { username } = store.getState().global.userInfo;
 	const [form] = Form.useForm();
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
@@ -42,10 +43,7 @@ const InfoModal = (props: Props) => {
 
 	// 加载用户详情
 	const loadUserInfo = async () => {
-		const params: getUserInfoParams = {
-			username: "admin"
-		};
-		const { data } = await getUserInfo(params);
+		const { data } = await getUserInfo(username);
 		setData(data);
 		form.setFieldsValue(data);
 	};

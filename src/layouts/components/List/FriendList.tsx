@@ -17,9 +17,14 @@ const FriendList = () => {
 	const addFriendRef = useRef<ModalProps>(null);
 
 	const [data, setData] = useState<Account.ChatUser[]>([]);
+	const [search, setSearch] = useState<string>("");
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
 	const navigate = useNavigate();
+	// * 更新输入框的内容
+	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setSearch(e.target.value);
+	};
 	useEffect(() => {
 		loadFriends(username);
 	}, []);
@@ -48,6 +53,7 @@ const FriendList = () => {
 	 * 搜索 好友
 	 */
 	function onSearch() {
+		console.log(search);
 		setSearchHidden(true);
 	}
 	/**
@@ -68,7 +74,15 @@ const FriendList = () => {
 		<div>
 			<div className="search-friend-class">
 				<Space>
-					<Input size="small" placeholder="搜索" allowClear onClick={onSearch} onBlur={onBlur} />
+					<Input
+						onChange={onChange}
+						value={search}
+						size="small"
+						placeholder="搜索"
+						allowClear
+						onClick={onSearch}
+						onBlur={onBlur}
+					/>
 					<Button onClick={addUser} type="primary" shape="circle">
 						<UserAddOutlined />
 					</Button>

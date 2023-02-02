@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
 import PasswordModal from "./userInfo/PasswordModal";
 import InfoModal from "./userInfo/UserDetails";
-import { getUserInfo, getUserInfoParams, logout } from "@/api/modules/user";
 
 import "./UserStatus.less";
+import { getUserInfo, logout } from "@/api/modules/user";
 
 function UserStatus(props: any) {
 	const { avatar, username } = store.getState().global.userInfo;
@@ -43,10 +43,7 @@ function UserStatus(props: any) {
 	};
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const loadUserInfo = async () => {
-		const params: getUserInfoParams = {
-			username: username
-		};
-		const { data } = await getUserInfo(params);
+		const { data } = await getUserInfo(username);
 		return data;
 	};
 

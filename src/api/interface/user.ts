@@ -89,9 +89,9 @@ export namespace Account {
 		nickName: String;
 
 		/**
-		 * 真实姓名
+		 * 个人描述
 		 */
-		realName: String;
+		selfDescription: String;
 
 		/**
 		 * 手机号

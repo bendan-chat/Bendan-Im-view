@@ -1,49 +1,54 @@
-import React from "react";
-import { Avatar, Button, List } from "antd";
+import React, { useEffect, useState } from "react";
+import { store } from "@/redux";
+// import { Avatar, Button, List } from "antd";
 import "./index.less";
+import { getNewFriends } from "@/api/modules/chat";
+import { Chat } from "@/api/interface/chat";
+import NewFriendList from "./components/NewFriendList";
 
 export default function index() {
-	const data = [
-		{
-			title: "Ant Design Title 1"
-		},
-		{
-			title: "Ant Design Title 2"
-		},
-		{
-			title: "Ant Design Title 3"
-		},
-		{
-			title: "Ant Design Title 4"
-		}
-	];
+	const [data, setData] = useState<Chat.NewFriendList[]>();
+	const { userId } = store.getState().global.userInfo;
+	useEffect(() => {
+		getNewFriends(userId).then(res => {
+			if (res.success) {
+				setData(res.data);
+			}
+		});
+	}, []);
 
-	function addFriend() {
-		console.log("addFriend");
-	}
+	/**
+	 * 添加按钮点击事情
+	 */
+	// function addFriend() {
+	// 	console.log("addFriend");
+	// }
 	return (
 		<div className="new-friend-parent">
 			<div className="new-friend-title">新的朋友</div>
-			<List
+			{data?.map((item, index) => {
+				return <NewFriendList key={index} newFriend={item} />;
+			})}
+			{/* <List
 				className="new-friend-list"
 				itemLayout="horizontal"
 				dataSource={data}
 				renderItem={item => (
 					<List.Item
 						actions={[
-							<Button style={{ background: "#1aad19" }} type="primary" key={"addFriend"} onClick={addFriend}>
-								添加
-							</Button>
+							item.status == 2 ? (
+								<Button style={{ background: "#1aad19" }} type="primary" key={"addFriend"} onClick={addFriend}>
+									添加
+								</Button>
+							) : (
+								<div className="btn-added">已添加</div>
+							)
 						]}
 					>
-						<List.Item.Meta
-							avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-							title={<a href="https://ant.design">{item.title}</a>}
-							description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-						/>
+						<List.Item.Meta avatar={<Avatar src={item.avatar} />} title={item.nickname} description={item.description} />
 					</List.Item>
 				)}
-			/>
+			/> */}
 		</div>
 	);
 }

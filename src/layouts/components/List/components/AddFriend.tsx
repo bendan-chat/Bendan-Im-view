@@ -1,7 +1,7 @@
 import { Ref, useImperativeHandle, useState } from "react";
-import { Avatar, Input, Modal, Card, Empty } from "antd";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { SettingOutlined, EditOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { Avatar, Input, Modal, Card, Empty, Button } from "antd";
+import { getUserInfo } from "@/api/modules/user";
+import { Account } from "@/api/interface/user";
 
 const { Search } = Input;
 const { Meta } = Card;
@@ -11,7 +11,13 @@ interface Props {
 export const AddFriend = (props: Props) => {
 	const [isModalOpenAddUser, setIsModalOpenAddUser] = useState<boolean>(false);
 	const [selectFriend, setSelectFriend] = useState<boolean>(false);
+	const [search, setSearch] = useState<string>("");
+	const [data, setData] = useState<Account.UserInfo>();
 
+	// * 更新输入框的内容
+	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setSearch(e.target.value);
+	};
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
 	}));
@@ -21,18 +27,32 @@ export const AddFriend = (props: Props) => {
 		setIsModalOpenAddUser(true);
 	};
 
-	const handleOk = () => {
-		setIsModalOpenAddUser(false);
-	};
-
 	const handleCancel = () => {
 		setIsModalOpenAddUser(false);
 	};
 
+	/**
+	 * 搜索事件
+	 */
 	const onSearch = () => {
-		console.log("onSearch");
-		setSelectFriend(true);
+		getUserInfo(search).then(res => {
+			if (res.success) {
+				if (res.data == null) {
+					setSelectFriend(false);
+				} else {
+					setData(res.data);
+					setSelectFriend(true);
+				}
+			}
+		});
 	};
+
+	/**
+	 * 按钮点击事情
+	 */
+	function btnAddClick() {
+		setIsModalOpenAddUser(false);
+	}
 	return (
 		<>
 			<Modal
@@ -41,15 +61,18 @@ export const AddFriend = (props: Props) => {
 						float: "left"
 					}
 				}}
-				onOk={handleOk}
 				onCancel={handleCancel}
 				open={isModalOpenAddUser}
+				destroyOnClose
+				footer={null}
 			>
 				<br />
 				<div style={{ display: "flex", flexDirection: "column" }}>
 					<Search
+						onChange={onChange}
+						value={search}
 						style={{ alignItems: "center" }}
-						placeholder="input search text"
+						placeholder="输入账户号......"
 						allowClear
 						enterButton="Search"
 						size="large"
@@ -57,15 +80,22 @@ export const AddFriend = (props: Props) => {
 					/>
 					<br />
 					{selectFriend ? (
-						<Card style={{ width: 473 }} actions={[<SettingOutlined key="add" />]}>
+						<Card
+							style={{ width: 473 }}
+							actions={[
+								<Button onClick={btnAddClick} type="primary" key={"btn-add"}>
+									添加好友
+								</Button>
+							]}
+						>
 							<Meta
-								avatar={<Avatar src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-								title="名字"
-								description="个性签名"
+								avatar={<Avatar size={80} src={data?.avatar} />}
+								title={data?.nickName as string}
+								description={data?.selfDescription}
 							/>
 						</Card>
 					) : (
-						<Empty />
+						<Empty description={"无法找到该用户，请检查你填写的帐号是否正确。"} />
 					)}
 				</div>
 			</Modal>
