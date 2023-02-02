@@ -20,3 +20,9 @@ export const setMenuIconKey = (menuIconKey: string) => ({
 	type: types.SET_MENU_ICON_KEY,
 	menuIconKey
 });
+
+// * setMenuKey
+export const setListMatch = (listMatch: boolean) => ({
+	type: types.SET_LIST_MATCH,
+	listMatch
+});

@@ -30,6 +30,7 @@ export interface MenuState {
 	isCollapse: boolean;
 	menuList: Menu.MenuOptions[];
 	menuIconKey: string;
+	listMatch: boolean;
 }
 
 /* AuthState */

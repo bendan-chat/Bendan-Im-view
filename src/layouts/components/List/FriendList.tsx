@@ -57,7 +57,7 @@ const FriendList = () => {
 		setSearchHidden(false);
 	}
 	/**
-	 * 新好友点击事情
+	 * 新的好友点击事情
 	 */
 	function newFriends() {
 		setSelectId(-1);

@@ -1,5 +1,6 @@
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { CSSProperties, useState } from "react";
+import { store } from "@/redux";
 import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
 import FriendList from "./components/List/FriendList";
@@ -9,20 +10,19 @@ import Sider from "antd/lib/layout/Sider";
 import { Content } from "antd/lib/layout/layout";
 import UserStatus from "./components/Header/UserStatus";
 import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
-import { setMenuIconKey } from "@/redux/modules/menu/action";
+import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 import ChatList from "./components/List/ChatList";
 
 import "./index.less";
-import { store } from "@/redux";
 
 const LayoutIndex = () => {
 	type MenuItem = Required<MenuProps>["items"][number];
 
 	const navigate = useNavigate();
 	const menuIconKey = store.getState().menu.menuIconKey;
+	const listMatch = store.getState().menu.listMatch;
 	const { id } = useParams();
 	const [chatNum, setChatNum] = useState<string>("");
-	const [listMatch, setListMatch] = useState<boolean>(false);
 
 	// * icon 样式
 	const styleColor: CSSProperties | undefined = {
@@ -45,7 +45,7 @@ const LayoutIndex = () => {
 				} else {
 					navigate("/chat" + "/" + chatNum);
 				}
-				setListMatch(false);
+				store.dispatch(setListMatch(false));
 				store.dispatch(setMenuIconKey("11"));
 			}
 		},
@@ -56,7 +56,7 @@ const LayoutIndex = () => {
 			onClick: () => {
 				setChatNum(id!);
 				navigate("/friends");
-				setListMatch(true);
+				store.dispatch(setListMatch(true));
 				store.dispatch(setMenuIconKey("12"));
 			}
 		}

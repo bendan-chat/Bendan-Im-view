@@ -1,18 +1,25 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Account } from "@/api/interface/user";
 import { getFriend } from "@/api/modules/user";
+import { useNavigate } from "react-router-dom";
 import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { ManOutlined, UserOutlined, WomanOutlined } from "@ant-design/icons";
 
 import "./index.less";
+import { store } from "@/redux";
+import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
+import { setToAvatar } from "@/redux/modules/chat/action";
 
 export default function index() {
 	const { id } = useParams();
 	const [data, setData] = useState<Account.FriendUser>();
+	const curId = Number.parseInt(id!);
+	const navigate = useNavigate();
+
 	useEffect(() => {
-		getFriend(Number.parseInt(id!)).then(res => {
+		getFriend(curId).then(res => {
 			setData(res.data);
 		});
 	}, [id]);
@@ -37,7 +44,10 @@ export default function index() {
 	 * 跳转到聊天页面
 	 */
 	function toChat() {
-		console.log("toChat");
+		store.dispatch(setListMatch(false));
+		store.dispatch(setMenuIconKey("11"));
+		store.dispatch(setToAvatar(data?.avatar as string));
+		navigate("/chat" + "/" + curId);
 	}
 
 	/**
