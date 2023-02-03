@@ -21,7 +21,7 @@ import { SendMessageProps, ws } from "@/websocket";
 import { Chat, Message } from "@/api/interface/chat";
 import { SendCode } from "@/websocket/type";
 
-import "./chat.less";
+import "./index.less";
 
 const ChatRoom = () => {
 	const { avatar, userId } = store.getState().global.userInfo;
