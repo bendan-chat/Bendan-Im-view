@@ -1,30 +1,34 @@
 import { Chat } from "@/api/interface/chat";
-import { Avatar, Button } from "antd";
+import { agreeAddNewFriend } from "@/api/modules/chat";
+import { Avatar, Button, message } from "antd";
 import React from "react";
 
 import "./NewFriendList.less";
 
 interface IProps {
-	key: number;
 	newFriend: Chat.NewFriendList;
 }
 
-export default function NewFriendList({ newFriend, key }: IProps) {
+export default function NewFriendList({ newFriend }: IProps) {
 	/**
 	 * 添加按钮点击事情
 	 */
 	function addFriend() {
-		console.log("addFriend");
+		agreeAddNewFriend(newFriend.id!).then(res => {
+			if (res.success) {
+				message.success("添加成功");
+			}
+		});
 	}
 	return (
-		<div key={key} className="newFriendList-parent">
+		<div className="newFriendList-parent">
 			<Avatar size={50} src={newFriend.avatar} />
 			<div className="newFriendList-text">
 				<div className="newFriendList-nickname">{newFriend.nickname}</div>
 				<div className="newFriendList-des">{newFriend.description}</div>
 			</div>
 			<div className="newFriendList-btn"></div>
-			{newFriend.status == 2 ? (
+			{newFriend.status == 1 ? (
 				<Button
 					className="newFriendList-btn-add"
 					style={{ background: "#1aad19" }}

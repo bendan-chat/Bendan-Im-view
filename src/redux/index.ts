@@ -17,12 +17,16 @@ const reducer = combineReducers({
 	chat
 });
 
+const rootReducer = (state: any, action: any) => {
+	return reducer(state, action);
+};
+
 // redux 持久化配置
 const persistConfig = {
 	key: "redux-state",
 	storage: storage
 };
-const persistReducerConfig = persistReducer(persistConfig, reducer);
+const persistReducerConfig = persistReducer(persistConfig, rootReducer);
 
 // 开启 redux-devtools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

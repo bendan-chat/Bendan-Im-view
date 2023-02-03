@@ -66,7 +66,7 @@ export namespace Chat {
 		/**
 		 * id
 		 */
-		id: number;
+		id?: number;
 
 		/**
 		 * 当前 用户id
@@ -96,17 +96,17 @@ export namespace Chat {
 		/**
 		 * 主动添加 的 用户 添加状态
 		 */
-		status: number;
+		status?: number;
 
 		/**
 		 * 主动添加 的 用户 创建时间
 		 */
-		createTime: string;
+		createTime?: string;
 
 		/**
 		 * 主动添加 的 用户 更新时间
 		 */
-		updateTime: string;
+		updateTime?: string;
 	}
 }
 

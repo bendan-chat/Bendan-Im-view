@@ -11,7 +11,7 @@ import "./FriendList.less";
 
 const FriendList = () => {
 	interface ModalProps {
-		showModal: (params: { name: number }) => void;
+		showModal: () => void;
 	}
 	const { username } = store.getState().global.userInfo;
 	const addFriendRef = useRef<ModalProps>(null);
@@ -46,7 +46,7 @@ const FriendList = () => {
 	 * 新增 好友
 	 */
 	function addUser() {
-		addFriendRef.current!.showModal({ name: 11 });
+		addFriendRef.current!.showModal();
 	}
 
 	/**

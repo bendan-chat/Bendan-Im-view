@@ -76,64 +76,64 @@ export namespace Account {
 		/**
 		 * 用户ID
 		 */
-		id: number;
+		id?: number;
 
 		/**
 		 * 用户名称
 		 */
-		username: String;
+		username?: String;
 
 		/**
 		 * 昵称
 		 */
-		nickName: String;
+		nickName?: String;
 
 		/**
 		 * 个人描述
 		 */
-		selfDescription: String;
+		selfDescription?: String;
 
 		/**
 		 * 手机号
 		 */
-		phoneNumber: String;
+		phoneNumber?: String;
 
 		/**
 		 * 头像
 		 */
-		avatar: String;
+		avatar?: String;
 
 		/**
 		 * 邮箱
 		 */
-		email: String;
+		email?: String;
 		/**
 		 * 状态（0-正常  1-锁定  2-删除）
 		 */
-		status: number;
+		status?: number;
 		/**
 		 * 性别   (-1 未知 0 女性  1 男性)
 		 */
-		gender: number;
+		gender?: number;
 
 		/**
 		 * 创建人ID
 		 */
-		createId: number;
+		createId?: number;
 
 		/**
 		 * 修改人ID
 		 */
-		updateId: number;
+		updateId?: number;
 
 		/**
 		 * 创建时间
 		 */
-		createTime: String;
+		createTime?: String;
 
 		/**
 		 * 更新时间
 		 */
-		updateTime: String;
+		updateTime?: String;
 	}
 }
