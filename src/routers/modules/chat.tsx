@@ -10,7 +10,7 @@ const AuthRouter: Array<RouteObject> = [
 		children: [
 			{
 				path: "/chat/:id",
-				element: lazyLoad(React.lazy(() => import("@/views/chat/chat"))),
+				element: lazyLoad(React.lazy(() => import("@/views/chat"))),
 				// element: ,
 				meta: {
 					requiresAuth: true,

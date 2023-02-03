@@ -1,16 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { listRecord, RecordPage } from "@/api/modules/chat";
 import { store } from "@/redux";
-
-import ChatRightMsg from "./msg/str/ChatRightMsg";
-import ChatLeftMsg from "./msg/str/ChatLeftMsg";
-import { SendMessageProps, ws } from "@/websocket";
-import { Chat, Message } from "@/api/interface/chat";
-import { SendCode } from "@/websocket/type";
-import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
-import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
+import { Spin } from "antd";
 
 import ChatVideoRightMsg from "./msg/video/ChatVideoRightMsg";
 import ChatVideoLeftMsg from "./msg/video/ChatVideoLeftMsg";
@@ -18,17 +12,54 @@ import ChatImageRightMsg from "./msg/image/ChatImageRightMsg";
 import ChatImageLeftMsg from "./msg/image/ChatImageLeftMsg";
 import ChatFileLeftMsg from "./msg/file/ChatFileLeftMsg";
 import ChatFileRightMsg from "./msg/file/ChatFileRightMsg";
+import ChatRightMsg from "./msg/str/ChatRightMsg";
+import ChatLeftMsg from "./msg/str/ChatLeftMsg";
+import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
+import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
+
+import { SendMessageProps, ws } from "@/websocket";
+import { Chat, Message } from "@/api/interface/chat";
+import { SendCode } from "@/websocket/type";
 
 import "./chat.less";
 
 const ChatRoom = () => {
-	const { avatar } = store.getState().global.userInfo;
-	const { userId } = store.getState().global.userInfo;
+	const { avatar, userId } = store.getState().global.userInfo;
 	const { toAvatar } = store.getState().chat;
 
 	const { id } = useParams();
 	const toId: number = Number.parseInt(id!);
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
+	const [loading, setLoading] = useState<boolean>(false);
+
+	// * 加载聊天记录
+	useEffect(() => {
+		const params: RecordPage = {
+			cur: 1,
+			limit: 1000,
+			orderField: "",
+			order: false,
+			userId: userId,
+			toId: Number.parseInt(id!)
+		};
+		setLoading(true);
+		listRecord(params)
+			.then(function (response) {
+				const dataList = handlerListRecord(response.data.items);
+				setMsgList(dataList);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+		document.getElementsByClassName("message-container")[0].scrollTop =
+			document.getElementsByClassName("message-container")[0].scrollHeight;
+	}, [id]);
+
+	// * 动态加载消息时候滚动条也要沉低
+	useEffect(() => {
+		document.getElementsByClassName("message-container")[0].scrollTop =
+			document.getElementsByClassName("message-container")[0].scrollHeight;
+	}, [msgList]);
 
 	/**
 	 * 把 RecordData[] ->  SendMessageProps[]
@@ -52,30 +83,6 @@ const ChatRoom = () => {
 		return smps;
 	};
 
-	// * 加载聊天记录
-	useEffect(() => {
-		const params: RecordPage = {
-			cur: 1,
-			limit: 1000,
-			orderField: "",
-			order: false,
-			userId: userId,
-			toId: Number.parseInt(id!)
-		};
-		listRecord(params).then(function (response) {
-			const dataList = handlerListRecord(response.data.items);
-			setMsgList(dataList);
-		});
-		document.getElementsByClassName("message-container")[0].scrollTop =
-			document.getElementsByClassName("message-container")[0].scrollHeight;
-	}, [id]);
-
-	// * 动态加载消息时候滚动条也要沉低
-	useEffect(() => {
-		document.getElementsByClassName("message-container")[0].scrollTop =
-			document.getElementsByClassName("message-container")[0].scrollHeight;
-	}, [msgList]);
-
 	// ws 接受消息
 	ws!.onmessage = function (event) {
 		handleMsg(event);
@@ -84,16 +91,19 @@ const ChatRoom = () => {
 	// * 处理WebSocket 消息
 	const handleMsg = (event: MessageEvent<any>) => {
 		const result = JSON.parse(event.data as string);
+		console.log(result);
 		// * 处理心跳
 		if (result === 2) {
 			console.log();
+		} else if (result === 5) {
+			location.reload();
 		} else {
-			addSelfMsg(result);
+			addMsg(result);
 		}
 	};
 
 	// * 页面新增消息
-	const addSelfMsg = (msg: SendMessageProps) => {
+	const addMsg = (msg: SendMessageProps) => {
 		const temp = [...msgList];
 		temp.push(msg);
 		setMsgList(temp);
@@ -140,12 +150,16 @@ const ChatRoom = () => {
 		<>
 			<div className="cr">
 				<div className="message-container">
-					{msgList.map((item, index) => {
-						return matchMsgType(item, index);
-					})}
+					<Spin spinning={loading} tip="Loading" size="large" style={{ width: "100%" }}>
+						<div>
+							{msgList.map((item, index) => {
+								return matchMsgType(item, index);
+							})}
+						</div>
+					</Spin>
 				</div>
 				<div className="chatFooter">
-					<ChatBottomSend addMsgList={addSelfMsg} toId={toId} />
+					<ChatBottomSend addMsgList={addMsg} toId={toId} />
 				</div>
 			</div>
 		</>
