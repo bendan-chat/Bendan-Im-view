@@ -26,15 +26,18 @@ const ChatList = () => {
 	 *
 	 * @param username
 	 */
-	async function loadChatList(username: string) {
+	function loadChatList(username: string) {
 		const params: ChatPage = {
 			cur: 1,
 			limit: 100,
 			order: true,
 			username: username
 		};
-		const { data } = await listChat(params);
-		setData(data);
+		listChat(params).then(res => {
+			if (res.success) {
+				setData(res.data);
+			}
+		});
 	}
 
 	/**

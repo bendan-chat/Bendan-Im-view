@@ -27,7 +27,8 @@ const LoginForm = (props: any) => {
 				setUserInfo({
 					userId: data.userId,
 					username: loginForm.username,
-					avatar: data.avatar
+					avatar: data.avatar,
+					nickName: data.nickName
 				});
 				message.success(msg);
 				navigate(HOME_URL);

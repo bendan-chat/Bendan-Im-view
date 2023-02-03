@@ -34,12 +34,15 @@ const FriendList = () => {
 	 *
 	 * @param username
 	 */
-	async function loadFriends(username: string) {
+	function loadFriends(username: string) {
 		const params: FriendParams = {
 			username
 		};
-		const { data } = await getFriends(params);
-		setData(data);
+		getFriends(params).then(res => {
+			if (res.success) {
+				setData(res.data);
+			}
+		});
 	}
 
 	/**

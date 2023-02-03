@@ -10,6 +10,7 @@ export namespace Login {
 		refreshExpiresIn?: number;
 		userId: number;
 		avatar: string;
+		nickName: string;
 	}
 	interface Oauth2AccessTokenResponse {
 		accessToken?: Token;

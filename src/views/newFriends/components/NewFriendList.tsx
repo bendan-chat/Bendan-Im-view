@@ -1,9 +1,10 @@
-import { Chat } from "@/api/interface/chat";
+import { Chat, Message } from "@/api/interface/chat";
 import { agreeAddNewFriend } from "@/api/modules/chat";
-import { Avatar, Button, message } from "antd";
-import React from "react";
+import { Avatar, Button } from "antd";
+import { sendMessage } from "@/websocket";
 
 import "./NewFriendList.less";
+import { SendCode } from "@/websocket/type";
 
 interface IProps {
 	newFriend: Chat.NewFriendList;
@@ -16,10 +17,18 @@ export default function NewFriendList({ newFriend }: IProps) {
 	function addFriend() {
 		agreeAddNewFriend(newFriend.id!).then(res => {
 			if (res.success) {
-				message.success("添加成功");
+				// 发送一条消息
+				sendMessage({
+					code: SendCode.NEWFRIEND,
+					fromId: newFriend.curUserId,
+					toId: newFriend.addUserId,
+					sendType: Message.MsgType.strMsg
+				});
+				location.reload();
 			}
 		});
 	}
+
 	return (
 		<div className="newFriendList-parent">
 			<Avatar size={50} src={newFriend.avatar} />

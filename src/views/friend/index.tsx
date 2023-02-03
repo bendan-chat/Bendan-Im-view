@@ -11,10 +11,12 @@ import "./index.less";
 import { store } from "@/redux";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 import { setToAvatar } from "@/redux/modules/chat/action";
+import { delFriendAndChatRecord } from "@/api/modules/chat";
 
 export default function index() {
 	const { id } = useParams();
 	const [data, setData] = useState<Account.FriendUser>();
+	const { userId } = store.getState().global.userInfo;
 	const curId = Number.parseInt(id!);
 	const navigate = useNavigate();
 
@@ -54,7 +56,11 @@ export default function index() {
 	 * 删除好友
 	 */
 	function delUser() {
-		console.log("delUser");
+		delFriendAndChatRecord(curId, userId).then(res => {
+			console.log(res.data);
+		});
+		navigate("/friends");
+		location.reload();
 	}
 	return (
 		<div className="friend-parant">

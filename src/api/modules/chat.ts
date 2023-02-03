@@ -66,3 +66,16 @@ export const agreeAddNewFriend = (addFriendRelId: number) => {
 		headers: { noLoading: true }
 	});
 };
+
+/**
+ * 删除好友
+ * @param newFriend
+ * @returns
+ */
+export const delFriendAndChatRecord = (curUserId: number, addUserId: number) => {
+	const params = {
+		curUserId,
+		addUserId
+	};
+	return http.delete<boolean>(`${AdminServer.Chat}/delFriendAndChatRecord`, params, { headers: { noLoading: true } });
+};

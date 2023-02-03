@@ -13,6 +13,7 @@ export interface ThemeConfigProp {
 export interface UserInfoConfigProp {
 	userId: number;
 	username: string;
+	nickName: string;
 	avatar: string;
 }
 

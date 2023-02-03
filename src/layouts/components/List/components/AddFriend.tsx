@@ -14,7 +14,7 @@ interface Props {
 	innerRef: Ref<{ showModal: () => void }>;
 }
 export const AddFriend = (props: Props) => {
-	const { userId } = store.getState().global.userInfo;
+	const { userId, nickName, avatar } = store.getState().global.userInfo;
 
 	const [isModalOpenAddUser, setIsModalOpenAddUser] = useState<boolean>(false);
 	const [selectFriend, setSelectFriend] = useState<boolean>(false);
@@ -72,8 +72,8 @@ export const AddFriend = (props: Props) => {
 		const params: Chat.NewFriendList = {
 			curUserId: data?.id as number,
 			addUserId: userId,
-			nickname: data?.nickName as string,
-			avatar: data?.avatar as string,
+			nickname: nickName,
+			avatar: avatar,
 			description: addSendMsg
 		};
 		addNewFriend(params).finally(() => {
@@ -89,6 +89,7 @@ export const AddFriend = (props: Props) => {
 		setAddHidden(false);
 		setSelectFriend(false);
 		setAddSendMsg("");
+		setData({});
 	}
 
 	return (

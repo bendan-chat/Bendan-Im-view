@@ -9,5 +9,6 @@ export const SendCode = {
 	NEW: 1,
 	HEARTBEAT: 2,
 	MESSAGE: 3,
-	END: 4
+	END: 4,
+	NEWFRIEND: 5
 } as const;
