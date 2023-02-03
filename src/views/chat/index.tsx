@@ -17,9 +17,9 @@ import ChatLeftMsg from "./msg/str/ChatLeftMsg";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
 
-import { SendMessageProps, ws } from "@/websocket";
+import { ws } from "@/websocket";
 import { Chat, Message } from "@/api/interface/chat";
-import { SendCode } from "@/websocket/type";
+import { SendCode, SendMessageProps } from "@/websocket/type";
 
 import "./index.less";
 

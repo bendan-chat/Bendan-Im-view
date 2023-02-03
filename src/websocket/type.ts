@@ -1,3 +1,5 @@
+import { Message } from "@/api/interface/chat";
+
 /**
  * @description 固定值，用于标识消息类型
  * 1 - 新的链接
@@ -12,3 +14,13 @@ export const SendCode = {
 	END: 4,
 	NEWFRIEND: 5
 } as const;
+
+export interface SendMessageProps {
+	code: typeof SendCode[keyof typeof SendCode];
+	sendType?: Message.SendType;
+	fromId?: number;
+	toId?: number;
+	sendContent?: string;
+	userId?: number;
+	length?: number;
+}

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { Message } from "@/api/interface/chat";
-import { sendMessage, SendMessageProps } from "@/websocket";
-import { SendCode } from "@/websocket/type";
+import { sendMessage } from "@/websocket";
+import { SendCode, SendMessageProps } from "@/websocket/type";
 import Recorder from "js-audio-recorder";
 
 let recorder: Recorder;

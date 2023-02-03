@@ -1,16 +1,5 @@
-import { Message } from "@/api/interface/chat";
 import { store } from "@/redux";
-import { SendCode } from "./type";
-
-export interface SendMessageProps {
-	code: typeof SendCode[keyof typeof SendCode];
-	sendType?: Message.SendType;
-	fromId?: number;
-	toId?: number;
-	sendContent?: string;
-	userId?: number;
-	length?: number;
-}
+import { SendCode, SendMessageProps } from "./type";
 
 let ws: WebSocket | null;
 let socketOpen: boolean = false;

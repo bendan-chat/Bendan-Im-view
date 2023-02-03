@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { Input, Button } from "antd";
-import { sendMessage, SendMessageProps } from "@/websocket";
-import { SendCode } from "@/websocket/type";
+import { sendMessage } from "@/websocket";
+import { SendCode, SendMessageProps } from "@/websocket/type";
 import ChatAudioButton from "./ChatAudioButton";
 import { Message } from "@/api/interface/chat";
 import EmjoyIcon from "./icon/EmjoyIcon";
