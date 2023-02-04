@@ -1,17 +1,15 @@
-import { SendMessageProps } from "..";
-
 // * 监听中的事件队列
-let eventList: SendMessageProps[] = [];
+let eventList: any[] = [];
 
 // * 删除队列中的某个事件
-const delQuque = (eventName: SendMessageProps) => {
-	const index = Ququehas(eventName);
+const delQuque = (msg: any) => {
+	const index = Ququehas(msg);
 	index !== -1 ? eventList.splice(index, 1) : null;
 };
 
 // * 添加到队列中
-const addQuque = (eventName: SendMessageProps) => {
-	eventList.push(eventName);
+const addQuque = (msg: any) => {
+	eventList.push(msg);
 };
 
 /**
@@ -40,11 +38,11 @@ const getQuqueLast = () => {
 
 /**
  * 判断是否存在
- * @param eventName
+ * @param msg
  * @returns -1不存在，0>存在
  */
-const Ququehas = (eventName: SendMessageProps): number => {
-	const index = eventList.findIndex(item => item === eventName);
+const Ququehas = (msg: any): number => {
+	const index = eventList.findIndex(item => item === msg);
 	return index;
 };
 

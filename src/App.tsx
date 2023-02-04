@@ -11,7 +11,7 @@ import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
 import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
-import { createWsClient } from "@/websocket/index";
+import { createWsClient } from "./websocket";
 
 const App = (props: any) => {
 	const { language, assemblySize, themeConfig, setLanguage } = props;
@@ -19,9 +19,9 @@ const App = (props: any) => {
 
 	// 全局使用主题
 	useTheme(themeConfig);
+
 	// *  连接ws
 	createWsClient();
-
 	// 设置 antd 语言国际化
 	const setAntdLanguage = () => {
 		// 如果 redux 中有默认语言就设置成 redux 的默认语言，没有默认语言就设置成浏览器默认语言

@@ -2,12 +2,12 @@
 import React, { useState } from "react";
 import { FolderTwoTone, UploadOutlined } from "@ant-design/icons";
 import { message, Modal, UploadFile } from "antd";
-import { sendMessage, SendMessageProps } from "@/websocket";
+import { sendMessage } from "@/websocket";
 import MyUploadFile from "@/components/UploadFile";
 import { store } from "@/redux";
 import { RcFile } from "antd/es/upload";
 import { uploadTencentFile } from "@/api/modules/upload";
-import { SendCode } from "@/websocket/type";
+import { SendCode, SendMessageProps } from "@/websocket/type";
 import { matchFileSuffix } from "@/utils/util";
 
 interface IProps {

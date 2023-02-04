@@ -6,9 +6,11 @@ import { setToAvatar } from "@/redux/modules//chat/action";
 import { List, Avatar, Input, Space } from "antd";
 import { PlusSquareTwoTone } from "@ant-design/icons";
 
-import "./ChatList.less";
 import { ChatPage, listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
+import { subscribe } from "@/websocket/helper/MyEventEmitter";
+
+import "./ChatList.less";
 
 const ChatList = () => {
 	const navigate = useNavigate();
@@ -16,6 +18,12 @@ const ChatList = () => {
 	const { username } = store.getState().global.userInfo;
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
+
+	useEffect(() => {
+		subscribe("newFriendWsMsg", () => {
+			loadChatList(username);
+		});
+	}, []);
 
 	useEffect(() => {
 		loadChatList(username);
