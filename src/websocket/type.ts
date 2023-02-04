@@ -12,7 +12,8 @@ export const SendCode = {
 	HEARTBEAT: 2,
 	MESSAGE: 3,
 	END: 4,
-	NEWFRIEND: 5
+	ADD_NEWFRIEND: 5,
+	AGREE_NEWFRIEND: 6
 } as const;
 
 export interface SendMessageProps {

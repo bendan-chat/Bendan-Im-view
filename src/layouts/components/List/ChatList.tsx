@@ -20,7 +20,7 @@ const ChatList = () => {
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
 
 	useEffect(() => {
-		subscribe("newFriendWsMsg", () => {
+		subscribe("agreeNewFriend", () => {
 			loadChatList(username);
 		});
 	}, []);

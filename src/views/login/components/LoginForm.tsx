@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form, Input, message, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import { Login } from "@/api/interface/user";
@@ -9,6 +9,8 @@ import { setToken, setUserInfo } from "@/redux/modules/global/action";
 import { useTranslation } from "react-i18next";
 import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { ResultEnum } from "@/enums/httpEnum";
+import { store } from "@/redux";
+import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
@@ -16,6 +18,14 @@ const LoginForm = (props: any) => {
 	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [loading, setLoading] = useState<boolean>(false);
+
+	/**
+	 * 清理缓存
+	 */
+	useEffect(() => {
+		store.dispatch(setListMatch(false));
+		store.dispatch(setMenuIconKey("11"));
+	}, []);
 
 	// 登录
 	const onFinish = async (loginForm: Login.ReqLoginForm) => {

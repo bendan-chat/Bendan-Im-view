@@ -7,6 +7,8 @@ import "./AddFriend.less";
 import { addNewFriend } from "@/api/modules/chat";
 import { Chat } from "@/api/interface/chat";
 import { store } from "@/redux";
+import { sendMessage } from "@/websocket";
+import { SendCode } from "@/websocket/type";
 
 const { Search } = Input;
 const { Meta } = Card;
@@ -76,9 +78,19 @@ export const AddFriend = (props: Props) => {
 			avatar: avatar,
 			description: addSendMsg
 		};
-		addNewFriend(params).finally(() => {
-			clearCache();
-		});
+		addNewFriend(params)
+			.then(res => {
+				if (res.success) {
+					sendMessage({
+						code: SendCode.ADD_NEWFRIEND,
+						fromId: userId,
+						toId: data?.id as number
+					});
+				}
+			})
+			.finally(() => {
+				clearCache();
+			});
 	}
 
 	/**

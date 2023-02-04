@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { store } from "@/redux";
 import { Account } from "@/api/interface/user";
-import { List, Avatar, Input, Space, Button } from "antd";
+import { List, Avatar, Input, Space, Button, Badge } from "antd";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
 import { AddFriend } from "./components/AddFriend";
+import { subscribe } from "@/websocket/helper/MyEventEmitter";
 
 import "./FriendList.less";
 
@@ -20,6 +21,8 @@ const FriendList = () => {
 	const [search, setSearch] = useState<string>("");
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
+	const [count, setCount] = useState(5);
+
 	const navigate = useNavigate();
 	// * 更新输入框的内容
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,6 +30,12 @@ const FriendList = () => {
 	};
 	useEffect(() => {
 		loadFriends(username);
+	}, []);
+
+	useEffect(() => {
+		subscribe("addNewFriend", () => {
+			setCount(count + 1);
+		});
 	}, []);
 
 	/**
@@ -96,7 +105,9 @@ const FriendList = () => {
 			<div hidden={searchHidden} className="friends-chat">
 				<div style={{ paddingLeft: "5px" }}>新的朋友</div>
 				<div className={`${selectId === -1 ? "active-user-newFriends" : "newFriends"}`} onClick={newFriends}>
-					<Avatar style={{ background: "#fa9d3b", marginTop: "15px" }} src={<UserAddOutlined />} size="large" />
+					<Badge offset={[5, 15]} count={count}>
+						<Avatar style={{ background: "#fa9d3b", marginTop: "15px" }} src={<UserAddOutlined />} size="large" />
+					</Badge>
 					<span style={{ marginTop: "24px", marginLeft: "11px" }}>新的朋友</span>
 				</div>
 				<br />

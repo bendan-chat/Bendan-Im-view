@@ -45,12 +45,21 @@ const createWsClient = () => {
 	ws.onmessage = function (e) {
 		let res = JSON.parse(e.data);
 		// 处理微标
-		console.log(res);
-		if (res === 5) {
-			publish("newFriendWsMsg", res);
-		}
+		handleWsMsg(res);
 		publish("wsMsg", res);
 	};
+};
+
+/**
+ * 返回消息匹配
+ * @param res
+ */
+const handleWsMsg = (res: any) => {
+	if (res === 5) {
+		publish("addNewFriend", res);
+	} else if (res === 6) {
+		publish("agreeNewFriend", res);
+	}
 };
 
 /**
