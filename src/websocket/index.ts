@@ -1,11 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Ws } from "@/api/interface/chat";
 import { store } from "@/redux";
+import { publish } from "./helper/MyEventEmitter";
 import { SendCode, SendMessageProps } from "./type";
 
 let ws: WebSocket | null;
 let socketOpen: boolean = false;
+let wsEvent: CustomEvent;
+let timer: any;
 
 // ws 初始化
 const createWsClient = () => {
+	// socket 数据
 	ws = new WebSocket(import.meta.env.VITE_WEB_SOCKET_URL);
 	ws.onopen = function (e) {
 		console.log("onopen: ", e);
@@ -28,27 +34,31 @@ const createWsClient = () => {
 	ws.onclose = function (e) {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
 		socketOpen = false;
+		timer = setInterval(() => {
+			if (!socketOpen) {
+				createWsClient();
+			} else {
+				timer = null;
+			}
+		}, 50000);
 	};
-	// ws.onmessage = function (event) {
-	// 	handleMsg(event);
-	// };
+	ws.onmessage = function (e) {
+		let res = JSON.parse(e.data);
+		// 处理微标
+		console.log(res);
+		if (res === 5) {
+			publish("newFriendWsMsg", res);
+		}
+		publish("wsMsg", res);
+	};
 };
 
 /**
  * 发送消息
  */
 const sendMessage = (obj: SendMessageProps): Promise<any> => {
-	return new Promise((resolve, reject) => {
-		try {
-			if (socketOpen) {
-				ws?.send(JSON.stringify(obj));
-			} else {
-				createWsClient();
-				reject(new Error("未连接服务"));
-			}
-		} catch (e) {
-			console.log(e);
-		}
+	return new Promise(() => {
+		ws?.send(JSON.stringify(obj));
 	});
 };
 
@@ -82,4 +92,4 @@ const reconnect = () => {
 	createWsClient();
 };
 
-export { createWsClient, ws, sendMessage };
+export { createWsClient, ws, sendMessage, wsEvent };
