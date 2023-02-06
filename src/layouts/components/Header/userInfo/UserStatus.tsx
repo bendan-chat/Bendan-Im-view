@@ -10,7 +10,7 @@ import { setToken } from "@/redux/modules/global/action";
 import "./UserStatus.less";
 import { getUserInfo, logout } from "@/api/modules/user";
 import InfoModal from "./components/UserDetails";
-import PasswordModal from "./components/PasswordModal";
+import PasswordModal from "./PasswordModal";
 
 function UserStatus(props: any) {
 	const { avatar, username } = store.getState().global.userInfo;

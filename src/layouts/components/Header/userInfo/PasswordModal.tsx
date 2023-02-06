@@ -1,6 +1,6 @@
 import { useState, useImperativeHandle, Ref } from "react";
 import { Modal } from "antd";
-import PasswordForm from "./PasswordForm";
+import PasswordForm from "./components/PasswordForm";
 
 interface Props {
 	innerRef: Ref<{ showModal: () => void }>;

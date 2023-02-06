@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useImperativeHandle, Ref } from "react";
+import { useState, useImperativeHandle, Ref, useRef } from "react";
 import { Modal, Button } from "antd";
 import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
@@ -7,9 +7,13 @@ import { store } from "@/redux";
 import { getUserInfo } from "@/api/modules/user";
 
 import "./userDetails.less";
+import UserInfoFrom from "./UserInfoFrom";
 
 interface Props {
 	innerRef: Ref<{ showModal: (params: any) => void }>;
+}
+interface ModalProps {
+	showModal: () => void;
 }
 
 const InfoModal = (props: Props) => {
@@ -17,6 +21,7 @@ const InfoModal = (props: Props) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const { username, avatar } = store.getState().global.userInfo;
 	const [myAvatar, setMyAvatar] = useState<string>("");
+	const userFromRef = useRef<ModalProps>(null);
 
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
@@ -93,9 +98,17 @@ const InfoModal = (props: Props) => {
 			</div>
 			<div className="btn-down-parent">
 				<UploadAvatar setModalVisible={setModalVisible} setMyAvatar={setMyAvatar} />
-				<Button className="btn-down" type="primary" style={{ borderRadius: "8px" }}>
+				<Button
+					className="btn-down"
+					type="primary"
+					style={{ borderRadius: "8px" }}
+					onClick={() => {
+						userFromRef.current?.showModal();
+					}}
+				>
 					修改信息
 				</Button>
+				<UserInfoFrom setModalVisible={setModalVisible} data={data!} innerRef={userFromRef} />
 			</div>
 		</Modal>
 	);
