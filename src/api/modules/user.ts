@@ -68,3 +68,7 @@ export const getFriend = (userId: number) => {
 	};
 	return http.get<Account.FriendUser>(AdminServer.Chat + `/getFriend`, params, { headers: { noLoading: true } });
 };
+
+export const updateUser = (userinfo: Account.UserInfo) => {
+	return http.post<Account.FriendUser>(AdminServer.User + `/update`, userinfo, { headers: { noLoading: true } });
+};

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { Ref, useEffect, useImperativeHandle, useState } from "react";
-import { message, Upload, Modal, Button } from "antd";
+import { message, Upload, Button } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { UploadRequestOption } from "rc-upload/lib/interface";
@@ -10,18 +9,15 @@ import { UploadOutlined } from "@ant-design/icons";
 
 import "./UserDetails.less";
 import ImgCrop from "antd-img-crop";
+import { updateUser } from "@/api/modules/user";
+import { setUserInfo } from "@/redux/modules/global/action";
+interface IProps {
+	setMyAvatar: (avatar: string) => void;
+	setModalVisible: (modalVisible: boolean) => void;
+}
 
-export default function UploadAvatar() {
-	const { userId } = store.getState().global.userInfo;
-	// 上传前校验文件
-	const getBase64 = (file: RcFile): Promise<string> =>
-		new Promise((resolve, reject) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = () => resolve(reader.result as string);
-			reader.onerror = (error: any) => reject(error);
-		});
-
+export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
+	const { userId, nickName, username } = store.getState().global.userInfo;
 	const props: UploadProps = {
 		name: "file",
 		showUploadList: false,
@@ -46,7 +42,20 @@ export default function UploadAvatar() {
 			uploadTencentFile(formData)
 				.then(res => {
 					if (res.success) {
-						console.log(res.data);
+						setModalVisible(false);
+						store.dispatch(
+							setUserInfo({
+								userId: userId,
+								username: username,
+								avatar: res.data,
+								nickName: nickName
+							})
+						);
+						updateUser({
+							id: userId,
+							avatar: res.data,
+							updateId: userId
+						});
 						//@ts-ignore
 						onSuccess(file);
 					}
