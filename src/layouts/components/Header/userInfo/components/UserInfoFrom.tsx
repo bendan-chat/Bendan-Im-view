@@ -33,6 +33,7 @@ export default function UserInfoFrom({ innerRef, data, setModalVisible }: Props)
 		let gender = values.gender;
 		let phoneNumber = values.phoneNumber;
 		let email = values.email;
+		setIsModalVisible(false);
 		setModalVisible(false);
 		store.dispatch(
 			setUserInfo({
