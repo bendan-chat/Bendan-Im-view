@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState, useImperativeHandle, Ref, useEffect } from "react";
-import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions, UploadFile } from "antd";
+import { useState, useImperativeHandle, Ref, useEffect, useRef } from "react";
+import { Modal, message, Button, Form, Input, Radio } from "antd";
 import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
-import "./userDetails.less";
 import { store } from "@/redux";
 import { getUserInfo } from "@/api/modules/user";
+import { ToTopOutlined } from "@ant-design/icons";
+
+import "./userDetails.less";
 
 interface Props {
 	innerRef: Ref<{ showModal: (params: any) => void }>;
@@ -16,22 +18,13 @@ const InfoModal = (props: Props) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
 	const { username, avatar } = store.getState().global.userInfo;
-	const [fileList, setFileList] = useState<UploadFile[]>([
-		{
-			uid: "-1",
-			name: "image.png",
-			status: "done",
-			url: avatar
-		}
-	]);
 
 	const [form] = Form.useForm();
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
 	}));
 
-	const showModal = (params: { name: number }) => {
-		console.log(params);
+	const showModal = () => {
 		loadUserInfo();
 		setModalVisible(true);
 	};
@@ -52,27 +45,27 @@ const InfoModal = (props: Props) => {
 
 	// 加载用户详情
 	const loadUserInfo = async () => {
-		const { data } = await getUserInfo(username);
-		setData(data);
-		form.setFieldsValue(data);
+		getUserInfo(username).then(res => {
+			if (res.success) {
+				setData(res.data);
+				form.setFieldsValue(res.data);
+			}
+		});
 	};
 
-	// 修改事件
-	const updateClick = () => {
-		setSubmitHidden(false);
-	};
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	/**
+	 * 匹配性别
+	 * @param gender
+	 * @returns
+	 */
 	const matchSex = (gender: number) => {
 		switch (gender) {
 			case 0:
 				return <span key={0}>女</span>;
-				break;
 			case 1:
 				return <span key={1}>男</span>;
-				break;
 			case -1:
 				return <span key={-1}>未知</span>;
-				break;
 		}
 	};
 
@@ -92,9 +85,9 @@ const InfoModal = (props: Props) => {
 					<img
 						className="big-img"
 						onClick={() => {
-							console.log("imgonClick");
+							console.log();
 						}}
-						src={data?.avatar as string}
+						src={avatar}
 					/>
 				</div>
 				<div className="userinfo-text-parent">
@@ -148,9 +141,6 @@ const InfoModal = (props: Props) => {
 				<Form.Item label="邮箱" name={"email"}>
 					<Input />
 				</Form.Item>
-				<Form.Item label="头像" name={"avatar"}>
-					<UploadAvatar fileList={fileList} setFileList={setFileList} />
-				</Form.Item>
 				<Form.Item wrapperCol={{ offset: 18 }}>
 					<Button
 						style={{ width: "80px", height: "32px", borderRadius: "10px" }}
@@ -162,8 +152,15 @@ const InfoModal = (props: Props) => {
 					</Button>
 				</Form.Item>
 			</Form>
-			<div style={{ textAlign: "right", marginTop: "40px" }}>
-				<Button style={{ borderRadius: "8px" }} hidden={!submitHidden} onClick={updateClick} danger>
+			<div className="btn-down-parent">
+				<UploadAvatar />
+				<Button
+					className="btn-down"
+					type="primary"
+					style={{ borderRadius: "8px" }}
+					hidden={!submitHidden}
+					onClick={() => setSubmitHidden(false)}
+				>
 					修改信息
 				</Button>
 			</div>

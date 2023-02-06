@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import PasswordForm from "./PasswordForm";
 
 interface Props {
-	innerRef: Ref<{ showModal: (params: any) => void }>;
+	innerRef: Ref<{ showModal: () => void }>;
 }
 
 const PasswordModal = (props: Props) => {
@@ -13,8 +13,7 @@ const PasswordModal = (props: Props) => {
 		showModal
 	}));
 
-	const showModal = (params: { name: number }) => {
-		console.log(params);
+	const showModal = () => {
 		setIsModalVisible(true);
 	};
 

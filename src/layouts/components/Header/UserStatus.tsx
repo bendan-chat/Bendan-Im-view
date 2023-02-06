@@ -19,7 +19,7 @@ function UserStatus(props: any) {
 	const navigate = useNavigate();
 
 	interface ModalProps {
-		showModal: (params: { name: number }) => void;
+		showModal: () => void;
 	}
 
 	const passRef = useRef<ModalProps>(null);
@@ -56,12 +56,12 @@ function UserStatus(props: any) {
 		{
 			key: "2",
 			label: <span className="dropdown-item">个人信息</span>,
-			onClick: () => infoRef.current!.showModal({ name: 11 })
+			onClick: () => infoRef.current!.showModal()
 		},
 		{
 			key: "3",
 			label: <span className="dropdown-item">修改密码</span>,
-			onClick: () => passRef.current!.showModal({ name: 11 })
+			onClick: () => passRef.current!.showModal()
 		},
 		{
 			type: "divider"
