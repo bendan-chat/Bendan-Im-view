@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
-import PasswordModal from "./userInfo/PasswordModal";
-import InfoModal from "./userInfo/UserDetails";
 
 import "./UserStatus.less";
 import { getUserInfo, logout } from "@/api/modules/user";
+import InfoModal from "./components/UserDetails";
+import PasswordModal from "./components/PasswordModal";
 
 function UserStatus(props: any) {
 	const { avatar, username } = store.getState().global.userInfo;

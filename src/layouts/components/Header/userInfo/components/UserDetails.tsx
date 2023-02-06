@@ -18,6 +18,7 @@ const InfoModal = (props: Props) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
 	const { username, avatar } = store.getState().global.userInfo;
+	const [myAvatar, setMyAvatar] = useState<string>(avatar);
 
 	const [form] = Form.useForm();
 	useImperativeHandle(props.innerRef, () => ({
@@ -37,14 +38,8 @@ const InfoModal = (props: Props) => {
 		message.success("修改用户信息成功 🎉🎉🎉");
 	};
 
-	// 取消按钮的响应
-	const handleCancel = () => {
-		setModalVisible(false);
-		setSubmitHidden(true);
-	};
-
 	// 加载用户详情
-	const loadUserInfo = async () => {
+	const loadUserInfo = () => {
 		getUserInfo(username).then(res => {
 			if (res.success) {
 				setData(res.data);
@@ -76,20 +71,15 @@ const InfoModal = (props: Props) => {
 			keyboard
 			title="个人信息"
 			open={modalVisible}
-			onCancel={handleCancel}
+			onCancel={() => {
+				setModalVisible(false);
+				setSubmitHidden(true);
+			}}
 			destroyOnClose={true}
 			footer={null}
 		>
 			<div hidden={!submitHidden} className="userinfo-parent">
-				<div className="big-img-div">
-					<img
-						className="big-img"
-						onClick={() => {
-							console.log();
-						}}
-						src={avatar}
-					/>
-				</div>
+				<img className="big-img" src={myAvatar} />
 				<div className="userinfo-text-parent">
 					<div className="userinfo-text-item">
 						<label>账号：</label>

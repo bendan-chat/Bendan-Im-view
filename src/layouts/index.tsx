@@ -8,7 +8,7 @@ import { MenuProps, Menu } from "antd";
 
 import Sider from "antd/lib/layout/Sider";
 import { Content } from "antd/lib/layout/layout";
-import UserStatus from "./components/Header/UserStatus";
+import UserStatus from "./components/Header/userInfo/UserStatus";
 import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 import ChatList from "./components/List/ChatList";
