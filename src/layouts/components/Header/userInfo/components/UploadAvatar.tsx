@@ -17,7 +17,7 @@ interface IProps {
 }
 
 export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
-	const { userId, nickName, username } = store.getState().global.userInfo;
+	const { userId, nickName, username, email } = store.getState().global.userInfo;
 	const props: UploadProps = {
 		name: "file",
 		showUploadList: false,
@@ -43,18 +43,23 @@ export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
 				.then(res => {
 					if (res.success) {
 						setModalVisible(false);
-						store.dispatch(
-							setUserInfo({
-								userId: userId,
-								username: username,
-								avatar: res.data,
-								nickName: nickName
-							})
-						);
+						let uploadAvatar = res.data;
 						updateUser({
 							id: userId,
-							avatar: res.data,
+							avatar: uploadAvatar,
 							updateId: userId
+						}).then(res => {
+							if (res.success) {
+								store.dispatch(
+									setUserInfo({
+										userId: userId,
+										username: username,
+										avatar: uploadAvatar,
+										nickName: nickName,
+										email: email
+									})
+								);
+							}
 						});
 						//@ts-ignore
 						onSuccess(file);

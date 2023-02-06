@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import { connect } from "react-redux";
 import { setToken } from "@/redux/modules/global/action";
-
-import "./UserStatus.less";
-import { getUserInfo, logout } from "@/api/modules/user";
 import InfoModal from "./components/UserDetails";
 import PasswordModal from "./PasswordModal";
+import { logout } from "@/api/modules/user";
+
+import "./UserStatus.less";
 
 function UserStatus(props: any) {
-	const { avatar, username } = store.getState().global.userInfo;
+	const { avatar } = store.getState().global.userInfo;
 
 	const { setToken } = props;
 	const navigate = useNavigate();
@@ -40,11 +40,6 @@ function UserStatus(props: any) {
 				navigate("/login");
 			}
 		});
-	};
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const loadUserInfo = async () => {
-		const { data } = await getUserInfo(username);
-		return data;
 	};
 
 	const items: MenuProps["items"] = [

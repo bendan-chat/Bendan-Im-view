@@ -28,29 +28,34 @@ export default function UserInfoFrom({ innerRef, data, setModalVisible }: Props)
 
 	// 修改用户信息
 	const onFinish = (values: any) => {
-		let username = values.username;
-		let nickName = values.nickName;
-		let gender = values.gender;
-		let phoneNumber = values.phoneNumber;
-		let email = values.email;
+		let usernameMy = values.username;
+		let nickNameMy = values.nickName;
+		let genderMy = values.gender;
+		let phoneNumberMy = values.phoneNumber;
+		let emailMy = values.email;
 		setIsModalVisible(false);
 		setModalVisible(false);
-		store.dispatch(
-			setUserInfo({
-				userId: userId,
-				username: username,
-				avatar: avatar,
-				nickName: nickName
-			})
-		);
+
 		updateUser({
 			id: userId,
-			username: username,
-			nickName: nickName,
-			gender: gender,
-			phoneNumber: phoneNumber,
-			email: email,
+			username: usernameMy,
+			nickName: nickNameMy,
+			gender: genderMy,
+			phoneNumber: phoneNumberMy,
+			email: emailMy,
 			updateId: userId
+		}).then(res => {
+			if (res.success) {
+				store.dispatch(
+					setUserInfo({
+						userId: userId,
+						username: usernameMy,
+						avatar: avatar,
+						nickName: nickNameMy,
+						email: emailMy
+					})
+				);
+			}
 		});
 		message.success("修改用户信息成功 🎉🎉🎉");
 	};

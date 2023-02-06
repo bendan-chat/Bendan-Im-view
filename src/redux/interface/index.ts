@@ -15,6 +15,7 @@ export interface UserInfoConfigProp {
 	username: string;
 	nickName: string;
 	avatar: string;
+	email: string;
 }
 
 /* GlobalState */

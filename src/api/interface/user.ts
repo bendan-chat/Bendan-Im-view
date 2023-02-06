@@ -11,6 +11,7 @@ export namespace Login {
 		userId: number;
 		avatar: string;
 		nickName: string;
+		email: string;
 	}
 	interface Oauth2AccessTokenResponse {
 		accessToken?: Token;

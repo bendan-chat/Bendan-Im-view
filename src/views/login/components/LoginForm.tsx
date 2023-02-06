@@ -38,7 +38,8 @@ const LoginForm = (props: any) => {
 					userId: data.userId,
 					username: loginForm.username,
 					avatar: data.avatar,
-					nickName: data.nickName
+					nickName: data.nickName,
+					email: data.email
 				});
 
 				message.success(msg);
