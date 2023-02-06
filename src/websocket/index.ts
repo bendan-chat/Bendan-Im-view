@@ -33,20 +33,19 @@ const createWsClient = () => {
 	};
 	ws.onclose = function (e) {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
-		socketOpen = false;
-		timer = setInterval(() => {
-			if (!socketOpen) {
-				createWsClient();
-			} else {
-				timer = null;
-			}
-		}, 50000);
+		// socketOpen = false;
+		// timer = setInterval(() => {
+		// 	if (!socketOpen) {
+		// 		createWsClient();
+		// 	} else {
+		// 		timer = null;
+		// 	}
+		// }, 50000);
 	};
 	ws.onmessage = function (e) {
 		let res = JSON.parse(e.data);
 		// 处理微标
 		handleWsMsg(res);
-		publish("wsMsg", res);
 	};
 };
 
@@ -55,10 +54,14 @@ const createWsClient = () => {
  * @param res
  */
 const handleWsMsg = (res: any) => {
-	if (res === 5) {
+	if (res == 2) {
+		console.log();
+	} else if (res === 5) {
 		publish("addNewFriend", res);
 	} else if (res === 6) {
 		publish("agreeNewFriend", res);
+	} else {
+		publish("wsMsg", res);
 	}
 };
 

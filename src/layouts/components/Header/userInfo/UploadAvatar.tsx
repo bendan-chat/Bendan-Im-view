@@ -26,8 +26,6 @@ interface IProps {
 }
 
 export default function UploadAvatar({ fileList, setFileList }: IProps) {
-	const { avatar } = store.getState().global.userInfo;
-
 	const [previewOpen, setPreviewOpen] = useState(false);
 	const [previewImage, setPreviewImage] = useState("");
 	const [previewTitle, setPreviewTitle] = useState("");

@@ -11,6 +11,7 @@ import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
 import i18n from "i18next";
 import "moment/dist/locale/zh-cn";
+import { createWsClient } from "./websocket";
 
 const App = (props: any) => {
 	const { language, assemblySize, themeConfig, setLanguage } = props;
@@ -27,7 +28,8 @@ const App = (props: any) => {
 		if (getBrowserLang() == "zh") return setI18nLocale(zhCN);
 		if (getBrowserLang() == "en") return setI18nLocale(enUS);
 	};
-
+	// *  连接ws
+	createWsClient();
 	useEffect(() => {
 		// 全局使用国际化
 		i18n.changeLanguage(language || getBrowserLang());

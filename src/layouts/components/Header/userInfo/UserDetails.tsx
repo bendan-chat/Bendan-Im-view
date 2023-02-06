@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useImperativeHandle, Ref, useEffect } from "react";
 import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions, UploadFile } from "antd";
 import UploadAvatar from "./UploadAvatar";
@@ -77,28 +77,48 @@ const InfoModal = (props: Props) => {
 	};
 
 	return (
-		<Modal centered keyboard title="个人信息" open={modalVisible} onCancel={handleCancel} destroyOnClose={true} footer={null}>
-			<div hidden={!submitHidden} className="userInfo-descriptions">
-				<Descriptions>
-					<Descriptions.Item label="账号">{data?.username}</Descriptions.Item>
-				</Descriptions>
-				<Descriptions>
-					<Descriptions.Item label="昵称">{data?.nickName}</Descriptions.Item>
-				</Descriptions>
-				<Descriptions>
-					<Descriptions.Item label="性别">{matchSex(data?.gender as number)}</Descriptions.Item>
-				</Descriptions>
-				<Descriptions>
-					<Descriptions.Item label="手机">{data?.phoneNumber}</Descriptions.Item>
-				</Descriptions>
-				<Descriptions>
-					<Descriptions.Item label="邮箱">{data?.email}</Descriptions.Item>
-				</Descriptions>
-				<Descriptions>
-					<Descriptions.Item label="头像">
-						<Avatar shape="square" size={64} src={data?.avatar} />
-					</Descriptions.Item>
-				</Descriptions>
+		<Modal
+			width={1000}
+			centered
+			keyboard
+			title="个人信息"
+			open={modalVisible}
+			onCancel={handleCancel}
+			destroyOnClose={true}
+			footer={null}
+		>
+			<div hidden={!submitHidden} className="userinfo-parent">
+				<div className="big-img-div">
+					<img
+						className="big-img"
+						onClick={() => {
+							console.log("imgonClick");
+						}}
+						src={data?.avatar as string}
+					/>
+				</div>
+				<div className="userinfo-text-parent">
+					<div className="userinfo-text-item">
+						<label>账号：</label>
+						<span>{data?.username}</span>
+					</div>
+					<div className="userinfo-text-item">
+						<label>昵称：</label>
+						<span>{data?.nickName}</span>
+					</div>
+					<div className="userinfo-text-item">
+						<label>性别：</label>
+						{matchSex(data?.gender as number)}
+					</div>
+					<div className="userinfo-text-item">
+						<label>手机：</label>
+						<span>{data?.phoneNumber}</span>
+					</div>
+					<div className="userinfo-text-item">
+						<label>邮箱：</label>
+						<span>{data?.email}</span>
+					</div>
+				</div>
 			</div>
 			<Form
 				form={form}
@@ -142,7 +162,7 @@ const InfoModal = (props: Props) => {
 					</Button>
 				</Form.Item>
 			</Form>
-			<div style={{ textAlign: "right" }}>
+			<div style={{ textAlign: "right", marginTop: "40px" }}>
 				<Button style={{ borderRadius: "8px" }} hidden={!submitHidden} onClick={updateClick} danger>
 					修改信息
 				</Button>

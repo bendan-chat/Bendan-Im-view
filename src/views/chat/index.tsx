@@ -22,6 +22,7 @@ import { Chat, Message } from "@/api/interface/chat";
 import { SendCode, SendMessageProps } from "@/websocket/type";
 
 import "./index.less";
+import { subscribe } from "@/websocket/helper/MyEventEmitter";
 
 const ChatRoom = () => {
 	const { avatar, userId } = store.getState().global.userInfo;
@@ -31,6 +32,10 @@ const ChatRoom = () => {
 	const toId: number = Number.parseInt(id!);
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+
+	subscribe("wsMsg", (e: any) => {
+		addMsg(e.detail);
+	});
 
 	// * 加载聊天记录
 	useEffect(() => {
@@ -83,30 +88,9 @@ const ChatRoom = () => {
 		return smps;
 	};
 
-	// ws 接受消息
-	ws!.onmessage = function (event) {
-		handleMsg(event);
-	};
-
-	// * 处理WebSocket 消息
-	const handleMsg = (event: MessageEvent<any>) => {
-		const result = JSON.parse(event.data as string);
-		console.log(result);
-		// * 处理心跳
-		if (result === 2) {
-			console.log();
-		} else if (result === 5) {
-			location.reload();
-		} else {
-			addMsg(result);
-		}
-	};
-
 	// * 页面新增消息
 	const addMsg = (msg: SendMessageProps) => {
-		const temp = [...msgList];
-		temp.push(msg);
-		setMsgList(temp);
+		setMsgList([...msgList, msg]);
 	};
 
 	const matchMsgType = (item: SendMessageProps, index: number) => {
