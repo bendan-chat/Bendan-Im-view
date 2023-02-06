@@ -1,91 +1,80 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import type { UploadChangeParam } from "antd/es/upload";
-import { message, Upload } from "antd";
+import { message, Upload, Modal } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { UploadRequestOption } from "rc-upload/lib/interface";
-import { getBase64 } from "@/utils/ImgUtil";
 import { store } from "@/redux";
 import { Message } from "@/api/interface/chat";
 
-interface IProps {
-	avatar: string;
-}
+import "./UserDetails.less";
 
 // 上传前校验文件
-const beforeUpload = (file: RcFile) => {
-	const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-	if (!isJpgOrPng) {
-		message.error("You can only upload JPG/PNG file!");
-	}
-	const isLt2M = file.size / 1024 / 1024 < 2;
-	if (!isLt2M) {
-		message.error("Image must smaller than 2MB!");
-	}
-	return isLt2M;
-};
+const getBase64 = (file: RcFile): Promise<string> =>
+	new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result as string);
+		reader.onerror = (error: any) => reject(error);
+	});
 
-export default function UploadAvatar({ avatar }: IProps) {
-	const [loading, setLoading] = useState(false);
-	const [imageUrl, setImageUrl] = useState<string>(avatar);
-	const { userId } = store.getState().global.userInfo;
+interface IProps {
+	fileList: UploadFile[];
+	setFileList: (file: UploadFile[]) => void;
+}
 
-	const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
-		if (info.file.status === "uploading") {
-			setLoading(true);
-			return;
+export default function UploadAvatar({ fileList, setFileList }: IProps) {
+	const { avatar } = store.getState().global.userInfo;
+
+	const [previewOpen, setPreviewOpen] = useState(false);
+	const [previewImage, setPreviewImage] = useState("");
+	const [previewTitle, setPreviewTitle] = useState("");
+
+	/**
+	 * 预览文件
+	 * @param file
+	 */
+	const handlePreview = async (file: UploadFile) => {
+		if (!file.url && !file.preview) {
+			file.preview = await getBase64(file.originFileObj as RcFile);
 		}
-		if (info.file.status === "done") {
-			// Get this url from response in real world.
-			getBase64(info.file.originFileObj as RcFile, url => {
-				setLoading(false);
-				setImageUrl(url);
-			});
-		}
+		setPreviewImage(file.url || (file.preview as string));
+		setPreviewOpen(true);
+		setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1));
 	};
 
-	const customRequest = async (options: UploadRequestOption<any>) => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { action, data, file, filename, headers, onError, onProgress, onSuccess, withCredentials } = options;
-
-		const formData = new FormData();
-		formData.append("file", file);
-		formData.append("userId", userId);
-		formData.append("type", `${Message.MsgType.pictureMsg}`);
-
-		uploadTencentFile(formData)
-			.then(({ data: response }) => {
-				setTimeout(() => {
-					//@ts-ignore
-					onSuccess(response, file);
-				});
-			})
-			.catch(onError);
+	/**
+	 * 上传变化
+	 */
+	const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
+		setFileList(newFileList);
 	};
 
 	const uploadButton = (
 		<div>
-			{loading ? <LoadingOutlined /> : <PlusOutlined />}
+			<PlusOutlined />
 			<div style={{ marginTop: 8 }}>Upload</div>
 		</div>
 	);
-
 	return (
-		<Upload
-			// {...uploadProps}
-			// 文件查询的时候只显示 jpeg, .png
-			accept={".jpeg, .png, .gif"}
-			name="avatar"
-			listType="picture-card"
-			className="avatar-uploader"
-			showUploadList={false}
-			customRequest={customRequest}
-			beforeUpload={beforeUpload}
-			onChange={handleChange}
-			maxCount={1}
-		>
-			{imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : uploadButton}
-		</Upload>
+		<>
+			<Upload
+				beforeUpload={(file: UploadFile) => {
+					setFileList([...fileList, file]);
+					return false;
+				}}
+				listType="picture-card"
+				fileList={fileList}
+				onPreview={handlePreview}
+				onChange={handleChange}
+			>
+				{fileList.length >= 1 ? null : uploadButton}
+			</Upload>
+			<Modal open={previewOpen} title={previewTitle} footer={null} onCancel={() => setPreviewOpen(false)}>
+				<img alt="example" style={{ width: "100%" }} src={previewImage} />
+			</Modal>
+		</>
 	);
 }

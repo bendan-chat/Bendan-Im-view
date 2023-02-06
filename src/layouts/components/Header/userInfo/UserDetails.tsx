@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useState, useImperativeHandle, Ref, useEffect } from "react";
-import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions } from "antd";
+import { Modal, message, Button, Form, Input, Radio, Avatar, Descriptions, UploadFile } from "antd";
 import UploadAvatar from "./UploadAvatar";
 import { Account } from "@/api/interface/user";
 import "./userDetails.less";
@@ -15,7 +15,16 @@ const InfoModal = (props: Props) => {
 	const [data, setData] = useState<Account.UserInfo>();
 	const [modalVisible, setModalVisible] = useState(false);
 	const [submitHidden, setSubmitHidden] = useState<boolean>(true);
-	const { username } = store.getState().global.userInfo;
+	const { username, avatar } = store.getState().global.userInfo;
+	const [fileList, setFileList] = useState<UploadFile[]>([
+		{
+			uid: "-1",
+			name: "image.png",
+			status: "done",
+			url: avatar
+		}
+	]);
+
 	const [form] = Form.useForm();
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
@@ -47,10 +56,6 @@ const InfoModal = (props: Props) => {
 		setData(data);
 		form.setFieldsValue(data);
 	};
-	// useEffect(() => {
-	// 	let dataTemp = data;
-	// 	setData(dataTemp);
-	// }, [data]);
 
 	// 修改事件
 	const updateClick = () => {
@@ -124,16 +129,21 @@ const InfoModal = (props: Props) => {
 					<Input />
 				</Form.Item>
 				<Form.Item label="头像" name={"avatar"}>
-					<UploadAvatar avatar={data?.avatar as string} />
+					<UploadAvatar fileList={fileList} setFileList={setFileList} />
 				</Form.Item>
 				<Form.Item wrapperCol={{ offset: 18 }}>
-					<Button hidden={submitHidden} type="primary" htmlType="submit">
+					<Button
+						style={{ width: "80px", height: "32px", borderRadius: "10px" }}
+						hidden={submitHidden}
+						type="primary"
+						htmlType="submit"
+					>
 						提交
 					</Button>
 				</Form.Item>
 			</Form>
 			<div style={{ textAlign: "right" }}>
-				<Button hidden={!submitHidden} onClick={updateClick} danger>
+				<Button style={{ borderRadius: "8px" }} hidden={!submitHidden} onClick={updateClick} danger>
 					修改信息
 				</Button>
 			</div>

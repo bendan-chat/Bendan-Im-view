@@ -11,6 +11,7 @@ import { UserOutlined, LockOutlined, CloseCircleOutlined } from "@ant-design/ico
 import { ResultEnum } from "@/enums/httpEnum";
 import { store } from "@/redux";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
+import { createWsClient } from "@/websocket";
 
 const LoginForm = (props: any) => {
 	const { t } = useTranslation();
@@ -40,6 +41,8 @@ const LoginForm = (props: any) => {
 					avatar: data.avatar,
 					nickName: data.nickName
 				});
+				// *  连接ws
+				createWsClient();
 				message.success(msg);
 				navigate(HOME_URL);
 			}
