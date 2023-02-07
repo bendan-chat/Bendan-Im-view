@@ -15,6 +15,11 @@ interface IProps {
 	setMyAvatar: (avatar: string) => void;
 	setModalVisible: (modalVisible: boolean) => void;
 }
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+	const reader = new FileReader();
+	reader.addEventListener("load", () => callback(reader.result as string));
+	reader.readAsDataURL(img);
+};
 
 export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
 	const { userId, nickName, username, email } = store.getState().global.userInfo;
@@ -26,7 +31,7 @@ export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
 				console.log(info.file, info.fileList);
 			}
 			if (info.file.status === "done") {
-				message.success(`${info.file.name} file uploaded successfully`);
+				message.success("更新成功！！！");
 			} else if (info.file.status === "error") {
 				message.error(`${info.file.name} file upload failed.`);
 			}

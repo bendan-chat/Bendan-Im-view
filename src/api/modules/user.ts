@@ -62,6 +62,11 @@ export const getFriends = (params: FriendParams) => {
 	return http.get<Account.ChatUser[]>(AdminServer.Chat + `/getFriends`, params, { headers: { noLoading: true } });
 };
 
+/**
+ * 获取朋友详情
+ * @param userId
+ * @returns
+ */
 export const getFriend = (userId: number) => {
 	const params = {
 		userId
@@ -69,6 +74,11 @@ export const getFriend = (userId: number) => {
 	return http.get<Account.FriendUser>(AdminServer.Chat + `/getFriend`, params, { headers: { noLoading: true } });
 };
 
+/**
+ * 更新用户
+ * @param userinfo
+ * @returns
+ */
 export const updateUser = (userinfo: Account.UserInfo) => {
 	return http.post<Account.FriendUser>(AdminServer.User + `/update`, userinfo, { headers: { noLoading: true } });
 };
