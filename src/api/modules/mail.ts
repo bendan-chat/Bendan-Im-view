@@ -7,10 +7,10 @@ import http from "@/api/config/ClientConfig";
  * @param email
  * @returns
  */
-export const sendMailCode = (useId: number, email: string) => {
+export const sendMailCode = (email: string, randomNum: string) => {
 	const params = {
-		useId,
-		email
+		email,
+		randomNum
 	};
 	return http.get(AdminServer.Mail + `/sendMailCode`, params, { headers: { noLoading: true } });
 };

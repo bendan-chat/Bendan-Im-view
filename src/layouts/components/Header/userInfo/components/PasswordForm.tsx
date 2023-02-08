@@ -1,21 +1,39 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useRef, useState } from "react";
-import { Button, Form, Input } from "antd";
+import React, { useState } from "react";
+import { Button, Form, Input, message } from "antd";
 import { CheckCircleTwoTone } from "@ant-design/icons";
+import { store } from "@/redux";
+import { logout, updateUserPassword } from "@/api/modules/user";
+import { useNavigate } from "react-router-dom";
+import { setToken } from "@/redux/modules/global/action";
 interface IProps {
 	setPasswordForm: (passwordForm: boolean) => void;
 	setIsModalVisible: (isModalVisible: boolean) => void;
 }
 
 export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IProps) {
-	const [inputValid, setInputValid] = useState<boolean>(false);
+	const [numValid, setNumValid] = useState<number>(0);
+
 	const [password, setPassword] = useState<string>("");
 	const [btnValid, setBtnValid] = useState<boolean>(true);
-	const [iconColor, setIconColor] = useState<boolean>(true);
+	const [iconColor, setIconColor] = useState<boolean[]>([true, true]);
+	const [loading, setLoading] = useState<boolean>(false);
+
+	const { userId } = store.getState().global.userInfo;
+	const navigate = useNavigate();
 
 	const updatePassword = () => {
-		setPasswordForm(true);
-		setIsModalVisible(false);
+		setLoading(true);
+		updateUserPassword(Number.parseInt(userId), password).then(async res => {
+			if (res.success) {
+				message.success("修改密码成功！！！");
+				setToken("");
+				navigate("/login");
+				await logout();
+				setPasswordForm(true);
+				setIsModalVisible(false);
+				setLoading(false);
+			}
+		});
 	};
 
 	/**
@@ -23,8 +41,20 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 	 * @param e
 	 */
 	const InputPassword = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setInputValid(false);
-		setPassword(e.target.value);
+		let value = e.target.value;
+		setIconColor([true, true]);
+		setNumValid(0);
+		setPassword(value);
+		// 密码包含 数字,英文(不区分大小写),字符中的三种以上，长度6-20
+		let three = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,16}";
+		// 至少包含数字跟字母，可以有字符
+		let two = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,16}$";
+		if (value.match(two) != null) {
+			setIconColor([false, true]);
+			if (value.match(three) != null) {
+				setIconColor([false, false]);
+			}
+		}
 	};
 
 	/**
@@ -33,11 +63,27 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 	 */
 	const confirmInputPassword = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		let passwordUpdate = e.target.value;
-		setInputValid(false);
+		setNumValid(0);
+		setBtnValid(true);
 		if (password == passwordUpdate) {
-			setBtnValid(false);
+			if (!iconColor[0]) {
+				setBtnValid(false);
+			} else {
+				setNumValid(2);
+			}
 		} else {
-			setInputValid(true);
+			setNumValid(1);
+		}
+	};
+
+	const matchValid = (key: number) => {
+		switch (key) {
+			case 0:
+				return "";
+			case 1:
+				return "前后密码不一致请检查！！！";
+			case 2:
+				return "密码强度不够，至少满足第一个条件！！！";
 		}
 	};
 	return (
@@ -50,14 +96,11 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 						placeholder="请设置新密码"
 						allowClear={true}
 						maxLength={16}
+						minLength={8}
 						className="password-update-input-password"
 					/>
 				</Form.Item>
-				<Form.Item
-					name="confirmPassword"
-					validateStatus={inputValid ? "error" : ""}
-					help={inputValid ? "验证码错误请检查！！！" : ""}
-				>
+				<Form.Item name="confirmPassword" validateStatus={numValid != 0 ? "error" : ""} help={matchValid(numValid)}>
 					<Input.Password
 						onChange={confirmInputPassword}
 						placeholder="请再次输入新密码"
@@ -67,13 +110,15 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 					/>
 				</Form.Item>
 				<div className="detail-text">
+					<span>至少满足一个条件</span>
 					<div>
-						<CheckCircleTwoTone twoToneColor={iconColor ? "#b0b3be" : ""} />
-						<span className={iconColor ? "detail-text-span" : ""}> 密码由8-16位数字、字母或符号组成</span>
+						<CheckCircleTwoTone twoToneColor={iconColor[0] ? "#b0b3be" : "#52c41a"} />
+						<span className={iconColor[0] ? "detail-text-span" : ""}> 密码由8-16位数字、字母或符号组成</span>
 					</div>
 					<div>
-						<CheckCircleTwoTone twoToneColor={iconColor ? "#b0b3be" : ""} />
-						<span className={iconColor ? "detail-text-span" : ""}> 至少含2种以上字符</span>
+						<CheckCircleTwoTone twoToneColor={iconColor[1] ? "#b0b3be" : "#52c41a"} />
+						{/*  */}
+						<span className={iconColor[1] ? "detail-text-span" : ""}> 至少含2种以上字符</span>
 					</div>
 				</div>
 			</Form>
@@ -83,6 +128,7 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 				type="primary"
 				className="password-update-btn-nextStep"
 				htmlType="submit"
+				loading={loading}
 			>
 				修改
 			</Button>

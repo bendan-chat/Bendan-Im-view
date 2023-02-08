@@ -1,8 +1,6 @@
-/* eslint-disable no-constant-condition */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { sendMailCode } from "@/api/modules/mail";
 import { store } from "@/redux";
-import { Button, Form, Input, message, Space } from "antd";
+import { Button, Form, Input } from "antd";
 import { useEffect, useRef, useState } from "react";
 
 interface IProps {
@@ -14,7 +12,7 @@ export default function SendMailCodeForm({ setPasswordForm }: IProps) {
 	const [hiddenNextStep, setHiddenNextStep] = useState<boolean>(true);
 	const [time, setTime] = useState<number>(0); //倒计时时间
 	const [inputValid, setInputValid] = useState<boolean>(false);
-	const [code, setCode] = useState<number>(123456); //验证码
+	const [code, setCode] = useState<number>(); //验证码
 
 	const timeRef = useRef<NodeJS.Timeout>(); //设置延时器
 	const { email } = store.getState().global.userInfo;
@@ -41,10 +39,20 @@ export default function SendMailCodeForm({ setPasswordForm }: IProps) {
 	 * 发送验证码点击事件
 	 */
 	const sendCodeCilck = () => {
-		// sendMailCode();
 		setSendCode(false);
 		setTime(60);
+		let num = Random();
+		console.log("验证码", num);
+		setCode(Number.parseInt(num));
+		sendMailCode(email, num);
 	};
+
+	/**
+	 * 生成验证码 【100000，999999】
+	 */
+	function Random() {
+		return (Math.round(Math.random() * (999999 - 100000)) + 100000).toString();
+	}
 
 	/**
 	 * 更新输入框的内容
@@ -73,7 +81,7 @@ export default function SendMailCodeForm({ setPasswordForm }: IProps) {
 			<span>请通过邮箱 {<span style={{ color: "#febe79" }}>{email}</span>} 接收邮箱验证码</span>
 			<div className="password-update-box">
 				<Form autoComplete="off">
-					<Form.Item name="验证码" validateStatus={inputValid ? "error" : ""} help={inputValid ? "验证码错误请检查！！！" : ""}>
+					<Form.Item validateStatus={inputValid ? "error" : ""} help={inputValid ? "验证码不正确请检查！！！" : ""}>
 						<Input
 							placeholder="请输入验证码......"
 							allowClear={true}

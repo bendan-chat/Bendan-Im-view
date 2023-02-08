@@ -24,7 +24,7 @@ const PasswordModal = (props: Props) => {
 
 	return (
 		<Modal
-			width={900}
+			width={500}
 			footer={null}
 			title={<span style={{ fontWeight: "bold", fontSize: "20px" }}>修改密码</span>}
 			open={isModalVisible}

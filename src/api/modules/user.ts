@@ -82,3 +82,16 @@ export const getFriend = (userId: number) => {
 export const updateUser = (userinfo: Account.UserInfo) => {
 	return http.post<Account.FriendUser>(AdminServer.User + `/update`, userinfo, { headers: { noLoading: true } });
 };
+
+/**
+ * 修改用户密码
+ * @param userinfo
+ * @returns
+ */
+export const updateUserPassword = (userId: number, password: string) => {
+	const params = {
+		userId,
+		password
+	};
+	return http.post<boolean>(AdminServer.User + `/updatePassword`, params, { headers: { noLoading: true } });
+};
