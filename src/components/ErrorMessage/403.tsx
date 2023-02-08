@@ -1,12 +1,11 @@
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
-import { HOME_URL } from "@/config/config";
 import "./index.less";
 
 const NotAuth = () => {
 	const navigate = useNavigate();
 	const goHome = () => {
-		navigate(HOME_URL);
+		navigate("/login");
 	};
 	return (
 		<Result
@@ -15,7 +14,7 @@ const NotAuth = () => {
 			subTitle="Sorry, you are not authorized to access this page."
 			extra={
 				<Button type="primary" onClick={goHome}>
-					回到 首页
+					回到 登录页
 				</Button>
 			}
 		/>

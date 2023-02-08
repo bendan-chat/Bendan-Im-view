@@ -1,12 +1,11 @@
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
-import { HOME_URL } from "@/config/config";
 import "./index.less";
 
 const NotFound = () => {
 	const navigate = useNavigate();
 	const goHome = () => {
-		navigate(HOME_URL);
+		navigate("/login");
 	};
 	return (
 		<Result
@@ -15,7 +14,7 @@ const NotFound = () => {
 			subTitle="Sorry, the page you visited does not exist."
 			extra={
 				<Button type="primary" onClick={goHome}>
-					回到 首页
+					回到 登录页
 				</Button>
 			}
 		/>

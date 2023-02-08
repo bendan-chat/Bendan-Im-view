@@ -87,8 +87,23 @@ const LoginForm = (props: any) => {
 				</Space>
 			</Form.Item>
 			<div>
-				<a>忘记密码</a>
-				<a style={{ float: "right" }}>立即注册</a>
+				<Button
+					type="link"
+					onClick={() => {
+						navigate("/login/forget");
+					}}
+				>
+					忘记密码
+				</Button>
+				<Button
+					type="link"
+					style={{ float: "right" }}
+					onClick={() => {
+						navigate("/login/register");
+					}}
+				>
+					立即注册
+				</Button>
 			</div>
 		</Form>
 	);
