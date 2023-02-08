@@ -1,13 +1,14 @@
 import { sendMailCode } from "@/api/modules/mail";
-import { store } from "@/redux";
+import { hiddenPassPort } from "@/utils/util";
 import { Button, Form, Input } from "antd";
 import { useEffect, useRef, useState } from "react";
 
 interface IProps {
-	setPasswordForm: (passwordForm: boolean) => void;
+	email: string;
+	onNextStep: (passwordForm: boolean) => void;
 }
 
-export default function SendMailCodeForm({ setPasswordForm }: IProps) {
+export default function SendMailCodeForm({ onNextStep, email }: IProps) {
 	const [sendCode, setSendCode] = useState<boolean>(true);
 	const [hiddenNextStep, setHiddenNextStep] = useState<boolean>(true);
 	const [time, setTime] = useState<number>(0); //倒计时时间
@@ -15,7 +16,6 @@ export default function SendMailCodeForm({ setPasswordForm }: IProps) {
 	const [code, setCode] = useState<number>(); //验证码
 
 	const timeRef = useRef<NodeJS.Timeout>(); //设置延时器
-	const { email } = store.getState().global.userInfo;
 
 	/**
 	 * 倒计时
@@ -71,14 +71,17 @@ export default function SendMailCodeForm({ setPasswordForm }: IProps) {
 		}
 	};
 
+	/**
+	 * 下一步
+	 */
 	const nextStepClick = () => {
-		setPasswordForm(false);
+		onNextStep(false);
 	};
 
 	return (
 		<div className="password-update-parent">
 			<span style={{ fontWeight: "bold", fontSize: "15px" }}>邮箱验证</span>
-			<span>请通过邮箱 {<span style={{ color: "#febe79" }}>{email}</span>} 接收邮箱验证码</span>
+			<span>请通过邮箱 {<span style={{ color: "#febe79" }}>{hiddenPassPort(email)}</span>} 接收邮箱验证码</span>
 			<div className="password-update-box">
 				<Form autoComplete="off">
 					<Form.Item validateStatus={inputValid ? "error" : ""} help={inputValid ? "验证码不正确请检查！！！" : ""}>

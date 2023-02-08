@@ -1,34 +1,36 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import SwitchDark from "@/components/SwitchDark";
-import loginLeft from "@/assets/images/login_left1.png";
-import logo from "@/assets/images/logo.png";
+import BackToLogin from "@/components/BackToLogin";
 
 import "./index.less";
-import { Button } from "antd";
-import { useNavigate } from "react-router-dom";
+import ForgetBefore from "./components/ForgetBefore";
+import ForgetCheckBefore from "./components/ForgetCheckBefore";
 
 export default function ForgetPassword() {
-	const navigate = useNavigate();
+	const [select, setSelect] = useState<number>(0);
+	const [passport, setPassport] = useState<string>("");
 
+	/**
+	 * 匹配忘记密码div
+	 * @param key
+	 * @returns
+	 */
+	const matchForgetDiv = (key: number) => {
+		switch (key) {
+			case 0:
+				return <ForgetBefore setPassport={setPassport} setSelect={setSelect} />;
+			case 2:
+				return <ForgetCheckBefore email={passport} />;
+		}
+	};
 	return (
 		<div className="login-container">
+			<BackToLogin />
 			<SwitchDark />
 			<div className="login-box">
-				<div className="login-left">
-					<img src={loginLeft} alt="login" />
-				</div>
 				<div className="login-form">
-					<div className="login-logo">
-						<img className="login-icon" src={logo} alt="logo" />
-						<span className="logo-text"></span>
-					</div>
-					<Button
-						onClick={() => {
-							navigate("/login");
-						}}
-					>
-						返回登录页
-					</Button>
+					<div className="forget-div">{matchForgetDiv(select)}</div>
 				</div>
 			</div>
 		</div>

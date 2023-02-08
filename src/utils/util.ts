@@ -187,3 +187,25 @@ export function randomNum(min: number, max: number): number {
 	let num = Math.floor(Math.random() * (min - max) + max);
 	return num;
 }
+
+/**
+ * 隐藏身份信息中间细节
+ * @param k PassPort
+ * @returns hiddenPassPort
+ */
+export function hiddenPassPort(k: string) {
+	let len = k.length;
+
+	// 常量
+	const isEvenNum = len % 2 == 0;
+	let stars = "*";
+	let saveLen = Math.ceil(len / 4);
+
+	let resHeader = k.substring(0, saveLen);
+	let resTail = k.substring(len - saveLen + 1, len + 1);
+	let starsLen = isEvenNum ? len - saveLen * 2 : len - saveLen * 2 + 1;
+	for (let i = 0; i <= starsLen; i++) {
+		stars = stars + "*";
+	}
+	return resHeader + stars + resTail;
+}

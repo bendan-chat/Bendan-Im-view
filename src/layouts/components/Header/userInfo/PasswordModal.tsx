@@ -5,6 +5,7 @@ import SendMailCodeForm from "./components/SendMailCodeForm";
 import PasswordForm from "./components/PasswordForm";
 
 import "./PasswordModal.less";
+import { store } from "@/redux";
 
 interface Props {
 	innerRef: Ref<{ showModal: () => void }>;
@@ -13,6 +14,7 @@ interface Props {
 const PasswordModal = (props: Props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [passwordForm, setPasswordForm] = useState<boolean>(true);
+	const { email } = store.getState().global.userInfo;
 
 	useImperativeHandle(props.innerRef, () => ({
 		showModal
@@ -36,7 +38,7 @@ const PasswordModal = (props: Props) => {
 		>
 			<div className="password-update-Modal">
 				{passwordForm ? (
-					<SendMailCodeForm setPasswordForm={setPasswordForm} />
+					<SendMailCodeForm email={email} onNextStep={setPasswordForm} />
 				) : (
 					<PasswordForm setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
 				)}
