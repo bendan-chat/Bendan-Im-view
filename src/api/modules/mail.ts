@@ -12,7 +12,7 @@ export const sendMailCode = (email: string, randomNum: string) => {
 		email,
 		randomNum
 	};
-	return http.get(AdminServer.Mail + `/sendMailCode`, params, { headers: { noLoading: true } });
+	return http.get<number>(AdminServer.Mail + `/sendMailCode`, params, { headers: { noLoading: true } });
 };
 
 /**

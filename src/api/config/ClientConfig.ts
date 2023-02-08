@@ -20,6 +20,16 @@ const config = {
 	// 跨域时候允许携带凭证
 	withCredentials: true
 };
+const passUrl: string[] = [AdminServer.User + "/login"];
+
+const matchUrl = (url: string) => {
+	let num = passUrl.indexOf(url);
+	if (num > -1) {
+		return true;
+	} else {
+		return false;
+	}
+};
 
 class RequestHttp {
 	service: AxiosInstance;
@@ -40,11 +50,11 @@ class RequestHttp {
 				// * 如果当前请求不需要显示 loading,在api服务中通过指定的第三个参数: { headers: { noLoading: true } }来控制不显示loading，参见loginApi
 				config.headers!.noLoading || showFullScreenLoading();
 				// * 放行登录接口
-				let loginUrl: string | undefined = config.url;
-				const token: string = store.getState().global.token;
-				if (loginUrl === AdminServer.User + "/login") {
+				let url: string | undefined = config.url;
+				if (matchUrl(url!)) {
 					return config;
 				}
+				const token: string = store.getState().global.token;
 				const bearerToken: string = "Bearer " + token;
 				return { ...config, headers: { ...config.headers, Authorization: bearerToken } };
 			},

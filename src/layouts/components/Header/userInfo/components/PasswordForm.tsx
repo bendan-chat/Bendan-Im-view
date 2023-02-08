@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Button, Form, Input, message } from "antd";
 import { CheckCircleTwoTone } from "@ant-design/icons";
-import { store } from "@/redux";
 import { logout, updateUserPassword } from "@/api/modules/user";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "@/redux/modules/global/action";
 interface IProps {
+	userId: number;
 	setPasswordForm: (passwordForm: boolean) => void;
 	setIsModalVisible: (isModalVisible: boolean) => void;
 }
 
-export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IProps) {
+export default function PasswordForm({ setPasswordForm, setIsModalVisible, userId }: IProps) {
 	const [numValid, setNumValid] = useState<number>(0);
 
 	const [password, setPassword] = useState<string>("");
@@ -18,12 +18,11 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible }: IPr
 	const [iconColor, setIconColor] = useState<boolean[]>([true, true]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	const { userId } = store.getState().global.userInfo;
 	const navigate = useNavigate();
 
 	const updatePassword = () => {
 		setLoading(true);
-		updateUserPassword(Number.parseInt(userId), password).then(async res => {
+		updateUserPassword(userId, password).then(async res => {
 			if (res.success) {
 				message.success("修改密码成功！！！");
 				setToken("");

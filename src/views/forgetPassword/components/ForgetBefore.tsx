@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Button, Input } from "antd";
 
@@ -31,7 +32,8 @@ export default function ForgetBefore({ setSelect, setPassport }: IProps) {
 			<Input
 				allowClear={true}
 				onChange={onChangeInput}
-				placeholder={match ? "输入账号......" : "输入邮箱......"}
+				placeholder={"输入邮箱......"}
+				// placeholder={match ? "输入账号......" : "输入邮箱......"}
 				className="forget-form-input"
 			/>
 			<Button
@@ -49,13 +51,13 @@ export default function ForgetBefore({ setSelect, setPassport }: IProps) {
 			>
 				下一步
 			</Button>
-			<a
+			{/* <a
 				onClick={() => {
 					setMatch(!match);
 				}}
 			>
 				{match ? "使用邮箱找回密码" : "使用账号找回密码"}
-			</a>
+			</a> */}
 		</>
 	);
 }

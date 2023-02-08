@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from "react";
 
 interface IProps {
 	email: string;
+	onUserId: (userId: number) => void;
 	onNextStep: (passwordForm: boolean) => void;
 }
 
-export default function SendMailCodeForm({ onNextStep, email }: IProps) {
+export default function SendMailCodeForm({ onNextStep, email, onUserId }: IProps) {
 	const [sendCode, setSendCode] = useState<boolean>(true);
 	const [hiddenNextStep, setHiddenNextStep] = useState<boolean>(true);
 	const [time, setTime] = useState<number>(0); //倒计时时间
@@ -44,7 +45,13 @@ export default function SendMailCodeForm({ onNextStep, email }: IProps) {
 		let num = Random();
 		console.log("验证码", num);
 		setCode(Number.parseInt(num));
-		sendMailCode(email, num);
+		sendMailCode(email, num).then(res => {
+			if (res.success) {
+				onUserId(res.data);
+			} else {
+				return Promise.reject();
+			}
+		});
 	};
 
 	/**

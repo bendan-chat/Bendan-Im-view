@@ -8,6 +8,7 @@ interface IProps {
 
 export default function ForgetCheckBefore({ email }: IProps) {
 	const [match, setMatch] = useState<boolean>(true);
+	const [myUserId, setMyUserId] = useState<number>();
 
 	return (
 		<>
@@ -15,9 +16,9 @@ export default function ForgetCheckBefore({ email }: IProps) {
 				<span style={{ color: "#2b8dfd" }}>| </span>找回密码
 			</span>
 			{match ? (
-				<SendMailCodeForm email={email} onNextStep={setMatch} />
+				<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setMatch} />
 			) : (
-				<PasswordForm setIsModalVisible={setMatch} setPasswordForm={setMatch} />
+				<PasswordForm userId={myUserId!} setIsModalVisible={setMatch} setPasswordForm={setMatch} />
 			)}
 		</>
 	);

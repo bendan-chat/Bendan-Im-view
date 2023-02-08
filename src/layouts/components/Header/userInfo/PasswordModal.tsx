@@ -14,6 +14,7 @@ interface Props {
 const PasswordModal = (props: Props) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [passwordForm, setPasswordForm] = useState<boolean>(true);
+	const [myUserId, setMyUserId] = useState<number>();
 	const { email } = store.getState().global.userInfo;
 
 	useImperativeHandle(props.innerRef, () => ({
@@ -38,9 +39,9 @@ const PasswordModal = (props: Props) => {
 		>
 			<div className="password-update-Modal">
 				{passwordForm ? (
-					<SendMailCodeForm email={email} onNextStep={setPasswordForm} />
+					<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setPasswordForm} />
 				) : (
-					<PasswordForm setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
+					<PasswordForm userId={myUserId!} setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
 				)}
 			</div>
 		</Modal>
