@@ -4,6 +4,7 @@ import { CheckCircleTwoTone } from "@ant-design/icons";
 import { logout, updateUserPassword } from "@/api/modules/user";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "@/redux/modules/global/action";
+import { isPasswordCheck2, isPasswordCheck3 } from "@/utils/util";
 interface IProps {
 	userId: number;
 	setPasswordForm: (passwordForm: boolean) => void;
@@ -44,13 +45,9 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 		setIconColor([true, true]);
 		setNumValid(0);
 		setPassword(value);
-		// 密码包含 数字,英文(不区分大小写),字符中的三种以上，长度6-20
-		let three = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,16}";
-		// 至少包含数字跟字母，可以有字符
-		let two = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,16}$";
-		if (value.match(two) != null) {
+		if (isPasswordCheck2(value)) {
 			setIconColor([false, true]);
-			if (value.match(three) != null) {
+			if (isPasswordCheck3(value)) {
 				setIconColor([false, false]);
 			}
 		}

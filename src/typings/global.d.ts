@@ -1,5 +1,3 @@
-//# Server
-
 // * Menu
 declare namespace Menu {
 	interface MenuOptions {

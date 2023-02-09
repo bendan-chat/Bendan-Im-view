@@ -209,3 +209,25 @@ export function hiddenPassPort(k: string) {
 	}
 	return resHeader + stars + resTail;
 }
+
+/**
+ * 密码包含 数字,英文(不区分大小写),字符中的三种以上，长度8-16
+ * 满足三种条件
+ * @param password 密码
+ * @returns 如果满足返回 true; 反之
+ */
+export function isPasswordCheck3(password: string) {
+	let three = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,16}";
+	return password.match(three) != null;
+}
+
+/**
+ * 至少包含数字跟字母，可以有字符
+ * 满足二种条件
+ * @param password
+ * @returns 如果满足返回 true; 反之
+ */
+export function isPasswordCheck2(password: string) {
+	let two = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,16}$";
+	return password.match(two) != null;
+}

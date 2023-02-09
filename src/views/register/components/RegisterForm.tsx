@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Account } from "@/api/interface/user";
 import { listAllUsernames, registerUser } from "@/api/modules/user";
+import { isPasswordCheck2 } from "@/utils/util";
 import { Button, Form, Input, message, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -63,6 +64,8 @@ export default function RegisterForm() {
 			if (res.success) {
 				navigate("/login");
 				message.success("注册成功，试试登录吧 🎉🎉🎉");
+			} else {
+				return Promise.reject(new Error("服务器异常，请联系管理员"));
 			}
 		});
 	};
@@ -114,7 +117,17 @@ export default function RegisterForm() {
 						{
 							required: true,
 							message: "请输入你的密码！！！"
-						}
+						},
+						() => ({
+							validator(_, value) {
+								if (value != null || value != "") {
+									if (isPasswordCheck2(value)) {
+										return Promise.resolve();
+									}
+									return Promise.reject(new Error("密码必须包含 数字和英文(不区分大小写)或字符，长度8-16"));
+								}
+							}
+						})
 					]}
 					hasFeedback
 				>
