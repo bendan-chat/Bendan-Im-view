@@ -4,7 +4,6 @@ import { ConfigProvider } from "antd";
 import { connect } from "react-redux";
 import { setLanguage } from "@/redux/modules/global/action";
 import { HashRouter } from "react-router-dom";
-// import AuthRouter from "@/routers/utils/authRouter";
 import Router from "@/routers/index";
 import useTheme from "@/hooks/useTheme";
 import zhCN from "antd/lib/locale/zh_CN";
@@ -38,6 +37,7 @@ const App = (props: any) => {
 	}, [language]);
 
 	// function beforeunload(e: any) {
+	// 	console.log("removeEventListener");
 	// 	let confirmationMessage = "你确定离开此页面吗?";
 	// 	(e || window.event).returnValue = confirmationMessage;
 	// 	return confirmationMessage;
@@ -59,9 +59,7 @@ const App = (props: any) => {
 	return (
 		<HashRouter>
 			<ConfigProvider locale={i18nLocale} componentSize={assemblySize}>
-				{/* <AuthRouter> */}
 				<Router />
-				{/* </AuthRouter> */}
 			</ConfigProvider>
 		</HashRouter>
 	);

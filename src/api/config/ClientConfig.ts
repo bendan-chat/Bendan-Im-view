@@ -55,13 +55,7 @@ class RequestHttp {
 					return config;
 				}
 				const token: string = store.getState().global.token;
-				let bearerToken: string;
-				if (token == "") {
-					bearerToken = "Bearer " + token;
-				} else {
-					bearerToken = token;
-				}
-				return { ...config, headers: { ...config.headers, Authorization: bearerToken } };
+				return { ...config, headers: { ...config.headers, Authorization: token } };
 			},
 			(error: AxiosError) => {
 				return Promise.reject(error);

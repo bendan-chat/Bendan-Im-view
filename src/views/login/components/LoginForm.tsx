@@ -33,7 +33,8 @@ const LoginForm = (props: any) => {
 			setLoading(true);
 			const { data, msg, code } = await login(loginForm);
 			if (code === ResultEnum.SUCCESS) {
-				setToken(data?.oauth2AccessTokenResponse?.accessToken?.tokenValue);
+				let token = data?.oauth2AccessTokenResponse?.accessToken?.tokenValue;
+				setToken("Bearer " + token);
 				setUserInfo({
 					userId: data.userId,
 					username: loginForm.username,

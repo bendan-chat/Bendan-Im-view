@@ -14,15 +14,15 @@ const FriendList = () => {
 	interface ModalProps {
 		showModal: () => void;
 	}
-	const { username } = store.getState().global.userInfo;
-	const addFriendRef = useRef<ModalProps>(null);
 
 	const [data, setData] = useState<Account.ChatUser[]>([]);
 	const [search, setSearch] = useState<string>("");
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
-	const [count, setCount] = useState(5);
+	const [count, setCount] = useState(0);
 
+	const { username } = store.getState().global.userInfo;
+	const addFriendRef = useRef<ModalProps>(null);
 	const navigate = useNavigate();
 	// * 更新输入框的内容
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,6 +38,11 @@ const FriendList = () => {
 		});
 	}, []);
 
+	useEffect(() => {
+		subscribe("newFriendBadge", () => {
+			setCount(count + 1);
+		});
+	}, []);
 	/**
 	 * 加载好友列表
 	 *
@@ -105,7 +110,7 @@ const FriendList = () => {
 			<div hidden={searchHidden} className="friends-chat">
 				<div style={{ paddingLeft: "5px" }}>新的朋友</div>
 				<div className={`${selectId === -1 ? "active-user-newFriends" : "newFriends"}`} onClick={newFriends}>
-					<Badge offset={[5, 15]} count={count}>
+					<Badge size="small" offset={[1, 16]} count={count}>
 						<Avatar style={{ background: "#fa9d3b", marginTop: "15px" }} src={<UserAddOutlined />} size="large" />
 					</Badge>
 					<span style={{ marginTop: "24px", marginLeft: "11px" }}>新的朋友</span>

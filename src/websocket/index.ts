@@ -11,8 +11,10 @@ let timer: any;
 
 // ws 初始化
 const createWsClient = () => {
+	if (ws == undefined || ws == null) {
+		ws = new WebSocket(import.meta.env.VITE_WEB_SOCKET_URL);
+	}
 	// socket 数据
-	ws = new WebSocket(import.meta.env.VITE_WEB_SOCKET_URL);
 	ws.onopen = function (e) {
 		console.log("onopen: ", e);
 		socketOpen = true;
@@ -33,18 +35,9 @@ const createWsClient = () => {
 	};
 	ws.onclose = function (e) {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
-		// socketOpen = false;
-		// timer = setInterval(() => {
-		// 	if (!socketOpen) {
-		// 		createWsClient();
-		// 	} else {
-		// 		timer = null;
-		// 	}
-		// }, 50000);
 	};
 	ws.onmessage = function (e) {
 		let res = JSON.parse(e.data);
-		// 处理微标
 		handleWsMsg(res);
 	};
 };
@@ -54,8 +47,8 @@ const createWsClient = () => {
  * @param res
  */
 const handleWsMsg = (res: any) => {
+	// eslint-disable-next-line no-empty
 	if (res == 2) {
-		console.log();
 	} else if (res === 5) {
 		publish("addNewFriend", res);
 	} else if (res === 6) {
@@ -90,11 +83,9 @@ const sendHeartbeat = () => {
 /**
  * 关闭 Web Socket
  */
-// const closeConnection = () => {
-// 	closeTimer = setTimeout(() => {
-// 		ws?.close();
-// 	}, 100000);
-// };
+const closeConnection = () => {
+	ws?.close();
+};
 
 /**
  * 重连 Web Socket

@@ -5,12 +5,19 @@ import { sendMessage } from "@/websocket";
 
 import "./NewFriendList.less";
 import { SendCode } from "@/websocket/type";
+import { useEffect } from "react";
+import { publish } from "@/websocket/helper/MyEventEmitter";
 
 interface IProps {
 	newFriend: Chat.NewFriendList;
 }
 
 export default function NewFriendList({ newFriend }: IProps) {
+	useEffect(() => {
+		if (newFriend.status == 1) {
+			publish("newFriendBadge", 1);
+		}
+	}, []);
 	/**
 	 * 添加按钮点击事情
 	 */

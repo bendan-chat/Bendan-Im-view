@@ -24,14 +24,10 @@ export const listRecord = (params: RecordPage) => {
  * @param page
  * @param username
  * */
-export interface ChatPage extends ReqPage {
-	/**
-	 * 用户id
-	 */
-	username: string;
-}
-
-export const listChat = (params: ChatPage) => {
+export const listChat = (userId: number) => {
+	const params = {
+		userId
+	};
 	return http.get<Account.ChatUser[]>(AdminServer.Chat + `/getChatList`, params, { headers: { noLoading: true } });
 };
 

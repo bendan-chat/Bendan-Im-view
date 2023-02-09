@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
 import { setToAvatar } from "@/redux/modules//chat/action";
-import { List, Avatar, Input, Space } from "antd";
+import { List, Avatar, Input, Space, Badge } from "antd";
 import { PlusSquareTwoTone } from "@ant-design/icons";
 
-import { ChatPage, listChat } from "@/api/modules/chat";
+import { listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
 import { subscribe } from "@/websocket/helper/MyEventEmitter";
 
@@ -15,33 +16,30 @@ import "./ChatList.less";
 const ChatList = () => {
 	const navigate = useNavigate();
 	const [data, setData] = useState<Account.ChatUser[]>([]);
-	const { username } = store.getState().global.userInfo;
+	const { userId } = store.getState().global.userInfo;
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
+	const [count, setCount] = useState(0);
+
+	subscribe("wsMsg", (e: any) => {
+		console.log("ChatList", e);
+	});
 
 	useEffect(() => {
 		subscribe("agreeNewFriend", () => {
-			loadChatList(username);
+			loadChatList();
 		});
 	}, []);
 
 	useEffect(() => {
-		loadChatList(username);
+		loadChatList();
 	}, []);
 
 	/**
 	 * 加载聊天列表
-	 *
-	 * @param username
 	 */
-	function loadChatList(username: string) {
-		const params: ChatPage = {
-			cur: 1,
-			limit: 100,
-			order: true,
-			username: username
-		};
-		listChat(params).then(res => {
+	function loadChatList() {
+		listChat(userId).then(res => {
 			if (res.success) {
 				setData(res.data);
 			}
@@ -55,7 +53,7 @@ const ChatList = () => {
 	function HandlerLastMsg(item: Account.ChatUser) {
 		// * 0文本，1图片，2语音，3视频 , 4文件
 		let msg: string;
-		let msgTemp = splitUrlToFileName(item.lastMsg);
+		const msgTemp = splitUrlToFileName(item.lastMsg);
 		let msgSplit = msgTemp.split(".");
 		if (msgSplit.length == 1) {
 			msg = "str";
@@ -64,7 +62,7 @@ const ChatList = () => {
 		}
 		switch (msg!) {
 			case "str":
-				return msgTemp;
+				return msgTemp.length > 10 ? msgTemp.substring(0, 10) + "......" : msgTemp;
 			case "wav":
 				return "[语音]";
 			case "mp4":
@@ -120,7 +118,11 @@ const ChatList = () => {
 						>
 							<List.Item.Meta
 								className="index"
-								avatar={<Avatar src={item.avatar} size="large" />}
+								avatar={
+									<Badge size="small" offset={[2, 2]} count={5}>
+										<Avatar src={item.avatar} size="large" />
+									</Badge>
+								}
 								title={item.nickName}
 								description={HandlerLastMsg(item)}
 							/>
