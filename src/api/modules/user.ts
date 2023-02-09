@@ -80,7 +80,7 @@ export const getFriend = (userId: number) => {
  * @returns
  */
 export const updateUser = (userinfo: Account.UserInfo) => {
-	return http.post<Account.FriendUser>(AdminServer.User + `/update`, userinfo, { headers: { noLoading: true } });
+	return http.post<boolean>(AdminServer.User + `/update`, userinfo, { headers: { noLoading: true } });
 };
 
 /**
@@ -94,4 +94,18 @@ export const updateUserPassword = (userId: number, password: string) => {
 		password
 	};
 	return http.post<boolean>(AdminServer.User + `/updatePassword`, params, { headers: { noLoading: true } });
+};
+
+/**
+ * @name 查询所有用户名
+ */
+export const listAllUsernames = () => {
+	return http.get<string[]>(AdminServer.User + `/listAllUsernames`, { headers: { noLoading: true } });
+};
+
+/**
+ * @name 查询所有用户名
+ */
+export const registerUser = (userinfo: Account.UserInfoDetail) => {
+	return http.post<boolean>(AdminServer.User + `/registerUser`, userinfo);
 };

@@ -12,17 +12,11 @@ import ImgCrop from "antd-img-crop";
 import { updateUser } from "@/api/modules/user";
 import { setUserInfo } from "@/redux/modules/global/action";
 interface IProps {
-	setMyAvatar: (avatar: string) => void;
 	setModalVisible: (modalVisible: boolean) => void;
 }
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-	const reader = new FileReader();
-	reader.addEventListener("load", () => callback(reader.result as string));
-	reader.readAsDataURL(img);
-};
-
-export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
+export default function UploadAvatar({ setModalVisible }: IProps) {
 	const { userId, nickName, username, email } = store.getState().global.userInfo;
+
 	const props: UploadProps = {
 		name: "file",
 		showUploadList: false,
@@ -31,13 +25,12 @@ export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
 				console.log(info.file, info.fileList);
 			}
 			if (info.file.status === "done") {
-				message.success("更新成功！！！");
+				message.success("上传成功！！！");
 			} else if (info.file.status === "error") {
 				message.error(`${info.file.name} file upload failed.`);
 			}
 		},
 		async customRequest(options: UploadRequestOption<any>) {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { action, data, file, filename, headers, onError, onProgress, onSuccess, withCredentials } = options;
 
 			const formData = new FormData();
@@ -87,7 +80,7 @@ export default function UploadAvatar({ setMyAvatar, setModalVisible }: IProps) {
 			imgWindow?.document.write(image.outerHTML);
 		}
 	};
-
+	// default
 	return (
 		<>
 			<ImgCrop rotate>

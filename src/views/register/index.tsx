@@ -13,8 +13,8 @@ export default function Register() {
 			<BackToLogin />
 			<SwitchDark />
 			<div className="login-box">
-				<div>
-					<span className="span-register-text">欢迎注册Bendan-Im</span>
+				<div className="register-div-parent">
+					<span className="register-span-text">欢迎注册Bendan-Im</span>
 					<RegisterForm />
 				</div>
 			</div>

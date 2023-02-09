@@ -74,6 +74,12 @@ export namespace Account {
 		 */
 		lastMsg: string;
 	}
+
+	export interface UserInfoDetail extends UserInfo {
+		password?: String;
+		roleIds: number[];
+	}
+
 	export interface UserInfo {
 		/**
 		 * 用户ID

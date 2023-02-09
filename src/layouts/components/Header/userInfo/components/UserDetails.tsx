@@ -19,7 +19,7 @@ interface ModalProps {
 const InfoModal = (props: Props) => {
 	const [data, setData] = useState<Account.UserInfo>();
 	const [modalVisible, setModalVisible] = useState(false);
-	const { username, avatar } = store.getState().global.userInfo;
+	const { username } = store.getState().global.userInfo;
 	const [myAvatar, setMyAvatar] = useState<string>("");
 	const userFromRef = useRef<ModalProps>(null);
 
@@ -97,7 +97,7 @@ const InfoModal = (props: Props) => {
 				</div>
 			</div>
 			<div className="btn-down-parent">
-				<UploadAvatar setModalVisible={setModalVisible} setMyAvatar={setMyAvatar} />
+				<UploadAvatar setModalVisible={setModalVisible} />
 				<Button
 					className="btn-down"
 					type="primary"

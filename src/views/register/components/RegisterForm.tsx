@@ -1,8 +1,9 @@
-import { AutoComplete, Button, Col, Form, Input, Radio, Row, Select, Upload } from "antd";
-import React, { useState } from "react";
-import { InboxOutlined } from "@ant-design/icons";
-
-const { Option } = Select;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Account } from "@/api/interface/user";
+import { listAllUsernames, registerUser } from "@/api/modules/user";
+import { Button, Form, Input, message, Radio } from "antd";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const formItemLayout = {
 	labelCol: {
@@ -29,165 +30,159 @@ const tailFormItemLayout = {
 };
 export default function RegisterForm() {
 	const [form] = Form.useForm();
-	const [autoCompleteResult, setAutoCompleteResult] = useState<string[]>([]);
+	const [usernames, setUsernames] = useState<string[]>([]);
+	const navigate = useNavigate();
+
+	/**
+	 * init 所有用户名
+	 */
+	useEffect(() => {
+		loadData();
+	}, []);
+
+	/**
+	 * 加载 所有用户名
+	 */
+	const loadData = async () => {
+		const { data } = await listAllUsernames();
+		setUsernames(data);
+	};
 
 	const onFinish = (values: any) => {
-		console.log("Received values of form: ", values);
+		const param: Account.UserInfoDetail = {
+			username: values.username,
+			nickName: values.nickName,
+			selfDescription: values.selfDescription,
+			password: values.password,
+			email: values.email,
+			phoneNumber: values.phoneNumber,
+			gender: values.gender,
+			roleIds: [1]
+		};
+		registerUser(param).then(res => {
+			if (res.success) {
+				navigate("/login");
+				message.success("注册成功，试试登录吧 🎉🎉🎉");
+			}
+		});
 	};
 
-	const prefixSelector = (
-		<Form.Item name="prefix" noStyle>
-			<Select style={{ width: 70 }}>
-				<Option value="86">+86</Option>
-				<Option value="87">+87</Option>
-			</Select>
-		</Form.Item>
-	);
-
-	const onWebsiteChange = (value: string) => {
-		if (!value) {
-			setAutoCompleteResult([]);
-		} else {
-			setAutoCompleteResult([".com", ".org", ".net"].map(domain => `${value}${domain}`));
-		}
-	};
-
-	const websiteOptions = autoCompleteResult.map(website => ({
-		label: website,
-		value: website
-	}));
-
-	const normFile = (e: any) => {
-		console.log("Upload event:", e);
-		if (Array.isArray(e)) {
-			return e;
-		}
-		return e?.fileList;
-	};
 	return (
-		<Form
-			{...formItemLayout}
-			form={form}
-			name="register"
-			onFinish={onFinish}
-			initialValues={{ residence: ["zhejiang", "hangzhou", "xihu"], prefix: "86" }}
-			style={{ maxWidth: 600 }}
-			scrollToFirstError
-		>
-			<Form.Item name="website" label="账户" rules={[{ required: true, message: "Please input website!" }]}>
-				<AutoComplete options={websiteOptions} onChange={onWebsiteChange} placeholder="website">
-					<Input />
-				</AutoComplete>
-			</Form.Item>
-
-			<Form.Item
-				name="email"
-				label="E-mail"
-				rules={[
-					{
-						type: "email",
-						message: "输入的不是 E-mail！！！"
-					},
-					{
-						required: true,
-						message: "请输入你的 E-mail！！！"
-					}
-				]}
-			>
-				<Input />
-			</Form.Item>
-
-			<Form.Item
-				name="password"
-				label="密码"
-				rules={[
-					{
-						required: true,
-						message: "请输入你的密码！！！"
-					}
-				]}
-				hasFeedback
-			>
-				<Input.Password />
-			</Form.Item>
-
-			<Form.Item
-				name="confirm"
-				label="确认密码"
-				dependencies={["password"]}
-				hasFeedback
-				rules={[
-					{
-						required: true,
-						message: "Please confirm your password!"
-					},
-					({ getFieldValue }) => ({
-						validator(_, value) {
-							if (!value || getFieldValue("password") === value) {
-								return Promise.resolve();
+		<div className="register-form">
+			<Form {...formItemLayout} form={form} name="register" onFinish={onFinish} scrollToFirstError>
+				<Form.Item
+					name="username"
+					label="账号"
+					rules={[
+						{ required: true, message: "请输入账号！！！" },
+						() => ({
+							validator(_, value) {
+								if (value != null || value != "") {
+									if (usernames.indexOf(value) == -1) {
+										return Promise.resolve();
+									}
+									return Promise.reject(new Error("当前账号已有人使用！！！"));
+								}
 							}
-							return Promise.reject(new Error("The two passwords that you entered do not match!"));
-						}
-					})
-				]}
-			>
-				<Input.Password />
-			</Form.Item>
-
-			<Form.Item
-				name="nickname"
-				label="昵称"
-				tooltip="What do you want others to call you?"
-				rules={[{ required: true, message: "Please input your nickname!", whitespace: true }]}
-			>
-				<Input />
-			</Form.Item>
-
-			<Form.Item name="phone" label="手机号" rules={[{ required: true, message: "Please input your phone number!" }]}>
-				<Input addonBefore={prefixSelector} style={{ width: "100%" }} />
-			</Form.Item>
-
-			<Form.Item name="gender" label="性别" rules={[{ required: true, message: "Please select gender!" }]}>
-				<Radio.Group>
-					<Radio value={0}>女</Radio>
-					<Radio value={1}>男</Radio>
-					<Radio value={-1}>未知</Radio>
-				</Radio.Group>
-			</Form.Item>
-
-			<Form.Item name="intro" label="个性签名" rules={[{ required: true, message: "Please input Intro" }]}>
-				<Input.TextArea showCount maxLength={100} />
-			</Form.Item>
-
-			<Form.Item label="头像">
-				<Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
-					<Upload.Dragger name="files" action="/upload.do">
-						<p className="ant-upload-drag-icon">
-							<InboxOutlined />
-						</p>
-						<p className="ant-upload-text">Click or drag file to this area to upload</p>
-						<p className="ant-upload-hint">Support for a single or bulk upload.</p>
-					</Upload.Dragger>
+						})
+					]}
+				>
+					<Input maxLength={20} allowClear={true} className="register-form-input" />
 				</Form.Item>
-			</Form.Item>
 
-			<Form.Item label="验证码" extra="We must make sure that your are a human.">
-				<Row gutter={8}>
-					<Col span={12}>
-						<Form.Item name="captcha" noStyle rules={[{ required: true, message: "Please input the captcha you got!" }]}>
-							<Input />
-						</Form.Item>
-					</Col>
-					<Col span={12}>
-						<Button>Get captcha</Button>
-					</Col>
-				</Row>
-			</Form.Item>
-			<Form.Item {...tailFormItemLayout}>
-				<Button type="primary" htmlType="submit">
-					Register
-				</Button>
-			</Form.Item>
-		</Form>
+				<Form.Item
+					name="email"
+					label="E-mail"
+					rules={[
+						{
+							type: "email",
+							message: "输入的不是 E-mail！！！"
+						},
+						{
+							required: true,
+							message: "请输入你的 E-mail！！！"
+						}
+					]}
+				>
+					<Input allowClear={true} className="register-form-input" />
+				</Form.Item>
+
+				<Form.Item
+					name="password"
+					label="密码"
+					rules={[
+						{
+							required: true,
+							message: "请输入你的密码！！！"
+						}
+					]}
+					hasFeedback
+				>
+					<Input.Password maxLength={16} allowClear={true} className="register-form-input" />
+				</Form.Item>
+
+				<Form.Item
+					name="confirm"
+					label="确认密码"
+					dependencies={["password"]}
+					hasFeedback
+					rules={[
+						{
+							required: true,
+							message: "请再输入一遍你的密码！！！"
+						},
+						{
+							min: 8,
+							message: "密码最小长度为8！！！"
+						},
+						{
+							max: 16,
+							message: "密码最大长度为16！！！"
+						},
+						({ getFieldValue }) => ({
+							validator(_, value) {
+								if (!value || getFieldValue("password") === value) {
+									return Promise.resolve();
+								}
+								return Promise.reject(new Error("前后密码不一致！！！"));
+							}
+						})
+					]}
+				>
+					<Input.Password maxLength={16} allowClear={true} className="register-form-input" />
+				</Form.Item>
+
+				<Form.Item
+					name="nickname"
+					label="昵称"
+					tooltip="你希望别人看到你是什么名字?"
+					rules={[{ required: true, message: "请输入你的昵称！！！", whitespace: true }]}
+				>
+					<Input maxLength={20} allowClear={true} className="register-form-input" />
+				</Form.Item>
+
+				<Form.Item name="phoneNumber" label="手机号" rules={[{ required: true, message: "请输入你的手机号！！！" }]}>
+					<Input allowClear={true} maxLength={11} className="register-form-input" style={{ width: "100%" }} />
+				</Form.Item>
+
+				<Form.Item name="gender" label="性别" rules={[{ required: true, message: "请选择你的性别！！！" }]}>
+					<Radio.Group>
+						<Radio value={0}>女</Radio>
+						<Radio value={1}>男</Radio>
+						<Radio value={-1}>未知</Radio>
+					</Radio.Group>
+				</Form.Item>
+
+				<Form.Item name="selfDescription" label="个性签名" tooltip="请用一句话描述一下自己">
+					<Input.TextArea allowClear={true} maxLength={100} className="register-form-input-textArea" />
+				</Form.Item>
+
+				<Form.Item {...tailFormItemLayout}>
+					<Button className="register-form-btn" type="primary" htmlType="submit">
+						注册
+					</Button>
+				</Form.Item>
+			</Form>
+		</div>
 	);
 }

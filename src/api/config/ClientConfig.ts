@@ -20,7 +20,7 @@ const config = {
 	// 跨域时候允许携带凭证
 	withCredentials: true
 };
-const passUrl: string[] = [AdminServer.User + "/login"];
+const passUrl: string[] = [AdminServer.User + "/login", AdminServer.User + "/listAllUsernames"];
 
 const matchUrl = (url: string) => {
 	let num = passUrl.indexOf(url);
@@ -55,7 +55,12 @@ class RequestHttp {
 					return config;
 				}
 				const token: string = store.getState().global.token;
-				const bearerToken: string = "Bearer " + token;
+				let bearerToken: string;
+				if (token == "") {
+					bearerToken = "Bearer " + token;
+				} else {
+					bearerToken = token;
+				}
 				return { ...config, headers: { ...config.headers, Authorization: bearerToken } };
 			},
 			(error: AxiosError) => {

@@ -49,7 +49,7 @@ export default function SendMailCodeForm({ onNextStep, email, onUserId }: IProps
 			if (res.success) {
 				onUserId(res.data);
 			} else {
-				return Promise.reject();
+				return Promise.reject(new Error("发送验证码失败！！！"));
 			}
 		});
 	};
