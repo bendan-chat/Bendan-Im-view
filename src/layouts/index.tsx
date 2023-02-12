@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { store } from "@/redux";
 import { Layout } from "antd";
 import LayoutFooter from "./components/Footer";
@@ -18,11 +19,12 @@ import "./index.less";
 const LayoutIndex = () => {
 	type MenuItem = Required<MenuProps>["items"][number];
 
+	const [chatNum, setChatNum] = useState<string>("");
+
 	const navigate = useNavigate();
 	const menuIconKey = store.getState().menu.menuIconKey;
 	const listMatch = store.getState().menu.listMatch;
 	const { id } = useParams();
-	const [chatNum, setChatNum] = useState<string>("");
 
 	// * icon 样式
 	const styleColor: CSSProperties | undefined = {

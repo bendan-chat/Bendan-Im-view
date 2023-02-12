@@ -2,7 +2,7 @@
 import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { listRecord, RecordPage } from "@/api/modules/chat";
+import { clearUnreadChatMsg, listRecord, RecordPage } from "@/api/modules/chat";
 import { store } from "@/redux";
 import { Spin } from "antd";
 
@@ -22,7 +22,7 @@ import { Chat, Message } from "@/api/interface/chat";
 import { SendCode, SendMessageProps } from "@/websocket/type";
 
 import "./index.less";
-import { subscribe } from "@/websocket/helper/MyEventEmitter";
+import { publish, subscribe } from "@/websocket/helper/MyEventEmitter";
 
 const ChatRoom = () => {
 	const { avatar, userId } = store.getState().global.userInfo;
@@ -34,7 +34,9 @@ const ChatRoom = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	subscribe("wsMsg", (e: any) => {
-		addMsg(e.detail);
+		if (e.detail.toId == userId) {
+			addMsg(e.detail);
+		}
 	});
 
 	// * 加载聊天记录
@@ -132,7 +134,12 @@ const ChatRoom = () => {
 
 	return (
 		<>
-			<div className="cr">
+			<div
+				className="cr"
+				onClick={() => {
+					publish("clearUnreadMsg", { fromId: userId, toId: toId });
+				}}
+			>
 				<div className="message-container">
 					<Spin spinning={loading} tip="Loading" size="large" style={{ width: "100%" }}>
 						<div>

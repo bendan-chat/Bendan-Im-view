@@ -75,3 +75,27 @@ export const delFriendAndChatRecord = (curUserId: number, addUserId: number) => 
 	};
 	return http.delete<boolean>(`${AdminServer.Chat}/delFriendAndChatRecord`, params, { headers: { noLoading: true } });
 };
+
+/**
+ * 清除未读消息状态
+ * @param newFriend
+ * @returns
+ */
+export const clearUnreadChatMsg = (curId: number, fromId: number) => {
+	const params = {
+		curId,
+		fromId
+	};
+	return http.post<boolean>(`${ChatServer.Record}/clearUnreadChatMsg`, params, { headers: { noLoading: true } });
+};
+
+/**
+ * 查询未读聊天记录
+ * @param page
+ * */
+export const getUnreadChatList = (curId: number) => {
+	const params = {
+		curId
+	};
+	return http.get<Chat.RecordData[]>(`${ChatServer.Record}/getUnreadChatList`, params, { headers: { noLoading: true } });
+};
