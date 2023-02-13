@@ -5,9 +5,18 @@
 .active-user {
 	background-color: #b1b1b1;
 }
-.chatList-chat {
-	overflow: auto;
-	height: calc(100vh - 60px);
+.list-item:hover {
+	background-color: rgb(196 196 196);
+}
+.click-active {
+	background-color: #b1b1b1;
+}
+.chat-list {
+	overflow: hidden;
+	height: calc(100vh - 68px);
+	width: 218px;
+	display: flex;
+	flex-direction: column;
 }
 .search-friend-class {
 	padding: 13px;
@@ -15,4 +24,27 @@
 }
 .ant-card-body {
 	background: #83beeb;
+}
+.list-item {
+	height: 66px;
+	border-bottom: 1px solid #f0f0f0;
+	display: flex;
+	align-items: center;
+	div {
+		cursor: pointer;
+	}
+}
+.list-item-text {
+	display: flex;
+	flex-direction: column;
+	margin-left: 15px;
+}
+.list-item-text-name {
+	font-size: 15px;
+	font-weight: 550;
+}
+.list-item-text-lastMsg {
+	font-size: 10px;
+	font-weight: 300;
+	margin-top: 3px;
 }

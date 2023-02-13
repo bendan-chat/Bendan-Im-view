@@ -17,8 +17,7 @@ const ChatList = () => {
 	const [chatUsers, setChatUsers] = useState<Account.ChatUser[]>([]);
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
-	const [counts, setCounts] = useState<number[]>([0, 1, 3]);
-	const [flag, setFlag] = useState<number>(0);
+	const [counts, setCounts] = useState<Map<number, number>>(new Map<number, number>());
 
 	const navigate = useNavigate();
 	const { userId } = store.getState().global.userInfo;
@@ -26,6 +25,10 @@ const ChatList = () => {
 	window.onbeforeunload = function () {
 		console.log();
 	};
+
+	useEffect(() => {
+		setCounts(counts);
+	}, [counts]);
 	/**
 	 * 初始加载聊天聊表
 	 */
@@ -81,6 +84,41 @@ const ChatList = () => {
 	}
 
 	/**
+	 * 加载聊天列表
+	 */
+	async function loadChatList() {
+		const { data } = await listChat(userId);
+		setChatUsers(data);
+	}
+
+	/**
+	 * 查询未读聊天记录
+	 */
+	async function loadUnreadChatList() {
+		const { data } = await getUnreadChatList(userId);
+		if (data.length > 0) {
+			data.map((value, index) => {
+				let fromId = value.fromId;
+				handlerBadgeByfromId(fromId);
+			});
+		}
+	}
+
+	/**
+	 * 处理微标数
+	 * @param fromId
+	 */
+	function handlerBadgeByfromId(fromId: number) {
+		if (counts.has(fromId)) {
+			counts.set(fromId, counts.get(fromId)! + 1);
+			setCounts(counts);
+		} else {
+			counts.set(fromId, 1);
+			setCounts(counts);
+		}
+	}
+
+	/**
 	 * 聊天消息处理
 	 * @param item
 	 */
@@ -109,45 +147,6 @@ const ChatList = () => {
 	}
 
 	/**
-	 * 加载聊天列表
-	 */
-	async function loadChatList() {
-		const { data } = await listChat(userId);
-		// setCounts(new Array(data.length).fill(0));
-		setChatUsers(data);
-	}
-
-	/**
-	 * 查询未读聊天记录
-	 */
-	async function loadUnreadChatList() {
-		const { data } = await getUnreadChatList(userId);
-		if (data.length > 0) {
-			data.map((value, index) => {
-				let fromId = value.fromId;
-				handlerBadgeByfromId(fromId);
-			});
-		}
-	}
-
-	/**
-	 * 处理微标数
-	 * @param fromId
-	 */
-	function handlerBadgeByfromId(fromId: number) {
-		// let v = margeKv(fromId, 1);
-		// let countMix = getItemById(fromId, userCounts);
-		// if (countMix != undefined && countMix.length > 0) {
-		// 	let index = userCounts.indexOf(countMix);
-		// 	let { id, count } = partKv(countMix);
-		// 	userCounts.splice(index, 1, margeKv(id, ++count));
-		// } else {
-		// 	userCounts.push(v);
-		// }
-		// setUserCounts(userCounts);
-	}
-
-	/**
 	 * 搜索 好友
 	 */
 	function onSearch() {
@@ -170,7 +169,12 @@ const ChatList = () => {
 	 */
 	function clearUserBadge(userId: number, toId: number) {
 		try {
-			console.log();
+			if (counts.has(toId)) {
+				counts.delete(toId);
+				setCounts(counts);
+				clearUnreadChatMsg(userId, toId);
+			}
+			setCounts(counts);
 		} catch (error) {
 			console.log(error);
 		}
@@ -184,7 +188,7 @@ const ChatList = () => {
 					<PlusSquareTwoTone onClick={ClickGroupChat} style={{ fontSize: "30px" }} />
 				</Space>
 			</div>
-			<div hidden={searchHidden} className="chatList-chat">
+			<div hidden={searchHidden} className="chat-list">
 				<List
 					itemLayout="horizontal"
 					dataSource={chatUsers}
@@ -201,7 +205,7 @@ const ChatList = () => {
 							<List.Item.Meta
 								className="index"
 								avatar={
-									<Badge size="small" offset={[2, 1]} count={counts[flag + 1]}>
+									<Badge size="small" offset={[2, 1]} count={counts.get(item.id)}>
 										<Avatar src={item.avatar} size="large" />
 									</Badge>
 								}
