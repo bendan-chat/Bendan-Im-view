@@ -24,7 +24,6 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	// * 更新输入框的内容
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		let v = e.target.value;
-		console.log(v);
 		if (v == "") {
 			setSendStattus(false);
 		}

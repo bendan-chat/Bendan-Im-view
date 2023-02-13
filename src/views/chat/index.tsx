@@ -22,7 +22,7 @@ import { Chat, Message } from "@/api/interface/chat";
 import { SendCode, SendMessageProps } from "@/websocket/type";
 
 import "./index.less";
-import { publish, subscribe } from "@/websocket/helper/MyEventEmitter";
+import { publish, subscribe, unsubscribe } from "@/websocket/helper/MyEvent";
 
 const ChatRoom = () => {
 	const { avatar, userId } = store.getState().global.userInfo;
@@ -47,12 +47,17 @@ const ChatRoom = () => {
 	// 	}
 	// };
 	useEffect(() => {
-		subscribe("wsMsg", (e: any) => {
-			if (e.detail.toId == userId) {
-				addMsg(e.detail);
-			}
-		});
-	}, []);
+		subscribe("wsMsg", wsMsgListener);
+		return () => {
+			unsubscribe("wsMsg", wsMsgListener);
+		};
+	}, [msgList]);
+
+	function wsMsgListener(e: any) {
+		if (e.detail.toId == userId) {
+			addMsg(e.detail);
+		}
+	}
 
 	/**
 	 * 加载聊天记录
@@ -159,11 +164,11 @@ const ChatRoom = () => {
 			>
 				<div className="message-container">
 					<Spin spinning={loading} tip="Loading" size="large" style={{ width: "100%" }}>
-						<div>
+						<ol>
 							{msgList.map((item, index) => {
 								return matchMsgType(item, index);
 							})}
-						</div>
+						</ol>
 					</Spin>
 				</div>
 				<div className="chatFooter">

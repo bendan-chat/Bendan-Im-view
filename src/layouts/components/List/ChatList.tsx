@@ -8,7 +8,7 @@ import { PlusSquareTwoTone } from "@ant-design/icons";
 
 import { clearUnreadChatMsg, getUnreadChatList, listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
-import { subscribe } from "@/websocket/helper/MyEventEmitter";
+import { subscribe } from "@/websocket/helper/MyEvent";
 
 import "./ChatList.less";
 import { setToAvatar } from "@/redux/modules/chat/action";

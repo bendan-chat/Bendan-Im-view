@@ -6,7 +6,7 @@ import { List, Avatar, Input, Space, Button, Badge } from "antd";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
 import { AddFriend } from "./components/AddFriend";
-import { subscribe } from "@/websocket/helper/MyEventEmitter";
+import { subscribe } from "@/websocket/helper/MyEvent";
 
 import "./FriendList.less";
 

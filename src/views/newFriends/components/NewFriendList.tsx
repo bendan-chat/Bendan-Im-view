@@ -6,7 +6,7 @@ import { sendMessage } from "@/websocket";
 import "./NewFriendList.less";
 import { SendCode } from "@/websocket/type";
 import { useEffect } from "react";
-import { publish } from "@/websocket/helper/MyEventEmitter";
+import { publish } from "@/websocket/helper/MyEvent";
 
 interface IProps {
 	newFriend: Chat.NewFriendList;
