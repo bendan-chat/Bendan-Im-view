@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
-import { Input, Button } from "antd";
+import { Input, Button, Tooltip } from "antd";
 import { sendMessage } from "@/websocket";
 import { SendCode, SendMessageProps } from "@/websocket/type";
 import ChatAudioButton from "./ChatAudioButton";
@@ -18,12 +18,17 @@ interface IProps {
 export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	const { userId } = store.getState().global.userInfo;
 	const [msg, setMsg] = useState<string>("");
-	const [sendStattus, setSendStattus] = useState<boolean>(true);
+	const [sendStattus, setSendStattus] = useState<boolean>(false);
 	const inputRef = React.createRef<HTMLInputElement>();
 
 	// * 更新输入框的内容
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setMsg(e.target.value);
+		let v = e.target.value;
+		console.log(v);
+		if (v == "") {
+			setSendStattus(false);
+		}
+		setMsg(v);
 	};
 
 	// * 发送消息 点击事件
@@ -36,9 +41,8 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			sendContent: msg
 		};
 		let text = msgObj.sendContent;
-		console.log("text", msgObj);
-		if (text == null || text == undefined || text!.match(/^\s+$/) != null) {
-			setSendStattus(false);
+		if (text == null || text == undefined || text!.match(/^\s+$/) != null || text == "") {
+			setSendStattus(true);
 			return;
 		} else {
 			// 发送到后台
@@ -66,19 +70,22 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			<div className="input-edge-div">
 				<TextArea
 					value={msg}
-					className="textArea"
+					className={sendStattus ? "textArea-bottom" : ""}
 					style={{ height: 150 }}
 					allowClear
 					onChange={onChange}
 					onClick={() => {
-						setSendStattus(true);
+						setSendStattus(false);
 					}}
 					ref={inputRef}
 					onPressEnter={sendMsgClick}
 				/>
-				<Button onClick={sendMsgClick} type="primary" className="right-send-btn">
-					发送
-				</Button>
+				<Tooltip placement="topRight" title={"不能发送空白消息"} open={sendStattus}>
+					<Button onClick={sendMsgClick} type="primary" className="right-send-btn">
+						发送
+					</Button>
+				</Tooltip>
+
 				<ChatAudioButton className="left-voice-btn" addMsgList={addMsgList} toId={toId} />
 			</div>
 		</div>
