@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { store } from "@/redux";
 import { publish } from "./helper/MyEvent";
 import { SendCode, SendMessageProps } from "./type";

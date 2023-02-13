@@ -2,7 +2,7 @@
 import ChatBottomSend from "./send/ChatBottomSend";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { clearUnreadChatMsg, listRecord, RecordPage } from "@/api/modules/chat";
+import { listRecord, RecordPage } from "@/api/modules/chat";
 import { store } from "@/redux";
 import { Spin } from "antd";
 
@@ -17,7 +17,6 @@ import ChatLeftMsg from "./msg/str/ChatLeftMsg";
 import ChatRightVoiceMsg from "./msg/voice/ChatRightVoiceMsg";
 import ChatLeftVoiceMsg from "./msg/voice/ChatLeftVoiceMsg";
 
-import { ws } from "@/websocket";
 import { Chat, Message } from "@/api/interface/chat";
 import { SendCode, SendMessageProps } from "@/websocket/type";
 
@@ -33,19 +32,6 @@ const ChatRoom = () => {
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	// ws!.onmessage = function (e) {
-	// 	let res = JSON.parse(e.data);
-	// 	if (res == 2) {
-	// 		console.log();
-	// 	} else if (res === 5) {
-	// 		// publish("addNewFriend", res);
-	// 	} else if (res === 6) {
-	// 		// publish("agreeNewFriend", res);
-	// 	} else {
-	// 		addMsg(res);
-	// 		// publish("wsMsg", res);
-	// 	}
-	// };
 	useEffect(() => {
 		subscribe("wsMsg", wsMsgListener);
 		return () => {

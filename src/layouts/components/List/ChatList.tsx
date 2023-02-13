@@ -8,7 +8,7 @@ import { PlusSquareTwoTone } from "@ant-design/icons";
 
 import { clearUnreadChatMsg, getUnreadChatList, listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
-import { subscribe } from "@/websocket/helper/MyEvent";
+import { subscribe, unsubscribe } from "@/websocket/helper/MyEvent";
 
 import "./ChatList.less";
 import { setToAvatar } from "@/redux/modules/chat/action";
@@ -17,46 +17,15 @@ const ChatList = () => {
 	const [chatUsers, setChatUsers] = useState<Account.ChatUser[]>([]);
 	const [selectId, setSelectId] = useState<number>();
 	const [searchHidden, setSearchHidden] = useState<boolean>(false);
-	const countsMap = useRef<Map<number, number>>(new Map<number, number>());
-	const [counts, setCounts] = useState<Map<number, number>>(new Map<number, number>());
+	const [counts, setCounts] = useState<number[]>([0, 1, 3]);
+	const [flag, setFlag] = useState<number>(0);
+
 	const navigate = useNavigate();
 	const { userId } = store.getState().global.userInfo;
 
-	/**
-	 * 捕获ws消息 处理成微标
-	 */
-	// subscribe("wsMsg", (e: any) => {
-	// 	let fromId = Number.parseInt(e.detail.fromId);
-	// 	let toId = Number.parseInt(e.detail.toId);
-	// 	let lastMsg = e.detail.sendContent as string;
-	// 	console.log("subscribewsMsg" + fromId, lastMsg);
-	// 	handlerBadgeByfromId(fromId);
-	// 	// handlerLastMsg(lastMsg, toId);
-	// });
-
-	/**
-	 * 清空微标
-	 */
-	useEffect(() => {
-		subscribe("clearUnreadMsg", (e: any) => {
-			const { fromId, toId } = e.detail;
-			let fromIdNum = Number.parseInt(fromId);
-			let toIdNum = Number.parseInt(toId);
-			if (!Number.isNaN(fromIdNum) && !Number.isNaN(toIdNum)) {
-				clearUserBadge(fromIdNum, toIdNum);
-			}
-		});
-	}, []);
-
-	/**
-	 * 捕获新增好友消息 然后更新
-	 */
-	useEffect(() => {
-		subscribe("agreeNewFriend", () => {
-			loadChatList();
-		});
-	}, []);
-
+	window.onbeforeunload = function () {
+		console.log();
+	};
 	/**
 	 * 初始加载聊天聊表
 	 */
@@ -64,6 +33,52 @@ const ChatList = () => {
 		loadChatList();
 		loadUnreadChatList();
 	}, []);
+	// useEffect listener
+	useEffect(() => {
+		subscribe("clearUnreadMsg", clearUnreadMsgListener);
+		return () => {
+			unsubscribe("clearUnreadMsg", clearUnreadMsgListener);
+		};
+	}, []);
+	useEffect(() => {
+		subscribe("agreeNewFriend", agreeNewFriendListener);
+		return () => {
+			unsubscribe("agreeNewFriend", agreeNewFriendListener);
+		};
+	}, []);
+	useEffect(() => {
+		subscribe("wsMsg", wsMsgListener);
+		return () => {
+			unsubscribe("wsMsg", wsMsgListener);
+		};
+	}, []);
+
+	/**
+	 * 捕获ws消息 处理成微标
+	 */
+	function wsMsgListener(e: any) {
+		let fromId = Number.parseInt(e.detail.fromId);
+		handlerBadgeByfromId(fromId);
+	}
+
+	/**
+	 * 清空微标
+	 */
+	function clearUnreadMsgListener(e: any) {
+		const { fromId, toId } = e.detail;
+		let fromIdNum = Number.parseInt(fromId);
+		let toIdNum = Number.parseInt(toId);
+		if (!Number.isNaN(fromIdNum) && !Number.isNaN(toIdNum)) {
+			clearUserBadge(fromIdNum, toIdNum);
+		}
+	}
+
+	/**
+	 * 捕获新增好友消息 ·
+	 */
+	function agreeNewFriendListener() {
+		loadChatList();
+	}
 
 	/**
 	 * 聊天消息处理
@@ -98,6 +113,7 @@ const ChatList = () => {
 	 */
 	async function loadChatList() {
 		const { data } = await listChat(userId);
+		// setCounts(new Array(data.length).fill(0));
 		setChatUsers(data);
 	}
 
@@ -107,7 +123,7 @@ const ChatList = () => {
 	async function loadUnreadChatList() {
 		const { data } = await getUnreadChatList(userId);
 		if (data.length > 0) {
-			data.map(value => {
+			data.map((value, index) => {
 				let fromId = value.fromId;
 				handlerBadgeByfromId(fromId);
 			});
@@ -119,16 +135,16 @@ const ChatList = () => {
 	 * @param fromId
 	 */
 	function handlerBadgeByfromId(fromId: number) {
-		if (counts.has(fromId)) {
-			setCounts(counts.set(fromId, counts.get(fromId)! + 1));
-		} else {
-			setCounts(counts.set(fromId, 1));
-		}
-		// if (countsMap.current.has(fromId)) {
-		// 	countsMap.current.set(fromId, countsMap.current.get(fromId)! + 1);
+		// let v = margeKv(fromId, 1);
+		// let countMix = getItemById(fromId, userCounts);
+		// if (countMix != undefined && countMix.length > 0) {
+		// 	let index = userCounts.indexOf(countMix);
+		// 	let { id, count } = partKv(countMix);
+		// 	userCounts.splice(index, 1, margeKv(id, ++count));
 		// } else {
-		// 	countsMap.current.set(fromId, 1);
+		// 	userCounts.push(v);
 		// }
+		// setUserCounts(userCounts);
 	}
 
 	/**
@@ -154,11 +170,7 @@ const ChatList = () => {
 	 */
 	function clearUserBadge(userId: number, toId: number) {
 		try {
-			if (counts.has(toId)) {
-				counts.delete(toId);
-				setCounts(counts);
-				clearUnreadChatMsg(userId, toId);
-			}
+			console.log();
 		} catch (error) {
 			console.log(error);
 		}
@@ -189,8 +201,7 @@ const ChatList = () => {
 							<List.Item.Meta
 								className="index"
 								avatar={
-									// <Badge size="small" offset={[2, 1]} count={countsMap.current.get(item.id)}>
-									<Badge size="small" offset={[2, 1]} count={counts.get(item.id)}>
+									<Badge size="small" offset={[2, 1]} count={counts[flag + 1]}>
 										<Avatar src={item.avatar} size="large" />
 									</Badge>
 								}
