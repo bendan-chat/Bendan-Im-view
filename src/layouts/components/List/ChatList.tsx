@@ -25,22 +25,14 @@ const ChatList = () => {
 	/**
 	 * 捕获ws消息 处理成微标
 	 */
-	subscribe("wsMsg", (e: any) => {
-		let fromId = Number.parseInt(e.detail.fromId);
-		let toId = Number.parseInt(e.detail.toId);
-		let lastMsg = e.detail.sendContent as string;
-		console.log("subscribewsMsg" + fromId, lastMsg);
-		handlerBadgeByfromId(fromId);
-		// handlerLastMsg(lastMsg, toId);
-	});
-
-	useEffect(() => {
-		console.log("counts");
-	}, [countsMap]);
-
-	useEffect(() => {
-		console.log("countsMap");
-	}, [counts]);
+	// subscribe("wsMsg", (e: any) => {
+	// 	let fromId = Number.parseInt(e.detail.fromId);
+	// 	let toId = Number.parseInt(e.detail.toId);
+	// 	let lastMsg = e.detail.sendContent as string;
+	// 	console.log("subscribewsMsg" + fromId, lastMsg);
+	// 	handlerBadgeByfromId(fromId);
+	// 	// handlerLastMsg(lastMsg, toId);
+	// });
 
 	/**
 	 * 清空微标

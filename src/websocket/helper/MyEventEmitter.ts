@@ -1,7 +1,6 @@
 /**
  * CustomEvent 缓存避免过多创建CustomEvent
  */
-const eventMap = new Map<string, CustomEvent>();
 
 function subscribe(eventName: string, listener: EventListenerOrEventListenerObject) {
 	document.addEventListener(eventName, listener);
@@ -12,13 +11,7 @@ function unsubscribe(eventName: string, listener: EventListenerOrEventListenerOb
 }
 
 function publish(eventName: string, data: any) {
-	let event: CustomEvent;
-	if (eventMap.has(eventName)) {
-		console.log(eventName, "存在用缓存");
-		event = eventMap.get(eventName)!;
-	} else {
-		event = new CustomEvent(eventName, { detail: data });
-	}
+	let event: CustomEvent = new CustomEvent(eventName, { detail: data });
 	document.dispatchEvent(event);
 }
 

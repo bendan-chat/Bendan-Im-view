@@ -22,6 +22,5 @@ export interface SendMessageProps {
 	fromId?: number;
 	toId?: number;
 	sendContent?: string;
-	userId?: number;
 	length?: number;
 }

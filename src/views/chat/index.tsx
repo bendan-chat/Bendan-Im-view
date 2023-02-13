@@ -33,13 +33,30 @@ const ChatRoom = () => {
 	const [msgList, setMsgList] = useState<SendMessageProps[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 
-	subscribe("wsMsg", (e: any) => {
-		if (e.detail.toId == userId) {
-			addMsg(e.detail);
-		}
-	});
+	// ws!.onmessage = function (e) {
+	// 	let res = JSON.parse(e.data);
+	// 	if (res == 2) {
+	// 		console.log();
+	// 	} else if (res === 5) {
+	// 		// publish("addNewFriend", res);
+	// 	} else if (res === 6) {
+	// 		// publish("agreeNewFriend", res);
+	// 	} else {
+	// 		addMsg(res);
+	// 		// publish("wsMsg", res);
+	// 	}
+	// };
+	useEffect(() => {
+		subscribe("wsMsg", (e: any) => {
+			if (e.detail.toId == userId) {
+				addMsg(e.detail);
+			}
+		});
+	}, []);
 
-	// * 加载聊天记录
+	/**
+	 * 加载聊天记录
+	 */
 	useEffect(() => {
 		const params: RecordPage = {
 			cur: 1,

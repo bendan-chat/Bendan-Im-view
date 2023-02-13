@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { store } from "@/redux";
 import { Input, Button } from "antd";
@@ -34,7 +35,9 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			toId: toId,
 			sendContent: msg
 		};
-		if (msgObj.sendContent === null || msgObj.sendContent === undefined || msgObj.sendContent === "") {
+		let text = msgObj.sendContent;
+		console.log("text", msgObj);
+		if (text == null || text == undefined || text!.match(/^\s+$/) != null) {
 			setSendStattus(false);
 			return;
 		} else {
@@ -62,12 +65,9 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 			</div>
 			<div className="input-edge-div">
 				<TextArea
-					bordered={false}
-					status={sendStattus ? "" : "warning"}
 					value={msg}
 					className="textArea"
 					style={{ height: 150 }}
-					placeholder=""
 					allowClear
 					onChange={onChange}
 					onClick={() => {

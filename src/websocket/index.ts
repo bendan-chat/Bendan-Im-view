@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Ws } from "@/api/interface/chat";
 import { store } from "@/redux";
 import { publish } from "./helper/MyEventEmitter";
 import { SendCode, SendMessageProps } from "./type";
@@ -7,7 +6,6 @@ import { SendCode, SendMessageProps } from "./type";
 let ws: WebSocket | null;
 let socketOpen: boolean = false;
 let wsEvent: CustomEvent;
-let timer: any;
 
 // ws 初始化
 const createWsClient = () => {
@@ -16,7 +14,7 @@ const createWsClient = () => {
 	}
 	// socket 数据
 	ws.onopen = function (e) {
-		console.log("onopen: ", e);
+		console.log("websocket建立连接: ", e);
 		socketOpen = true;
 		// 建立连接通道
 		const { userId } = store.getState().global.userInfo;
@@ -30,11 +28,14 @@ const createWsClient = () => {
 		// closeConnection();
 	};
 	ws.onerror = function (e) {
-		console.log("onerror: ", e);
+		console.log("websocket 出现异常: ", e);
 		reconnect();
 	};
 	ws.onclose = function (e) {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
+	};
+	window.onbeforeunload = function () {
+		closeConnection();
 	};
 	ws.onmessage = function (e) {
 		let res = JSON.parse(e.data);

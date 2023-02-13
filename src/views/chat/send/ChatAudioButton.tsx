@@ -98,7 +98,7 @@ function ChatAudioButton({ className, addMsgList, toId }: IProps) {
 				onMouseUp={onMouseUp}
 				onMouseDown={onMouseDown}
 				type="primary"
-				className="right-bottom-btn-Stop"
+				className={className}
 			>
 				{audioBtu}
 			</Button>
