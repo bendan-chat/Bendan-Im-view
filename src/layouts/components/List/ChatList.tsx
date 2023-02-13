@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { store } from "@/redux";
 import { useNavigate } from "react-router-dom";
 import { Account } from "@/api/interface/user";
-import { List, Avatar, Input, Space, Badge } from "antd";
-import { PlusSquareTwoTone } from "@ant-design/icons";
+import { List, Avatar, Input, Space, Badge, AutoComplete } from "antd";
 
 import { clearUnreadChatMsg, getUnreadChatList, listChat } from "@/api/modules/chat";
 import { splitUrlToFileName } from "@/utils/util";
@@ -15,8 +14,8 @@ import { setToAvatar } from "@/redux/modules/chat/action";
 
 const ChatList = () => {
 	const [chatUsers, setChatUsers] = useState<Account.ChatUser[]>([]);
+	const [options, setOptions] = useState<{ label: JSX.Element }[]>([]);
 	const [selectId, setSelectId] = useState<number>();
-	const [searchHidden, setSearchHidden] = useState<boolean>(false);
 	const [counts, setCounts] = useState<Map<number, number>>(new Map<number, number>());
 
 	const navigate = useNavigate();
@@ -149,18 +148,39 @@ const ChatList = () => {
 	/**
 	 * 搜索 好友
 	 */
-	function onSearch() {
-		setSearchHidden(true);
-	}
-	function onBlur() {
-		setSearchHidden(false);
-	}
-
-	/**
-	 * 创建群聊
-	 */
-	function ClickGroupChat() {
-		console.log("ClickGroupChat");
+	function onSearch(value: string) {
+		let res: { label: JSX.Element }[] = [];
+		if (!value) {
+			res = [];
+		} else {
+			let filter = chatUsers
+				.filter(v => {
+					if (v.nickName?.includes(value)) {
+						return v;
+					}
+				})
+				.map(item => {
+					return {
+						label: (
+							<>
+								<List.Item
+									className={`${selectId === item.id ? "active-user" : ""}`}
+									onClick={() => {
+										navigate("/chat" + "/" + item.id);
+										clearUserBadge(userId, item.id);
+										setSelectId(item.id);
+										store.dispatch(setToAvatar(item.avatar as string));
+									}}
+								>
+									<List.Item.Meta avatar={<Avatar src={item.avatar} size="large" />} title={item.nickName} />
+								</List.Item>
+							</>
+						)
+					};
+				});
+			res = filter;
+		}
+		setOptions(res);
 	}
 
 	/**
@@ -179,16 +199,20 @@ const ChatList = () => {
 			console.log(error);
 		}
 	}
-
 	return (
 		<div>
 			<div className="search-friend-class">
 				<Space>
-					<Input size="small" placeholder="搜索" allowClear onClick={onSearch} onBlur={onBlur} />
-					<PlusSquareTwoTone onClick={ClickGroupChat} style={{ fontSize: "30px" }} />
+					<AutoComplete
+						allowClear={true}
+						style={{ width: 200 }}
+						onSearch={onSearch}
+						placeholder="搜索聊天列表......"
+						options={options}
+					/>
 				</Space>
 			</div>
-			<div hidden={searchHidden} className="chat-list">
+			<div className="chat-list">
 				<List
 					itemLayout="horizontal"
 					dataSource={chatUsers}
@@ -203,7 +227,6 @@ const ChatList = () => {
 							}}
 						>
 							<List.Item.Meta
-								className="index"
 								avatar={
 									<Badge size="small" offset={[2, 1]} count={counts.get(item.id)}>
 										<Avatar src={item.avatar} size="large" />

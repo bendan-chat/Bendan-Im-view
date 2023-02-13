@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { store } from "@/redux";
 import { Account } from "@/api/interface/user";
-import { List, Avatar, Input, Space, Button, Badge } from "antd";
+import { List, Avatar, Space, Button, Badge, AutoComplete } from "antd";
 import { FriendParams, getFriends } from "@/api/modules/user";
 import { UserAddOutlined } from "@ant-design/icons";
 import { AddFriend } from "./components/AddFriend";
@@ -15,19 +15,15 @@ const FriendList = () => {
 		showModal: () => void;
 	}
 
-	const [data, setData] = useState<Account.ChatUser[]>([]);
-	const [search, setSearch] = useState<string>("");
+	const [friends, setFriends] = useState<Account.ChatUser[]>([]);
 	const [selectId, setSelectId] = useState<number>();
-	const [searchHidden, setSearchHidden] = useState<boolean>(false);
+	const [options, setOptions] = useState<{ label: JSX.Element }[]>([]);
 	const [count, setCount] = useState(0);
 
 	const { username } = store.getState().global.userInfo;
 	const addFriendRef = useRef<ModalProps>(null);
 	const navigate = useNavigate();
-	// * 更新输入框的内容
-	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setSearch(e.target.value);
-	};
+
 	useEffect(() => {
 		loadFriends(username);
 	}, []);
@@ -54,7 +50,7 @@ const FriendList = () => {
 		};
 		getFriends(params).then(res => {
 			if (res.success) {
-				setData(res.data);
+				setFriends(res.data);
 			}
 		});
 	}
@@ -69,15 +65,37 @@ const FriendList = () => {
 	/**
 	 * 搜索 好友
 	 */
-	function onSearch() {
-		console.log(search);
-		setSearchHidden(true);
-	}
-	/**
-	 * 输入框 鼠标移出事件
-	 */
-	function onBlur() {
-		setSearchHidden(false);
+	function onSearch(value: string) {
+		let res: { label: JSX.Element }[] = [];
+		if (!value) {
+			res = [];
+		} else {
+			let filter = friends
+				.filter(v => {
+					if (v.nickName?.includes(value)) {
+						return v;
+					}
+				})
+				.map(item => {
+					return {
+						label: (
+							<>
+								<List.Item
+									className={`${selectId === item.id ? "active-user" : ""}`}
+									onClick={() => {
+										navigate("/friend" + "/" + item.id);
+										setSelectId(item.id);
+									}}
+								>
+									<List.Item.Meta className="index" avatar={<Avatar src={item.avatar} size="large" />} title={item.nickName} />
+								</List.Item>
+							</>
+						)
+					};
+				});
+			res = filter;
+		}
+		setOptions(res);
 	}
 	/**
 	 * 新的好友点击事情
@@ -91,14 +109,12 @@ const FriendList = () => {
 		<div>
 			<div className="search-friend-class">
 				<Space>
-					<Input
-						onChange={onChange}
-						value={search}
-						size="small"
-						placeholder="搜索"
-						allowClear
-						onClick={onSearch}
-						onBlur={onBlur}
+					<AutoComplete
+						allowClear={true}
+						style={{ width: 160 }}
+						onSearch={onSearch}
+						placeholder="搜索聊天好友......"
+						options={options}
 					/>
 					<Button onClick={addUser} type="primary" shape="circle">
 						<UserAddOutlined />
@@ -107,7 +123,7 @@ const FriendList = () => {
 				</Space>
 			</div>
 			<br />
-			<div hidden={searchHidden} className="friends-chat">
+			<div className="friends-chat">
 				<div style={{ paddingLeft: "5px" }}>新的朋友</div>
 				<div className={`${selectId === -1 ? "active-user-newFriends" : "newFriends"}`} onClick={newFriends}>
 					<Badge size="small" offset={[1, 16]} count={count}>
@@ -119,7 +135,7 @@ const FriendList = () => {
 				<div style={{ paddingLeft: "5px" }}>好友</div>
 				<List
 					itemLayout="horizontal"
-					dataSource={data}
+					dataSource={friends}
 					renderItem={item => (
 						<List.Item
 							className={`${selectId === item.id ? "active-user" : ""}`}
