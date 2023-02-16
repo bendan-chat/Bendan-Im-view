@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { SmileTwoTone } from "@ant-design/icons";
 import { Tooltip } from "antd";
 
@@ -9,10 +9,12 @@ const emjoys =
 	"😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 😗 😙 😚 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 😳 🤪 😵 😡 😠 🤬 😷 🤒 🤕 🤢 🤮 🤧 😇 🤠 🤡 🤥 🤫 🤭 🧐 🤓 😈 👿 👹 👺 💀 👻 👽 🤖 💩 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🤲 👐 🙌 👏 🤝 👍 👎 👊 ✊ 🤛 🤜 🤞 ✌️ 🤟 🤘 👌 👈 👉 👆 👇 ☝️ ✋ 🤚 🖐 🖖 👋 🤙 💪 🖕 ✍️ 🙏";
 const emjoyList = emjoys.split(" ");
 interface IProps {
+	msg: string;
 	setMsg: (msg: any) => void;
 }
 
-export default function EmjoyIcon({ setMsg }: IProps) {
+export default function EmjoyIcon({ setMsg, msg }: IProps) {
+	const [open, setOpen] = useState<boolean>();
 	/**
 	 * 处理表情
 	 * @returns
@@ -26,7 +28,8 @@ export default function EmjoyIcon({ setMsg }: IProps) {
 					key={i}
 					onClick={() => {
 						console.log(i);
-						setMsg(emjoyList[i]);
+						setMsg(msg + emjoyList[i]);
+						setOpen(false);
 					}}
 				>
 					{" " + emjoyList[i] + " "}
@@ -41,13 +44,14 @@ export default function EmjoyIcon({ setMsg }: IProps) {
 				placement="topLeft"
 				trigger="click"
 				color="#dedede"
+				open={open}
 				title={
 					<>
 						<div className="emjoy-list-div-parent">{buildEmjoysSpan()}</div>
 					</>
 				}
 			>
-				<SmileTwoTone className="emjoy-left-icon" />
+				<SmileTwoTone onClick={() => setOpen(true)} className="emjoy-left-icon" />
 			</Tooltip>
 		</>
 	);
