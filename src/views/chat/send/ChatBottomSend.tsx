@@ -79,7 +79,7 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 	return (
 		<div className="footer-body">
 			<div className="multi-div">
-				<EmjoyIcon />
+				<EmjoyIcon setMsg={setMsg} />
 				<FileUploadIcon addMsgList={addMsgList} toId={toId} />
 				<PhoneIcon />
 			</div>

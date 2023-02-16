@@ -47,6 +47,16 @@ const AuthRouter: Array<RouteObject> = [
 					title: "朋友",
 					key: "friend"
 				}
+			},
+			{
+				path: "/files",
+				element: lazyLoad(React.lazy(() => import("@/views/fileList"))),
+				// element: ,
+				meta: {
+					requiresAuth: true,
+					title: "文件列表",
+					key: "files"
+				}
 			}
 		]
 	}

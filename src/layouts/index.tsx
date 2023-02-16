@@ -10,7 +10,7 @@ import { MenuProps, Menu } from "antd";
 import Sider from "antd/lib/layout/Sider";
 import { Content } from "antd/lib/layout/layout";
 import UserStatus from "./components/Header/userInfo/UserStatus";
-import { MessageOutlined, TeamOutlined } from "@ant-design/icons";
+import { MessageOutlined, TeamOutlined, FolderOpenOutlined } from "@ant-design/icons";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 import ChatList from "./components/List/ChatList";
 
@@ -62,6 +62,16 @@ const LayoutIndex = () => {
 				store.dispatch(setMenuIconKey("12"));
 			}
 		}
+		// ,
+		// {
+		// 	label: "",
+		// 	key: "13",
+		// 	icon: <FolderOpenOutlined style={menuIconKey == "13" ? styleColor : style} />,
+		// 	onClick: () => {
+		// 		navigate("/files");
+		// 		store.dispatch(setMenuIconKey("13"));
+		// 	}
+		// }
 	];
 
 	return (
