@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Account } from "@/api/interface/user";
 import { getFriend } from "@/api/modules/user";
@@ -7,11 +8,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { ManOutlined, UserOutlined, WomanOutlined } from "@ant-design/icons";
 
-import "./index.less";
 import { store } from "@/redux";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
 import { setToAvatar } from "@/redux/modules/chat/action";
 import { delFriendAndChatRecord } from "@/api/modules/chat";
+
+import "./index.less";
 
 export default function index() {
 	const { id } = useParams();
@@ -34,11 +36,11 @@ export default function index() {
 	function matchSex(sex: number) {
 		switch (sex) {
 			case 1:
-				return <ManOutlined className="sex-icon" style={{ color: "blue" }} />;
+				return " 男";
 			case -1:
-				return <UserOutlined className="sex-icon" />;
+				return " 未知";
 			case 0:
-				return <WomanOutlined className="sex-icon" style={{ color: "red" }} />;
+				return " 女";
 		}
 	}
 
@@ -64,28 +66,23 @@ export default function index() {
 	}
 	return (
 		<div className="friend-parant">
-			<div className="friend-up">
-				<img className="friend-up-1" src={data?.avatar as string} />
-				<div className="friend-up-2">
-					<div className="friend-up-2-up-1">
-						<span className="name-font">{"昵称: " + data?.nickName}</span>
-						{matchSex(data?.gender as number)}
-					</div>
-					<div className="friend-up-2-up-2">
-						<span className="name-font">{"账号: " + data?.username}</span>
-					</div>
+			<div className="friend-card">
+				<div className="photo">
+					<img src={data?.avatar as string} />
 				</div>
-			</div>
-			<div className="friend-down">
-				<div className="friend-down-1">
-					<Button onClick={toChat} className="btn-css" type="primary" size="large">
+				<h1 style={{ fontSize: "30px" }}>{`${data?.nickName}`}</h1>
+				<h2 style={{ fontSize: "20px" }}>{`账号： ${data?.username}`}</h2>
+				<p>
+					<UserOutlined className="sex-icon" /> {"  " + matchSex(data?.gender as number)}
+				</p>
+				<p className="friend-self-des">{`${data?.selfDescription}`}</p>
+				<div className="friend-down">
+					<a className="friend-down-send" onClick={toChat}>
 						发送消息
-					</Button>
-				</div>
-				<div className="friend-down-2">
-					<Button onClick={delUser} className="btn-css" type="primary" size="large" danger>
+					</a>
+					<a className="friend-down-del" style={{ color: "red" }} onClick={delUser}>
 						删除好友
-					</Button>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -18,7 +18,7 @@ export default function ForgetCheckBefore({ email }: IProps) {
 			{match ? (
 				<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setMatch} />
 			) : (
-				<PasswordForm userId={myUserId!} setIsModalVisible={setMatch} setPasswordForm={setMatch} />
+				<PasswordForm email={email} userId={myUserId!} setIsModalVisible={setMatch} setPasswordForm={setMatch} />
 			)}
 		</>
 	);

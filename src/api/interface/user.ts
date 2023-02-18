@@ -51,6 +51,10 @@ export namespace Account {
 		 * 性别   (-1 未知 0 女性  1 男性)
 		 */
 		gender: -1 | 0 | 1;
+		/**
+		 * 个人描述
+		 */
+		selfDescription?: String;
 	}
 	export interface ChatUser {
 		/**

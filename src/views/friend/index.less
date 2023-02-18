@@ -1,3 +1,4 @@
+/* stylelint-disable custom-property-pattern */
 .friend-parant {
 	display: flex;
 	flex-direction: column;
@@ -7,65 +8,138 @@
 	height: 100%;
 	background: #ffffff;
 }
-.friend-up {
-	display: flex;
-	flex-direction: row;
+* {
+	padding: 0;
+	margin: 0;
 }
-.friend-up-1 {
-	width: 500px;
-	height: 400px;
+html {
+	font-size: 14px;
 }
-.friend-up-2 {
-	width: 500px;
-	height: 400px;
-	background: #abe7ff;
-}
-.friend-up-2-up-1 {
+body {
 	display: flex;
 	align-items: center;
-	height: 200px;
-	border-bottom: 1px solid black;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	font-family: Montserrat, sans-serif, Arial, "Microsoft Yahei";
+	background-color: #2c3e50;
 }
-.friend-up-2-up-2 {
+.friend-card {
+	position: relative;
 	display: flex;
+
+	/* flex 子元素 纵向排列 */
+	flex-direction: column;
+	flex-grow: 0;
+
+	/* flex布局下元素不按比例缩放 */
 	flex-shrink: 0;
 	align-items: center;
-	height: 200px;
+	justify-content: flex-start;
+	width: 800px;
+	height: 500px;
+	margin: 20px;
+	overflow: hidden;
+
+	/* 同意给字体价格颜色 */
+	color: #e8f6fd;
+	background-color: #7591ad;
+	border-radius: 20px;
+
+	/* 增加个阴影 */
+	box-shadow: 0 0 30px #2c2c2c;
+}
+.photo {
+	position: absolute;
+	top: 0;
+
+	/* 默认为放大 */
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 0%;
+	transition: 0.5s;
+}
+.photo::before {
+	/* 通过before增加渐变背景实现遮罩，让文字默认看起来清晰一些 */
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	content: "";
+	background-image: linear-gradient(to top, #333333, transparent);
+}
+.friend-card:hover .photo::before {
+	/* 缩小时隐藏 */
+	display: none;
+}
+.photo img {
+	/* 图片高宽均为100% */
+
+	/* 然后按照cover缩放，裁切长边 */
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.friend-card:hover .photo {
+	top: 30px;
+
+	/* 鼠标移上变小 */
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	box-shadow: 0 0 7px #111111;
+}
+h1 {
+	position: absolute;
+	top: 380px;
+	transition: 0.5s;
+}
+.friend-card:hover h1 {
+	position: absolute;
+	top: 170px;
+}
+h2 {
+	width: 80%;
+	padding-bottom: 20px !important;
+	margin-top: 220px !important;
+	margin-bottom: 20px !important;
+	font-weight: normal !important;
+	text-align: center !important;
+	border-bottom: 1px solid #8ea2b8 !important;
+}
+p {
+	width: 90%;
+	margin-bottom: 10px;
+	font-size: 16px;
+	line-height: 30px;
+
+	/* 段落缩进2个字符大小 */
+	text-indent: 2em;
+}
+a {
+	padding: 12px 36px;
+	color: #e8f6fd !important;
+	text-decoration: none;
+	border: 1px solid #86a3b3;
+	border-radius: 8px;
+}
+a:hover {
+	color: #ffffff;
+	background-color: #86a3b3;
+}
+.friend-down-del {
+	margin-right: 20px !important;
+	background: red !important;
+	border: 1px solid red !important;
+}
+.friend-down-send {
+	margin-left: 20px !important;
+}
+.friend-self-des {
+	width: 80%;
+	height: 76px;
 }
 .friend-down {
 	display: flex;
-	height: 200px;
-	margin-top: 40px;
-	background: #eaeaea;
-}
-.friend-down-1 {
-	display: flex;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-	width: 500px;
-	height: 200px;
-}
-.friend-down-2 {
-	display: flex;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-	width: 500px;
-	height: 200px;
-}
-.name-font {
-	margin-left: 25px;
-	font-size: 40px;
-}
-.sex-icon {
-	align-self: auto;
-	margin-left: 200px;
-	font-size: 60px;
-}
-.btn-css {
-	width: 200px !important;
-	height: 100px !important;
-	font-size: 29px !important;
-	border-radius: 10px !important;
+	margin-top: 10px;
 }

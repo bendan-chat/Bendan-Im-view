@@ -7,11 +7,12 @@ import { setToken } from "@/redux/modules/global/action";
 import { isPasswordCheck2, isPasswordCheck3 } from "@/utils/util";
 interface IProps {
 	userId: number;
+	email: string;
 	setPasswordForm: (passwordForm: boolean) => void;
 	setIsModalVisible: (isModalVisible: boolean) => void;
 }
 
-export default function PasswordForm({ setPasswordForm, setIsModalVisible, userId }: IProps) {
+export default function PasswordForm({ setPasswordForm, setIsModalVisible, userId, email }: IProps) {
 	const [numValid, setNumValid] = useState<number>(0);
 
 	const [password, setPassword] = useState<string>("");
@@ -23,7 +24,7 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 
 	const updatePassword = () => {
 		setLoading(true);
-		updateUserPassword(userId, password).then(async res => {
+		updateUserPassword(userId, password, email).then(async res => {
 			if (res.success) {
 				message.success("修改密码成功！！！");
 				setToken("");

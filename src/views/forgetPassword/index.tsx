@@ -5,7 +5,7 @@ import BackToLogin from "@/components/BackToLogin";
 
 import "./index.less";
 import ForgetBefore from "./components/ForgetBefore";
-import ForgetCheckBefore from "./components/ForgetCheckBefore";
+import ForgetCheck from "./components/ForgetCheckBefore";
 
 export default function ForgetPassword() {
 	const [select, setSelect] = useState<number>(0);
@@ -21,7 +21,7 @@ export default function ForgetPassword() {
 			case 0:
 				return <ForgetBefore setPassport={setPassport} setSelect={setSelect} />;
 			case 2:
-				return <ForgetCheckBefore email={passport} />;
+				return <ForgetCheck email={passport} />;
 		}
 	};
 	return (

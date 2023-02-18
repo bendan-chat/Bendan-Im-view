@@ -88,10 +88,11 @@ export const updateUser = (userinfo: Account.UserInfo) => {
  * @param userinfo
  * @returns
  */
-export const updateUserPassword = (userId: number, password: string) => {
+export const updateUserPassword = (userId: number, password: string, email: string) => {
 	const params = {
 		userId,
-		password
+		password,
+		email
 	};
 	return http.post<boolean>(AdminServer.User + `/updatePassword`, params, { headers: { noLoading: true } });
 };

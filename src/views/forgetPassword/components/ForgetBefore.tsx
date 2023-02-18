@@ -17,6 +17,7 @@ export default function ForgetBefore({ setSelect, setPassport }: IProps) {
 	 * @param e
 	 */
 	const onChangeInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+		setMatch(true);
 		setBtnAble(true);
 		let v = e.target.value;
 		setInputValue(v);
@@ -39,11 +40,7 @@ export default function ForgetBefore({ setSelect, setPassport }: IProps) {
 			<Button
 				onClick={() => {
 					setPassport(inputValue);
-					if (match) {
-						setSelect(1);
-					} else {
-						setSelect(2);
-					}
+					setSelect(2);
 				}}
 				disabled={btnAble}
 				type="primary"

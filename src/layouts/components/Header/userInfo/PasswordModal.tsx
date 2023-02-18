@@ -41,7 +41,7 @@ const PasswordModal = (props: Props) => {
 				{passwordForm ? (
 					<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setPasswordForm} />
 				) : (
-					<PasswordForm userId={myUserId!} setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
+					<PasswordForm email="" userId={myUserId!} setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
 				)}
 			</div>
 		</Modal>
