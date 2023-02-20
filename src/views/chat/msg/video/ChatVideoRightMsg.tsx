@@ -3,7 +3,7 @@ import { ChatProps } from "@/views/chat/interface/ChatProps";
 
 export default function ChatVideoRightMsg({ msg, avatar }: ChatProps.CommonProps) {
 	return (
-		<>
+		<li>
 			<div className="video-ri">
 				<div className="video-ri-box">
 					<div className="video-ri-message-box">
@@ -14,6 +14,6 @@ export default function ChatVideoRightMsg({ msg, avatar }: ChatProps.CommonProps
 					<Avatar shape="square" src={avatar} />
 				</div>
 			</div>
-		</>
+		</li>
 	);
 }

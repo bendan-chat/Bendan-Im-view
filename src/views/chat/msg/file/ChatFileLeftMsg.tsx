@@ -25,7 +25,7 @@ export default function ChatFileLeftMsg({ avatar, size, msg }: ChatProps.FilePro
 		});
 	}
 	return (
-		<>
+		<li>
 			<div className="file-le">
 				<div className="file-le-box">
 					<Avatar shape="square" src={avatar} />
@@ -40,6 +40,6 @@ export default function ChatFileLeftMsg({ avatar, size, msg }: ChatProps.FilePro
 					</div>
 				</div>
 			</div>
-		</>
+		</li>
 	);
 }

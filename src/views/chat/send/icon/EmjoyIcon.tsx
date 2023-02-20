@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { SmileTwoTone } from "@ant-design/icons";
-import { Tooltip } from "antd";
+import { Button, Tooltip } from "antd";
 
 import "./EmjoyIcon.less";
 
@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export default function EmjoyIcon({ setMsg, msg }: IProps) {
-	const [open, setOpen] = useState<boolean>();
+	const [open, setOpen] = useState<boolean>(false);
 	/**
 	 * 处理表情
 	 * @returns
@@ -23,27 +23,26 @@ export default function EmjoyIcon({ setMsg, msg }: IProps) {
 		const emjoysSpans: JSX.Element[] = [];
 		for (let i = 0; i < emjoyList.length; i++) {
 			emjoysSpans.push(
-				<span
+				<Button
+					type="text"
 					className="emjoy-span"
 					key={i}
 					onClick={() => {
-						console.log(i);
 						setMsg(msg + emjoyList[i]);
 						setOpen(false);
 					}}
 				>
-					{" " + emjoyList[i] + " "}
-				</span>
+					{" " + emjoyList[i]}
+				</Button>
 			);
 		}
 		return emjoysSpans;
 	}
 	return (
-		<>
+		<div>
 			<Tooltip
 				placement="topLeft"
-				trigger="click"
-				color="#dedede"
+				color="rgb(240 240 240)"
 				open={open}
 				title={
 					<>
@@ -51,8 +50,8 @@ export default function EmjoyIcon({ setMsg, msg }: IProps) {
 					</>
 				}
 			>
-				<SmileTwoTone onClick={() => setOpen(true)} className="emjoy-left-icon" />
+				<SmileTwoTone onClick={() => setOpen(!open)} className="emjoy-left-icon" />
 			</Tooltip>
-		</>
+		</div>
 	);
 }

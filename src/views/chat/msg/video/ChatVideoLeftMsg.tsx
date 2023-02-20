@@ -5,7 +5,7 @@ import "./ChatVideo.less";
 
 export default function ChatVideoLeftMsg({ msg, avatar }: ChatProps.CommonProps) {
 	return (
-		<>
+		<li>
 			<div className="video-le">
 				<div className="video-le-box">
 					<Avatar shape="square" src={avatar} />
@@ -16,6 +16,6 @@ export default function ChatVideoLeftMsg({ msg, avatar }: ChatProps.CommonProps)
 					</div>
 				</div>
 			</div>
-		</>
+		</li>
 	);
 }

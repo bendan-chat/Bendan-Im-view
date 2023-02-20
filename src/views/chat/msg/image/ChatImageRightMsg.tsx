@@ -5,7 +5,7 @@ import "./ChatImage.less";
 
 export default function ChatImageRightMsg({ msg, avatar }: ChatProps.CommonProps) {
 	return (
-		<>
+		<li>
 			<div className="image-ri">
 				<div className="image-ri-box">
 					<div className="image-ri-message-box">
@@ -14,6 +14,6 @@ export default function ChatImageRightMsg({ msg, avatar }: ChatProps.CommonProps
 					<Avatar shape="square" src={avatar} />
 				</div>
 			</div>
-		</>
+		</li>
 	);
 }

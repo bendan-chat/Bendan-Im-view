@@ -25,7 +25,7 @@ export default function ChatFileRightMsg({ avatar, msg, size }: ChatProps.FilePr
 		});
 	}
 	return (
-		<>
+		<li>
 			<div className="file-ri">
 				<div className="file-ri-box">
 					<div className="file-ri-message-box" onClick={downloadClick}>
@@ -40,6 +40,6 @@ export default function ChatFileRightMsg({ avatar, msg, size }: ChatProps.FilePr
 					<Avatar shape="square" src={avatar} />
 				</div>
 			</div>
-		</>
+		</li>
 	);
 }

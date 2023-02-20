@@ -1,5 +1,5 @@
 import { Avatar, Card } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import staticLeft from "@/assets/images/voice/static_left.png";
 import Left from "@/assets/images/voice/left.gif";
 import { SyncOutlined, FontSizeOutlined } from "@ant-design/icons";
@@ -29,6 +29,14 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 	};
 
 	/**
+	 * 自动沉底
+	 */
+	useEffect(() => {
+		document.getElementsByClassName("message-container")[0].scrollTop =
+			document.getElementsByClassName("message-container")[0].scrollHeight;
+	}, [turnText]);
+
+	/**
 	 * 翻译点击事件
 	 */
 	const sttClick = () => {
@@ -36,7 +44,9 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 		// asr请求
 		asrText(msg!)
 			.then(res => {
-				setTurnText(res.data);
+				if (res.success) {
+					setTurnText(res.data);
+				}
 			})
 			.finally(() => {
 				setAsrState(true);
@@ -44,7 +54,7 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 			});
 	};
 	return (
-		<>
+		<li>
 			<div className="voice-le">
 				<div className="voice-le-box-voice">
 					<Avatar shape="square" src={avatar} />
@@ -61,17 +71,12 @@ export default function ChatLeftVoiceMsg({ msg, avatar, len }: ChatProps.VoicePr
 					size="small"
 					hidden={asrHidden}
 					style={{
-						wordBreak: "break-all",
-						borderRadius: "10px",
-						marginLeft: "50px",
-						width: "auto",
-						color: "#f8f8f8",
-						background: "rgb(78 78 78)"
+						marginLeft: "50px"
 					}}
 				>
 					<span>{turnText}</span>
 				</Card>
 			</div>
-		</>
+		</li>
 	);
 }
