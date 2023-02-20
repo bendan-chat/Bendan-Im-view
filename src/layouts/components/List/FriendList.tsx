@@ -12,10 +12,10 @@ import "./FriendList.less";
 
 const FriendList = () => {
 	interface ModalProps {
-		showModal: () => void;
+		showModal: (friends: Account.FriendUser[]) => void;
 	}
 
-	const [friends, setFriends] = useState<Account.ChatUser[]>([]);
+	const [friends, setFriends] = useState<Account.FriendUser[]>([]);
 	const [selectId, setSelectId] = useState<number>();
 	const [options, setOptions] = useState<{ label: JSX.Element }[]>([]);
 	const [count, setCount] = useState(0);
@@ -39,6 +39,7 @@ const FriendList = () => {
 			setCount(count + 1);
 		});
 	}, []);
+
 	/**
 	 * 加载好友列表
 	 *
@@ -59,7 +60,7 @@ const FriendList = () => {
 	 * 新增 好友
 	 */
 	function addUser() {
-		addFriendRef.current!.showModal();
+		addFriendRef.current!.showModal(friends);
 	}
 
 	/**
@@ -81,7 +82,6 @@ const FriendList = () => {
 						label: (
 							<>
 								<List.Item
-									className={`${selectId === item.id ? "active-user" : ""}`}
 									onClick={() => {
 										navigate("/friend" + "/" + item.id);
 										setSelectId(item.id);
@@ -113,13 +113,13 @@ const FriendList = () => {
 						allowClear={true}
 						style={{ width: 160 }}
 						onSearch={onSearch}
-						placeholder="搜索聊天好友......"
+						placeholder="搜索好友......"
 						options={options}
 					/>
 					<Button onClick={addUser} type="primary" shape="circle">
 						<UserAddOutlined />
 					</Button>
-					<AddFriend innerRef={addFriendRef} />
+					<AddFriend setSelectId={setSelectId} innerRef={addFriendRef} />
 				</Space>
 			</div>
 			<br />

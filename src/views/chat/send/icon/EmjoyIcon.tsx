@@ -32,7 +32,7 @@ export default function EmjoyIcon({ setMsg, msg }: IProps) {
 						setOpen(false);
 					}}
 				>
-					{" " + emjoyList[i]}
+					{emjoyList[i]}
 				</Button>
 			);
 		}

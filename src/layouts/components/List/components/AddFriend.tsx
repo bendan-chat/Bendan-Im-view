@@ -9,21 +9,27 @@ import { Chat } from "@/api/interface/chat";
 import { store } from "@/redux";
 import { sendMessage } from "@/websocket";
 import { SendCode } from "@/websocket/type";
+import { useNavigate } from "react-router-dom";
 
 const { Search } = Input;
 const { Meta } = Card;
 interface Props {
-	innerRef: Ref<{ showModal: () => void }>;
+	innerRef: Ref<{ showModal: (friends: Account.FriendUser[]) => void }>;
+	setSelectId: (id: number) => void;
 }
-export const AddFriend = (props: Props) => {
+export const AddFriend = ({ innerRef, setSelectId }: Props) => {
 	const { userId, nickName, avatar } = store.getState().global.userInfo;
 
 	const [isModalOpenAddUser, setIsModalOpenAddUser] = useState<boolean>(false);
 	const [selectFriend, setSelectFriend] = useState<boolean>(false);
 	const [addSendMsg, setAddSendMsg] = useState<string>("");
 	const [searchText, setSearchText] = useState<string>("请搜索......");
-	const [data, setData] = useState<Account.UserInfo>();
+	const [data, setData] = useState<Account.UserInfo>({});
 	const [addhidden, setAddHidden] = useState<boolean>(false);
+	const [friends, setFriends] = useState<Account.FriendUser[]>();
+	const [haveFriend, setHaveFriend] = useState<boolean>(true);
+
+	const navigate = useNavigate();
 
 	/**
 	 * 更新输入框的内容
@@ -31,11 +37,12 @@ export const AddFriend = (props: Props) => {
 	const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setAddSendMsg(e.target.value);
 	};
-	useImperativeHandle(props.innerRef, () => ({
+	useImperativeHandle(innerRef, () => ({
 		showModal
 	}));
 
-	const showModal = () => {
+	const showModal = (friends: Account.FriendUser[]) => {
+		setFriends(friends);
 		setIsModalOpenAddUser(true);
 	};
 
@@ -47,17 +54,31 @@ export const AddFriend = (props: Props) => {
 	 * 搜索事件
 	 */
 	const onSearch = (value: string) => {
-		getUserInfo(value).then(res => {
-			if (res.success) {
-				if (res.data == null) {
-					setSelectFriend(false);
-					setSearchText("无法找到该用户，请检查你填写的帐号是否正确。");
-				} else {
-					setData(res.data);
-					setSelectFriend(true);
+		setHaveFriend(true);
+		if (value != "" && value.length > 0) {
+			getUserInfo(value).then(res => {
+				if (res.success) {
+					if (res.data == null) {
+						setSelectFriend(false);
+						setSearchText("无法找到该用户，请检查你填写的帐号是否正确。");
+					} else {
+						let userDetail = res.data;
+						setData(userDetail);
+						setSelectFriend(true);
+						if (
+							friends?.find(v => {
+								return v.id == userDetail.id;
+							}) != undefined
+						) {
+							setHaveFriend(false);
+						}
+					}
 				}
-			}
-		});
+			});
+		} else {
+			setSelectFriend(false);
+			setSearchText("请搜索......");
+		}
 	};
 
 	/**
@@ -65,6 +86,12 @@ export const AddFriend = (props: Props) => {
 	 */
 	function btnAddClick() {
 		setAddHidden(true);
+	}
+
+	function btnSendClick() {
+		clearCache();
+		navigate("/friend" + "/" + data?.id);
+		setSelectId(data?.id as number);
 	}
 
 	/**
@@ -102,6 +129,7 @@ export const AddFriend = (props: Props) => {
 		setSelectFriend(false);
 		setAddSendMsg("");
 		setData({});
+		setHaveFriend(true);
 	}
 
 	return (
@@ -121,6 +149,7 @@ export const AddFriend = (props: Props) => {
 				<br />
 				<div hidden={addhidden} style={{ display: "flex", flexDirection: "column" }}>
 					<Search
+						className="search-add-friends"
 						style={{ alignItems: "center" }}
 						placeholder="输入账号......"
 						allowClear
@@ -133,9 +162,15 @@ export const AddFriend = (props: Props) => {
 						<Card
 							style={{ width: 473 }}
 							actions={[
-								<Button style={{ marginTop: "30px" }} onClick={btnAddClick} type="primary" key={"btn-add"}>
-									添加好友
-								</Button>
+								haveFriend ? (
+									<Button style={{ marginTop: "30px" }} onClick={btnAddClick} type="primary" key={"btn-add"}>
+										添加好友
+									</Button>
+								) : (
+									<Button style={{ marginTop: "30px" }} onClick={btnSendClick} type="primary" key={"btn-add"}>
+										查看详情
+									</Button>
+								)
 							]}
 						>
 							<Meta

@@ -164,7 +164,6 @@ const ChatList = () => {
 						label: (
 							<>
 								<List.Item
-									className={`${selectId === item.id ? "active-user" : ""}`}
 									onClick={() => {
 										navigate("/chat" + "/" + item.id);
 										clearUserBadge(userId, item.id);
