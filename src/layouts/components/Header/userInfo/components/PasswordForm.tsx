@@ -86,19 +86,25 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 	};
 	return (
 		<div className="password-update-Form">
-			<Form style={{ margin: "25px" }}>
+			<Form>
 				<span style={{ fontWeight: "bold", fontSize: "15px" }}>设置新的密码</span>
 				<Form.Item name="InputPassword">
 					<Input.Password
+						style={{ marginTop: "30px" }}
 						onChange={InputPassword}
-						placeholder="请设置新密码"
+						placeholder="请输入新密码"
 						allowClear={true}
 						maxLength={16}
 						minLength={8}
 						className="password-update-input-password"
 					/>
 				</Form.Item>
-				<Form.Item name="confirmPassword" validateStatus={numValid != 0 ? "error" : ""} help={matchValid(numValid)}>
+				<Form.Item
+					style={{ marginTop: "30px" }}
+					name="confirmPassword"
+					validateStatus={numValid != 0 ? "error" : ""}
+					help={matchValid(numValid)}
+				>
 					<Input.Password
 						onChange={confirmInputPassword}
 						placeholder="请再次输入新密码"
@@ -107,17 +113,19 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 						className="password-update-input-password"
 					/>
 				</Form.Item>
-				<div className="detail-text">
-					<span>至少满足一个条件</span>
-					<div>
-						<CheckCircleTwoTone twoToneColor={iconColor[0] ? "#b0b3be" : "#52c41a"} />
-						<span className={iconColor[0] ? "detail-text-span" : ""}> 密码由8-16位数字、字母或符号组成</span>
+				<Form.Item name="text">
+					<div className="detail-text">
+						<span>至少满足一个条件</span>
+						<div>
+							<CheckCircleTwoTone twoToneColor={iconColor[0] ? "#b0b3be" : "#52c41a"} />
+							<span className={iconColor[0] ? "detail-text-span" : ""}> 密码由8-16位数字、字母或符号组成</span>
+						</div>
+						<div>
+							<CheckCircleTwoTone twoToneColor={iconColor[1] ? "#b0b3be" : "#52c41a"} />
+							<span className={iconColor[1] ? "detail-text-span" : ""}> 至少含2种以上字符</span>
+						</div>
 					</div>
-					<div>
-						<CheckCircleTwoTone twoToneColor={iconColor[1] ? "#b0b3be" : "#52c41a"} />
-						<span className={iconColor[1] ? "detail-text-span" : ""}> 至少含2种以上字符</span>
-					</div>
-				</div>
+				</Form.Item>
 			</Form>
 			<Button
 				disabled={btnValid}

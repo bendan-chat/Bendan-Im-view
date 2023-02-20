@@ -88,7 +88,9 @@ export default function SendMailCodeForm({ onNextStep, email, onUserId }: IProps
 	return (
 		<div className="password-update-parent">
 			<span style={{ fontWeight: "bold", fontSize: "15px" }}>邮箱验证</span>
-			<span>请通过邮箱 {<span style={{ color: "#febe79" }}>{hiddenPassPort(email)}</span>} 接收邮箱验证码</span>
+			<span style={{ marginBottom: "20px" }}>
+				请通过邮箱 {<span style={{ color: "#febe79" }}>{hiddenPassPort(email)}</span>} 接收邮箱验证码
+			</span>
 			<div className="password-update-box">
 				<Form autoComplete="off">
 					<Form.Item validateStatus={inputValid ? "error" : ""} help={inputValid ? "验证码不正确请检查！！！" : ""}>

@@ -36,26 +36,6 @@ const App = (props: any) => {
 		setAntdLanguage();
 	}, [language]);
 
-	// function beforeunload(e: any) {
-	// 	console.log("removeEventListener");
-	// 	let confirmationMessage = "你确定离开此页面吗?";
-	// 	(e || window.event).returnValue = confirmationMessage;
-	// 	return confirmationMessage;
-	// }
-	// useEffect(() => {
-	// 	return () => {
-	// 		window.removeEventListener("beforeunload", beforeunload);
-	// 		console.log("removeEventListener");
-	// 		// 这里写离开页面的后续操作
-	// 		// 项目中这个页面使用了websocket。所以在页面离开的时候，需要将websocket关闭掉
-	// 		// 关闭websocket
-	// 	};
-	// }, []);
-	// useEffect(() => {
-	// 	// 拦截判断是否离开当前页面
-	// 	window.addEventListener("beforeunload", beforeunload);
-	// }, []);
-
 	return (
 		<HashRouter>
 			<ConfigProvider locale={i18nLocale} componentSize={assemblySize}>
