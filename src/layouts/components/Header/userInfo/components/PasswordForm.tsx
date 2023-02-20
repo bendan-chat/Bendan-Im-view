@@ -5,6 +5,7 @@ import { logout, updateUserPassword } from "@/api/modules/user";
 import { useNavigate } from "react-router-dom";
 import { setToken } from "@/redux/modules/global/action";
 import { isPasswordCheck2, isPasswordCheck3 } from "@/utils/util";
+
 interface IProps {
 	userId: number;
 	email: string;
@@ -114,7 +115,6 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 					</div>
 					<div>
 						<CheckCircleTwoTone twoToneColor={iconColor[1] ? "#b0b3be" : "#52c41a"} />
-						{/*  */}
 						<span className={iconColor[1] ? "detail-text-span" : ""}> 至少含2种以上字符</span>
 					</div>
 				</div>

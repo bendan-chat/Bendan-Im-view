@@ -80,10 +80,9 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 			imgWindow?.document.write(image.outerHTML);
 		}
 	};
-	// default
 	return (
 		<>
-			<ImgCrop rotate>
+			<ImgCrop modalTitle={"编辑头像"} rotate modalOk={"修改"} modalCancel={"取消"}>
 				<Upload {...props}>
 					<Button type="primary" style={{ borderRadius: "8px" }} className="btn-down" icon={<UploadOutlined />}>
 						上传头像

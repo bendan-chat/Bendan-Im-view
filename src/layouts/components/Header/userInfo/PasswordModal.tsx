@@ -37,13 +37,11 @@ const PasswordModal = (props: Props) => {
 			}}
 			destroyOnClose={true}
 		>
-			<div className="password-update-Modal">
-				{passwordForm ? (
-					<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setPasswordForm} />
-				) : (
-					<PasswordForm email="" userId={myUserId!} setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
-				)}
-			</div>
+			{passwordForm ? (
+				<SendMailCodeForm onUserId={setMyUserId} email={email} onNextStep={setPasswordForm} />
+			) : (
+				<PasswordForm email="" userId={myUserId!} setIsModalVisible={setIsModalVisible} setPasswordForm={setPasswordForm} />
+			)}
 		</Modal>
 	);
 };

@@ -70,8 +70,8 @@ export default function index() {
 				<div className="photo">
 					<img src={data?.avatar as string} />
 				</div>
-				<h1 style={{ fontSize: "30px" }}>{`${data?.nickName}`}</h1>
-				<h2 style={{ fontSize: "20px" }}>{`账号： ${data?.username}`}</h2>
+				<h1 style={{ fontSize: "35px", color: "#ffffff" }}>{`${data?.nickName}`}</h1>
+				<h2 style={{ fontSize: "20px", color: "#ffffff" }}>{`账号： ${data?.username}`}</h2>
 				<p>
 					<UserOutlined className="sex-icon" /> {"  " + matchSex(data?.gender as number)}
 				</p>
