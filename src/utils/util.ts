@@ -231,3 +231,14 @@ export function isPasswordCheck2(password: string) {
 	let two = "^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)(?!([^(0-9a-zA-Z)])+$).{8,16}$";
 	return password.match(two) != null;
 }
+
+/**
+ * 包含数字或者字母
+ * 二种条件
+ * @param username
+ * @returns 如果满足返回 true; 反之
+ */
+export function usernameCheck(username: string) {
+	let two = "(^[A-Za-z0-9]+$)";
+	return username.match(two) != null;
+}

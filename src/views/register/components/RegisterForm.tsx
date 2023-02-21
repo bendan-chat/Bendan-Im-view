@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Account } from "@/api/interface/user";
 import { listAllUsernames, registerUser } from "@/api/modules/user";
-import { isPasswordCheck2 } from "@/utils/util";
+import { isPasswordCheck2, usernameCheck } from "@/utils/util";
 import { Button, Form, Input, message, Radio } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -78,6 +78,16 @@ export default function RegisterForm() {
 					label="账号"
 					rules={[
 						{ required: true, message: "请输入账号！！！" },
+						() => ({
+							validator(_, value) {
+								if (value != null || value != "") {
+									if (usernameCheck(value)) {
+										return Promise.resolve();
+									}
+									return Promise.reject(new Error("用户名只能由数字或者英文组成！！！"));
+								}
+							}
+						}),
 						() => ({
 							validator(_, value) {
 								if (value != null || value != "") {
