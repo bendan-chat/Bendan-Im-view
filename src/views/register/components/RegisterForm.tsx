@@ -84,7 +84,7 @@ export default function RegisterForm() {
 									if (usernameCheck(value)) {
 										return Promise.resolve();
 									}
-									return Promise.reject(new Error("用户名只能由数字或者英文组成！！！"));
+									return Promise.reject(new Error("账号只能由数字或者英文组成！！！"));
 								}
 							}
 						}),
