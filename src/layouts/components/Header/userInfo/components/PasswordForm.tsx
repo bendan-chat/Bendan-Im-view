@@ -88,7 +88,15 @@ export default function PasswordForm({ setPasswordForm, setIsModalVisible, userI
 		<div className="password-update-Form">
 			<Form>
 				<span style={{ fontWeight: "bold", fontSize: "15px" }}>设置新的密码</span>
-				<Form.Item name="InputPassword">
+				<Form.Item
+					name="InputPassword"
+					rules={[
+						{
+							required: true,
+							message: "请输入你的密码！！！"
+						}
+					]}
+				>
 					<Input.Password
 						style={{ marginTop: "30px" }}
 						onChange={InputPassword}
