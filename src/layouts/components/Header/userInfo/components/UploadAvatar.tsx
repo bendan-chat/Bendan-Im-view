@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { message, Upload, Button } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
@@ -25,7 +26,6 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 				console.log(info.file, info.fileList);
 			}
 			if (info.file.status === "done") {
-				message.success("上传成功！！！");
 			} else if (info.file.status === "error") {
 				message.error(`${info.file.name} file upload failed.`);
 			}
@@ -40,7 +40,6 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 			uploadTencentFile(formData)
 				.then(res => {
 					if (res.success) {
-						setModalVisible(false);
 						let uploadAvatar = res.data;
 						updateUser({
 							id: userId,
@@ -57,6 +56,8 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 										email: email
 									})
 								);
+								setModalVisible(false);
+								message.success("头像更新成功！！！");
 							}
 						});
 						//@ts-ignore

@@ -3,10 +3,9 @@
 import { Account } from "@/api/interface/user";
 import { getFriend } from "@/api/modules/user";
 import { useNavigate } from "react-router-dom";
-import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { ManOutlined, UserOutlined, WomanOutlined } from "@ant-design/icons";
+import { ManOutlined, UserOutlined, WomanOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 
 import { store } from "@/redux";
 import { setListMatch, setMenuIconKey } from "@/redux/modules/menu/action";
@@ -14,6 +13,7 @@ import { setToAvatar } from "@/redux/modules/chat/action";
 import { delFriendAndChatRecord } from "@/api/modules/chat";
 
 import "./index.less";
+import { message, Modal } from "antd";
 
 export default function index() {
 	const { id } = useParams();
@@ -58,11 +58,21 @@ export default function index() {
 	 * 删除好友
 	 */
 	function delUser() {
-		delFriendAndChatRecord(curId, userId).then(res => {
-			console.log(res.data);
+		Modal.confirm({
+			title: "温馨提示 🧡",
+			icon: <ExclamationCircleOutlined />,
+			content: "是否确认删除好友？",
+			okText: "确认",
+			cancelText: "取消",
+			onOk: () => {
+				message.success("删除好友成功！");
+				delFriendAndChatRecord(curId, userId).then(res => {
+					console.log(res.data);
+				});
+				navigate("/friends");
+				location.reload();
+			}
 		});
-		navigate("/friends");
-		location.reload();
 	}
 	return (
 		<div className="friend-parant">

@@ -1,5 +1,5 @@
 import { Ref, useImperativeHandle, useState } from "react";
-import { Avatar, Input, Modal, Card, Empty, Button } from "antd";
+import { Avatar, Input, Modal, Card, Empty, Button, message } from "antd";
 import { getUserInfo } from "@/api/modules/user";
 import { Account } from "@/api/interface/user";
 
@@ -105,6 +105,7 @@ export const AddFriend = ({ innerRef, setSelectId }: Props) => {
 			avatar: avatar,
 			description: addSendMsg
 		};
+		console.log(params);
 		addNewFriend(params)
 			.then(res => {
 				if (res.success) {
@@ -113,6 +114,7 @@ export const AddFriend = ({ innerRef, setSelectId }: Props) => {
 						fromId: userId,
 						toId: data?.id as number
 					});
+					message.success("发送好友申请成功！！！");
 				}
 			})
 			.finally(() => {
@@ -153,7 +155,7 @@ export const AddFriend = ({ innerRef, setSelectId }: Props) => {
 						style={{ alignItems: "center" }}
 						placeholder="输入账号......"
 						allowClear
-						enterButton="Search"
+						enterButton="搜索"
 						size="large"
 						onSearch={onSearch}
 					/>
