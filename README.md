@@ -92,11 +92,35 @@ npm run commit
 
 ![hooks-login-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220914150544.png)
 
-#### 2、首页：
+#### 2、注册页：
 
-![hooks-home-light](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220914150552.png)
+![image-20230227104701717](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104701717.png)
 
-![hooks-home-dark](https://iamge-1259297738.cos.ap-chengdu.myqcloud.com/img/20220914150559.png)
+#### 3、找回密码页
+
+![image-20230227104736649](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104736649.png)
+
+![image-20230227104757875](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104757875.png)
+
+4、聊天界面：
+
+![image-20230227104829257](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104829257.png)
+
+#### 5、好友详情
+
+![image-20230227104904125](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104904125.png)
+
+![image-20230227104915248](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104915248.png)
+
+#### 6、语音消息详情
+
+![image-20230227104943944](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104943944.png)
+
+![image-20230227104951529](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227104951529.png)
+
+#### 7、个人详情以及头像上传
+
+![image-20230227105022963](https://cdn.jsdelivr.net/gh/obeast-dragon/cloud-bed/pictures/image-20230227105022963.png)
 
 ### 五、文件资源目录 📚
 
