@@ -1,22 +1,24 @@
-/* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { message, Upload, Button } from "antd";
+import { message, Upload, Button, Spin } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { uploadTencentFile } from "@/api/modules/upload";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { store } from "@/redux";
 import { Message } from "@/api/interface/chat";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, LoadingOutlined } from "@ant-design/icons";
 
 import "./UserDetails.less";
 import ImgCrop from "antd-img-crop";
 import { updateUser } from "@/api/modules/user";
 import { setUserInfo } from "@/redux/modules/global/action";
+import { useState } from "react";
 interface IProps {
 	setModalVisible: (modalVisible: boolean) => void;
 }
 export default function UploadAvatar({ setModalVisible }: IProps) {
 	const { userId, nickName, username, email } = store.getState().global.userInfo;
+	const [uploading, setUploading] = useState<boolean>(false);
+	const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 	const props: UploadProps = {
 		name: "file",
@@ -25,6 +27,7 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 			if (info.file.status !== "uploading") {
 				console.log(info.file, info.fileList);
 			}
+			// eslint-disable-next-line no-empty
 			if (info.file.status === "done") {
 			} else if (info.file.status === "error") {
 				message.error(`${info.file.name} file upload failed.`);
@@ -37,6 +40,7 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 			formData.append("file", file);
 			formData.append("userId", userId);
 			formData.append("type", `${Message.MsgType.pictureMsg}`);
+			setUploading(true);
 			uploadTencentFile(formData)
 				.then(res => {
 					if (res.success) {
@@ -64,7 +68,10 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 						onSuccess(file);
 					}
 				})
-				.catch(onError);
+				.catch(onError)
+				.finally(() => {
+					setUploading(false);
+				});
 		},
 		async onPreview(file: UploadFile) {
 			let src = file.url as string;
@@ -85,7 +92,13 @@ export default function UploadAvatar({ setModalVisible }: IProps) {
 		<>
 			<ImgCrop modalTitle={"编辑头像"} rotate modalOk={"修改"} modalCancel={"取消"}>
 				<Upload {...props}>
-					<Button type="primary" style={{ borderRadius: "8px" }} className="btn-down" icon={<UploadOutlined />}>
+					<Button
+						type="primary"
+						disabled={uploading}
+						style={{ borderRadius: "8px" }}
+						className="btn-down"
+						icon={uploading ? <Spin indicator={antIcon} /> : <UploadOutlined />}
+					>
 						上传头像
 					</Button>
 				</Upload>
