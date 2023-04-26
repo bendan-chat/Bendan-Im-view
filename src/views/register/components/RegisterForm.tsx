@@ -60,6 +60,8 @@ export default function RegisterForm() {
 			gender: values.gender,
 			roleIds: [1]
 		};
+		console.log(values);
+		console.log(param);
 		registerUser(param).then(res => {
 			if (res.success) {
 				navigate("/login");
@@ -99,6 +101,15 @@ export default function RegisterForm() {
 							}
 						})
 					]}
+				>
+					<Input maxLength={20} allowClear={true} className="register-form-input" />
+				</Form.Item>
+
+				<Form.Item
+					name="nickName"
+					label="昵称"
+					tooltip="你希望别人看到你是什么名字?"
+					rules={[{ required: true, message: "请输入你的昵称！！！", whitespace: true }]}
 				>
 					<Input maxLength={20} allowClear={true} className="register-form-input" />
 				</Form.Item>
@@ -173,15 +184,6 @@ export default function RegisterForm() {
 					]}
 				>
 					<Input.Password maxLength={16} allowClear={true} className="register-form-input" />
-				</Form.Item>
-
-				<Form.Item
-					name="nickname"
-					label="昵称"
-					tooltip="你希望别人看到你是什么名字?"
-					rules={[{ required: true, message: "请输入你的昵称！！！", whitespace: true }]}
-				>
-					<Input maxLength={20} allowClear={true} className="register-form-input" />
 				</Form.Item>
 
 				<Form.Item name="phoneNumber" label="手机号" rules={[{ required: true, message: "请输入你的手机号！！！" }]}>

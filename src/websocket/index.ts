@@ -33,9 +33,9 @@ const createWsClient = () => {
 	ws.onclose = function (e) {
 		console.log("websocket 断开: " + e.code + " " + e.reason + " " + e.wasClean);
 	};
-	window.onbeforeunload = function () {
-		closeConnection();
-	};
+	// window.onbeforeunload = function () {
+	// 	closeConnection();
+	// };
 	ws.onmessage = function (e) {
 		let res = JSON.parse(e.data);
 		handleWsMsg(res);
@@ -80,12 +80,12 @@ const sendHeartbeat = () => {
 	}, 8000);
 };
 
-/**
- * 关闭 Web Socket
- */
-const closeConnection = () => {
-	ws?.close();
-};
+// /**
+//  * 关闭 Web Socket
+//  */
+// const closeConnection = () => {
+// 	ws?.close();
+// };
 
 /**
  * 重连 Web Socket

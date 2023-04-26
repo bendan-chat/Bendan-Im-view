@@ -51,19 +51,24 @@ export default function FileUploadIcon({ addMsgList, toId }: IProps) {
 			setUploading(true);
 			uploadTencentFile(formData)
 				.then(res => {
-					const msgObj: SendMessageProps = {
-						code: SendCode.MESSAGE,
-						sendType: matchFileSuffix(fileName),
-						fromId: userId,
-						toId: toId,
-						sendContent: res.data,
-						length: size
-					};
-					// 发送前端
-					addMsgList(msgObj);
-					// 发送后台
-					sendMessage(msgObj);
-					//发送消息
+					if (res.success) {
+						const msgObj: SendMessageProps = {
+							code: SendCode.MESSAGE,
+							sendType: matchFileSuffix(fileName),
+							fromId: userId,
+							toId: toId,
+							sendContent: res.data,
+							length: size
+						};
+						// 发送前端
+						addMsgList(msgObj);
+						// 发送后台
+						sendMessage(msgObj);
+						//发送消息
+					}
+				})
+				.catch((error: any) => {
+					console.log(error);
 				})
 				.finally(() => {
 					setFileList([]);

@@ -22,7 +22,7 @@ declare interface ViteEnv {
 	VITE_PROXY_URL: string;
 	VITE_BUILD_GZIP: boolean;
 	VITE_REPORT: boolean;
-	VITE_SERVER_URL: "http://localhost:9999";
+	VITE_SERVER_URL: "http://127.0.0.1:9999";
 }
 
 // * Dropdown MenuInfo

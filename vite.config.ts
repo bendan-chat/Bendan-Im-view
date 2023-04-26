@@ -43,7 +43,7 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 			// 代理跨域（mock 不需要配置，这里只是个事列）
 			proxy: {
 				"/api": {
-					target: viteEnv.VITE_SERVER_URL, // easymock
+					target: viteEnv.VITE_SERVER_URL,
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api/, "")
 				}
