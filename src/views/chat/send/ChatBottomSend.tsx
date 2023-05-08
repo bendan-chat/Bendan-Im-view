@@ -9,6 +9,7 @@ import { Message } from "@/api/interface/chat";
 import EmjoyIcon from "./icon/EmjoyIcon";
 import FileUploadIcon from "./icon/FileUploadIcon";
 import PhoneIcon from "./icon/PhoneIcon";
+import VideoIcon from "./icon/VideoIcon";
 const { TextArea } = Input;
 
 interface IProps {
@@ -82,6 +83,7 @@ export default function ChatBottomSend({ toId, addMsgList }: IProps) {
 				<EmjoyIcon msg={msg} setMsg={setMsg} />
 				<FileUploadIcon addMsgList={addMsgList} toId={toId} />
 				<PhoneIcon />
+				<VideoIcon toId={toId} />
 			</div>
 			<div className="input-edge-div">
 				<TextArea
