@@ -27,16 +27,14 @@ export default function PhoneIcon({ toId }: IProps) {
 				open={open}
 				destroyOnClose={true}
 				centered={true}
-				width={400}
+				width={500}
 				onCancel={() => setOpen(false)}
 			>
-				<div className="video-box">
-					<iframe
-						src={`${import.meta.env.VITE_VIDEO_URL}/webrtc/${userId}.html?toUser=${toId}`}
-						frameBorder="0"
-						className="card full-iframe"
-					></iframe>
-				</div>
+				<iframe
+					src={`${import.meta.env.VITE_VIDEO_URL}/webrtc/${userId}.html?toUser=${toId}`}
+					frameBorder="0"
+					className="card full-iframe"
+				></iframe>
 			</Modal> */}
 		</>
 	);
