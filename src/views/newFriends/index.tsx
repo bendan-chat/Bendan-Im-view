@@ -20,9 +20,11 @@ export default function index() {
 	return (
 		<div className="new-friend-parent">
 			<div className="new-friend-title">新的朋友</div>
-			{data?.map(item => {
-				return <NewFriendList key={item.id} newFriend={item} />;
-			})}
+			<div className="new-friend-list-add">
+				{data?.map(item => {
+					return <NewFriendList key={item.id} newFriend={item} />;
+				})}
+			</div>
 		</div>
 	);
 }
